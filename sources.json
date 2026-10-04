@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "target_cli": "0.160.0",
+  "tested_cli": null,
+  "test_profile": {
+    "os": "Windows 11 (AMD64)",
+    "python": "3.13.0",
+    "git": "2.47.0"
+  },
+  "sources": [
+    {
+      "id": "CX-01",
+      "title": "Codex Release rust-v0.160.0",
+      "url": "https://github.com/openai/codex/releases/tag/rust-v0.160.0",
+      "checked_at": "2026-10-04",
+      "lesson_ids": ["start"]
+    },
+    {
+      "id": "CX-02",
+      "title": "Codex CLI Reference",
+      "url": "https://developers.openai.com/codex/cli/reference",
+      "checked_at": "2026-10-04",
+      "lesson_ids": ["start", "workflow"]
+    },
+    {
+      "id": "CX-03",
+      "title": "Codex Skills",
+      "url": "https://developers.openai.com/codex/skills/",
+      "checked_at": "2026-10-04",
+      "lesson_ids": ["skills"]
+    },
+    {
+      "id": "CX-04",
+      "title": "Codex AGENTS.md Guide",
+      "url": "https://developers.openai.com/codex/guides/agents-md/",
+      "checked_at": "2026-10-04",
+      "lesson_ids": ["instructions"]
+    },
+    {
+      "id": "CX-05",
+      "title": "Codex MCP",
+      "url": "https://developers.openai.com/codex/mcp/",
+      "checked_at": "2026-10-04",
+      "lesson_ids": ["mcp"]
+    },
+    {
+      "id": "CX-06",
+      "title": "Codex Noninteractive",
+      "url": "https://developers.openai.com/codex/noninteractive/",
+      "checked_at": "2026-10-04",
+      "lesson_ids": ["automation"]
+    },
+    {
+      "id": "CX-07",
+      "title": "Codex Configuration Reference",
+      "url": "https://developers.openai.com/codex/config-reference/",
+      "checked_at": "2026-10-04",
+      "lesson_ids": ["safety", "extensions"]
+    },
+    {
+      "id": "CX-08",
+      "title": "Codex Security",
+      "url": "https://developers.openai.com/codex/security/",
+      "checked_at": "2026-10-04",
+      "lesson_ids": ["safety"]
+    }
+  ]
+}

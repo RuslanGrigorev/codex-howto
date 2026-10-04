@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "course_id": "codex-cli-course-ru",
+  "title": "Автономный курс Codex CLI",
+  "description": "Практическое руководство и локальный интерактивный справочник по Codex CLI",
+  "version": "0.1.0",
+  "default_locale": "ru",
+  "supported_locales": ["ru"],
+  "modules": [
+    {
+      "id": "start",
+      "title": "Подготовка и первый запуск",
+      "summary": "Различить режимы курса, проверить подготовленную среду и прочитать локальную справку.",
+      "order": 1,
+      "lessons": [
+        {
+          "id": "start.overview",
+          "title": "Введение в Codex CLI",
+          "revision": 1,
+          "dependencies": [],
+          "path": "01-start/overview.md"
+        }
+      ]
+    },
+    {
+      "id": "workflow",
+      "title": "Повседневная работа",
+      "summary": "Сформулировать ограниченную задачу, разобрать план, diff и результат тестов.",
+      "order": 2,
+      "lessons": [
+        {
+          "id": "workflow.small-fix",
+          "title": "Точечное исправление бага (small-fix)",
+          "revision": 1,
+          "dependencies": ["start.overview"],
+          "path": "02-workflow/small-fix.md",
+          "exercise_id": "small-fix",
+          "quiz_path": "02-workflow/quiz.json"
+        }
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Разрешения и безопасные изменения",
+      "summary": "Определить область записи и выполнить восстановление в учебном Git-репозитории.",
+      "order": 3,
+      "lessons": []
+    },
+    {
+      "id": "instructions",
+      "title": "Инструкции и контекст",
+      "summary": "Создать AGENTS.md; отличить инструкции, данные, память и политики команд.",
+      "order": 4,
+      "lessons": []
+    },
+    {
+      "id": "sessions",
+      "title": "Сессии и восстановление",
+      "summary": "Различить продолжение/ветвление разговора и возврат состояния файлов.",
+      "order": 5,
+      "lessons": []
+    },
+    {
+      "id": "skills",
+      "title": "Повторяемые действия и skills",
+      "summary": "Подготовить маленький навык; не путать его со встроенной slash-командой.",
+      "order": 6,
+      "lessons": []
+    },
+    {
+      "id": "mcp",
+      "title": "Внешние инструменты без внешней сети",
+      "summary": "Разобрать и испытать локальный read-only stdio-пример; Docs MCP — дополнительный сетевой пример.",
+      "order": 7,
+      "lessons": []
+    },
+    {
+      "id": "automation",
+      "title": "Неинтерактивная работа",
+      "summary": "Различить поток событий JSONL и итоговый результат, проверить обработку ошибки.",
+      "order": 8,
+      "lessons": []
+    },
+    {
+      "id": "extensions",
+      "title": "Hooks, субагенты и плагины",
+      "summary": "Разобрать минимальные локальные примеры, области действия и доверие.",
+      "order": 9,
+      "lessons": []
+    },
+    {
+      "id": "capstone",
+      "title": "Итоговая практика",
+      "summary": "Исправить ограниченную ошибку, выполнить проверки и сохранить раздельные результаты.",
+      "order": 10,
+      "lessons": []
+    }
+  ]
+}

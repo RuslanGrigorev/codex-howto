@@ -1,0 +1,22 @@
+{
+  "locale": "en",
+  "direction": "ltr",
+  "strings": {
+    "site_title": "Codex CLI Course",
+    "site_tagline": "Offline Practical Guide and Handbook",
+    "nav_home": "Home",
+    "nav_progress": "Progress",
+    "nav_reference": "Reference",
+    "status_read": "Read",
+    "status_quiz_passed": "Quiz Passed",
+    "status_exercise_passed": "Exercise Passed",
+    "status_codex_verified": "Codex Verified",
+    "btn_mark_read": "Mark as read",
+    "btn_export_progress": "Export progress (JSON)",
+    "btn_import_progress": "Import progress",
+    "btn_reset_progress": "Reset progress",
+    "btn_submit_quiz": "Submit quiz",
+    "noscript_warning": "Warning: JavaScript is disabled. Text materials are fully readable, but interactive quizzes and progress tracking require JS.",
+    "storage_warning": "Warning: Local storage is unavailable. Your progress is held in memory for this session only. Remember to export your progress."
+  }
+}

@@ -78,12 +78,14 @@ htmlcov/
 # uv lockfile
 uv.lock
 blog-post/
-openspec/
 .opencode/
+
+# Local learning progress and caches
+.learning/
 
 # Promo video project
 promo-video/
-.agents/
+!.agents/skills/
 .codex/
 
 # Video files (too large for git)
