@@ -1,0 +1,9 @@
+{
+  "candidate_cli": "0.160.0",
+  "doc_changes": [
+    {
+      "source_id": "CX-02",
+      "lessons": ["start.overview"]
+    }
+  ]
+}

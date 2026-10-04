@@ -1,0 +1,9 @@
+{
+  "candidate_cli": "0.161.0",
+  "removed_flags": [
+    {
+      "name": "--sandbox",
+      "lessons": ["safety.permissions"]
+    }
+  ]
+}

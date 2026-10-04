@@ -505,6 +505,93 @@ def run_offline_checks(repo_root: Path) -> List[Dict[str, Any]]:
                 "message": f"Сбой проверки capstone-project: sol={res_sol.returncode}, st={res_st.returncode}, m1={res_m1.returncode}, m2={res_m2.returncode}",
             })
 
+    # 16. Проверка инструмента обновления check_updates.py (UPD-002, UPD-003)
+    cu_script = repo_root / "scripts" / "check_updates.py"
+    if cu_script.exists():
+        r_base = subprocess.run([sys.executable, str(cu_script)], cwd=str(repo_root), capture_output=True, text=True, timeout=5)
+        r_rem = subprocess.run([sys.executable, str(cu_script), "--candidate", "scripts/fixtures/updates/removed_flag.json"], cwd=str(repo_root), capture_output=True, text=True, timeout=5)
+        r_unk = subprocess.run([sys.executable, str(cu_script), "--candidate", "scripts/fixtures/updates/unknown_command.json"], cwd=str(repo_root), capture_output=True, text=True, timeout=5)
+        r_edt = subprocess.run([sys.executable, str(cu_script), "--candidate", "scripts/fixtures/updates/editorial_only.json"], cwd=str(repo_root), capture_output=True, text=True, timeout=5)
+        r_mal = subprocess.run([sys.executable, str(cu_script), "--candidate", "scripts/fixtures/updates/malformed_response.json"], cwd=str(repo_root), capture_output=True, text=True, timeout=5)
+        r_fetch = subprocess.run([sys.executable, str(cu_script), "--fetch"], cwd=str(repo_root), capture_output=True, text=True, timeout=5)
+
+        if (
+            r_base.returncode == 0
+            and r_rem.returncode == 1
+            and r_unk.returncode == 2
+            and r_edt.returncode == 0
+            and r_mal.returncode == 2
+            and r_fetch.returncode == 1
+        ):
+            cases.append({
+                "scenario_id": "UPD-002-S01",
+                "status": "PASS",
+                "check": "check_updates_tool",
+                "evidence": [{"path": "scripts/check_updates.py", "type": "file"}],
+                "message": "Скрипт check_updates.py корректно классифицирует кандидатов (COMPATIBLE/INCOMPLETE/INCOMPATIBLE) и блокирует сеть",
+            })
+        else:
+            cases.append({
+                "scenario_id": "UPD-002-S01",
+                "status": "FAIL",
+                "check": "check_updates_tool",
+                "evidence": [{"path": "scripts/check_updates.py", "type": "file"}],
+                "message": f"Сбой проверки check_updates: base={r_base.returncode}, rem={r_rem.returncode}, unk={r_unk.returncode}, edt={r_edt.returncode}, mal={r_mal.returncode}, fetch={r_fetch.returncode}",
+            })
+
+    # 17. Проверка миграции прогресса при обновлении курса (PRG-004)
+    try:
+        sys.path.insert(0, str(repo_root / "scripts"))
+        from check_updates import migrate_progress_record
+
+        # 1. Отклонение чужого курса
+        f_res = migrate_progress_record({"course_id": "claude-tracker", "lessons": {}}, "codex-cli-course-ru", {})
+        # 2. Обработка изменения revision и unlinked
+        t_res = migrate_progress_record(
+            {
+                "schema_version": 1,
+                "course_id": "codex-cli-course-ru",
+                "lessons": {
+                    "start.overview": {"read": True, "revision": 1},
+                    "workflow.small-fix": {"read": True, "revision": 1},
+                    "old.deleted": {"read": True, "revision": 1},
+                },
+            },
+            "codex-cli-course-ru",
+            {"start.overview": 1, "workflow.small-fix": 2},
+        )
+
+        if (
+            not f_res["success"]
+            and t_res["success"]
+            and t_res["migrated_data"]["lessons"]["workflow.small-fix"]["needs_recheck"] is True
+            and t_res["migrated_data"]["lessons"]["start.overview"]["needs_recheck"] is False
+            and "old.deleted" in t_res["migrated_data"]["unlinked_records"]
+        ):
+            cases.append({
+                "scenario_id": "PRG-004-S01",
+                "status": "PASS",
+                "check": "check_progress_migration",
+                "evidence": [{"path": "scripts/check_updates.py", "type": "file"}],
+                "message": "Миграция прогресса: чужой курс отклоняется, changed revision помечается recheck, удаленные уроки сохраняются",
+            })
+        else:
+            cases.append({
+                "scenario_id": "PRG-004-S01",
+                "status": "FAIL",
+                "check": "check_progress_migration",
+                "evidence": [{"path": "scripts/check_updates.py", "type": "file"}],
+                "message": f"Сбой проверки миграции прогресса: f_res={f_res}, t_res={t_res}",
+            })
+    except Exception as e:
+        cases.append({
+            "scenario_id": "PRG-004-S01",
+            "status": "FAIL",
+            "check": "check_progress_migration",
+            "evidence": [],
+            "message": f"Исключение при проверке миграции прогресса: {e}",
+        })
+
     # 7. Проверка сборки сайта и офлайн-совместимости (OFF-001, CRS-001)
     test_out = repo_root / ".learning" / "test_site"
     try:

@@ -1,0 +1,6 @@
+{
+  "candidate_cli": "0.162.0",
+  "unknown_commands": [
+    "codex experimental-daemon"
+  ]
+}
