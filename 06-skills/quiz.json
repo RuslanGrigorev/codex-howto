@@ -1,0 +1,96 @@
+{
+  "module_id": "skills",
+  "lesson_id": "skills.custom",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Какой файл является обязательной точкой входа для пользовательского навыка Codex CLI?",
+      "options": [
+        {
+          "id": "opt1",
+          "text": "SKILL.md с блоком YAML frontmatter в корне папки навыка",
+          "is_correct": true,
+          "explanation": "Согласно спецификации Codex Skills, каждый навык определяется файлом SKILL.md с обязательным блоком frontmatter (name, description)."
+        },
+        {
+          "id": "opt2",
+          "text": "config.json с перечислением разрешенных системных команд",
+          "is_correct": false,
+          "explanation": "Файл config.json не является стандартной точкой входа навыка Codex."
+        },
+        {
+          "id": "opt3",
+          "text": "Бинарный исполняемый файл skill.exe",
+          "is_correct": false,
+          "explanation": "Навыки являются декларативными текстовыми инструкциями с метаданными, а не скомпилированными бинарниками."
+        },
+        {
+          "id": "opt4",
+          "text": "Файл README.txt без метаданных",
+          "is_correct": false,
+          "explanation": "Обычный README.txt не содержит frontmatter для обнаружения агентом."
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "Какие поля являются обязательными в YAML frontmatter файла SKILL.md?",
+      "options": [
+        {
+          "id": "opt1",
+          "text": "name и description",
+          "is_correct": true,
+          "explanation": "Поля name (идентификатор навыка) и description (краткое описание назначения для селектора) строго обязательны."
+        },
+        {
+          "id": "opt2",
+          "text": "author, email и license",
+          "is_correct": false,
+          "explanation": "Эти поля опциональны и не требуются для загрузки навыка агентом."
+        },
+        {
+          "id": "opt3",
+          "text": "api_key и provider",
+          "is_correct": false,
+          "explanation": "Хранение API-ключей в навыках запрещено политиками безопасности."
+        },
+        {
+          "id": "opt4",
+          "text": "version и dependencies",
+          "is_correct": false,
+          "explanation": "Хотя они могут присутствовать, минимально необходимыми являются name и description."
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "В чем главное отличие пользовательского навыка (Skill) от встроенной команды CLI?",
+      "options": [
+        {
+          "id": "opt1",
+          "text": "Навык подгружается по смыслу задачи как контекстная инструкция, а встроенная команда зашита в бинарник CLI",
+          "is_correct": true,
+          "explanation": "Навыки расширяют контекст модели специализированными инструкциями по требованию, не требуя компиляции бинарника CLI."
+        },
+        {
+          "id": "opt2",
+          "text": "Навыки могут выполняться только при наличии root-прав операционной системы",
+          "is_correct": false,
+          "explanation": "Навыки работают в контексте прав запущенного сеанса пользователя."
+        },
+        {
+          "id": "opt3",
+          "text": "Встроенные команды пишутся на Python, а навыки только на C++",
+          "is_correct": false,
+          "explanation": "Встроенный CLI обычно скомпилирован на Rust, а навыки оформлены в Markdown/YAML."
+        },
+        {
+          "id": "opt4",
+          "text": "Между ними нет никакой разницы",
+          "is_correct": false,
+          "explanation": "Разница принципиальна: встроенный синтаксис против декларативных инструкций."
+        }
+      ]
+    }
+  ]
+}

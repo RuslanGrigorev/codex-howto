@@ -79,14 +79,34 @@
       "title": "Сессии и восстановление",
       "summary": "Различить продолжение/ветвление разговора и возврат состояния файлов.",
       "order": 5,
-      "lessons": []
+      "lessons": [
+        {
+          "id": "sessions.resume",
+          "title": "Сессии диалога и независимость Git-файлов",
+          "revision": 1,
+          "dependencies": ["instructions.agents-md"],
+          "path": "05-sessions/resume.md",
+          "exercise_id": "session-restore",
+          "quiz_path": "05-sessions/quiz.json"
+        }
+      ]
     },
     {
       "id": "skills",
       "title": "Повторяемые действия и skills",
       "summary": "Подготовить маленький навык; не путать его со встроенной slash-командой.",
       "order": 6,
-      "lessons": []
+      "lessons": [
+        {
+          "id": "skills.custom",
+          "title": "Создание пользовательского навыка (SKILL.md)",
+          "revision": 1,
+          "dependencies": ["sessions.resume"],
+          "path": "06-skills/custom-skills.md",
+          "exercise_id": "custom-skill",
+          "quiz_path": "06-skills/quiz.json"
+        }
+      ]
     },
     {
       "id": "mcp",

@@ -328,6 +328,79 @@ def run_offline_checks(repo_root: Path) -> List[Dict[str, Any]]:
                 "message": f"Сбой проверки agents-rules: sol={res_sol.returncode}, st={res_st.returncode}, m1={res_m1.returncode}, m2={res_m2.returncode}",
             })
 
+    # 9. Проверка упражнения session-restore (CRS-004-S02)
+    sr_dir = repo_root / "examples" / "session-restore"
+    if (sr_dir / "test.py").exists() and (sr_dir / "solution").exists():
+        sr_test = str((sr_dir / "test.py").resolve())
+        res_sol = subprocess.run([sys.executable, sr_test], cwd=str(sr_dir / "solution"), env={"PYTHONPATH": str(sr_dir / "solution")}, capture_output=True, text=True, timeout=5)
+        res_st = subprocess.run([sys.executable, sr_test], cwd=str(sr_dir / "starter"), env={"PYTHONPATH": str(sr_dir / "starter")}, capture_output=True, text=True, timeout=5)
+        res_m1 = subprocess.run([sys.executable, sr_test], cwd=str(sr_dir / "broken_mutation_mix_git"), env={"PYTHONPATH": str(sr_dir / "broken_mutation_mix_git")}, capture_output=True, text=True, timeout=5)
+        res_m2 = subprocess.run([sys.executable, sr_test], cwd=str(sr_dir / "broken_mutation_lost_history"), env={"PYTHONPATH": str(sr_dir / "broken_mutation_lost_history")}, capture_output=True, text=True, timeout=5)
+
+        if res_sol.returncode == 0 and res_st.returncode != 0 and res_m1.returncode != 0 and res_m2.returncode != 0:
+            cases.append({
+                "scenario_id": "CRS-004-S02",
+                "status": "PASS",
+                "check": "check_exercise_session_restore",
+                "evidence": [{"path": "examples/session-restore", "type": "directory"}],
+                "message": "Упражнение session-restore: изоляция сессии от Git-состояния файлов доказана",
+            })
+        else:
+            cases.append({
+                "scenario_id": "CRS-004-S02",
+                "status": "FAIL",
+                "check": "check_exercise_session_restore",
+                "evidence": [{"path": "examples/session-restore", "type": "directory"}],
+                "message": f"Сбой проверки session-restore: sol={res_sol.returncode}, st={res_st.returncode}, m1={res_m1.returncode}, m2={res_m2.returncode}",
+            })
+
+    # 10. Проверка упражнения custom-skill (CRS-005-S01)
+    cs_dir = repo_root / "examples" / "custom-skill"
+    if (cs_dir / "test.py").exists() and (cs_dir / "solution").exists():
+        cs_test = str((cs_dir / "test.py").resolve())
+        res_sol = subprocess.run([sys.executable, cs_test], cwd=str(cs_dir / "solution"), env={"PYTHONPATH": str(cs_dir / "solution")}, capture_output=True, text=True, timeout=5)
+        res_st = subprocess.run([sys.executable, cs_test], cwd=str(cs_dir / "starter"), env={"PYTHONPATH": str(cs_dir / "starter")}, capture_output=True, text=True, timeout=5)
+        res_m1 = subprocess.run([sys.executable, cs_test], cwd=str(cs_dir / "broken_mutation_no_frontmatter"), env={"PYTHONPATH": str(cs_dir / "broken_mutation_no_frontmatter")}, capture_output=True, text=True, timeout=5)
+        res_m2 = subprocess.run([sys.executable, cs_test], cwd=str(cs_dir / "broken_mutation_leak_paths"), env={"PYTHONPATH": str(cs_dir / "broken_mutation_leak_paths")}, capture_output=True, text=True, timeout=5)
+
+        if res_sol.returncode == 0 and res_st.returncode != 0 and res_m1.returncode != 0 and res_m2.returncode != 0:
+            cases.append({
+                "scenario_id": "CRS-005-S01",
+                "status": "PASS",
+                "check": "check_exercise_custom_skill",
+                "evidence": [{"path": "examples/custom-skill", "type": "directory"}],
+                "message": "Упражнение custom-skill: валидация frontmatter и блокировка путей доказана",
+            })
+        else:
+            cases.append({
+                "scenario_id": "CRS-005-S01",
+                "status": "FAIL",
+                "check": "check_exercise_custom_skill",
+                "evidence": [{"path": "examples/custom-skill", "type": "directory"}],
+                "message": f"Сбой проверки custom-skill: sol={res_sol.returncode}, st={res_st.returncode}, m1={res_m1.returncode}, m2={res_m2.returncode}",
+            })
+
+    # 11. Проверка локального справочника (CRS-005-S02)
+    ref_dir = repo_root / "reference"
+    ref_files = ["commands.md", "config.md", "skills.md"]
+    missing_refs = [rf for rf in ref_files if not (ref_dir / rf).exists()]
+    if missing_refs:
+        cases.append({
+            "scenario_id": "CRS-005-S02",
+            "status": "FAIL",
+            "check": "check_local_reference",
+            "evidence": [],
+            "message": f"В справочнике reference/ отсутствуют файлы: {missing_refs}",
+        })
+    else:
+        cases.append({
+            "scenario_id": "CRS-005-S02",
+            "status": "PASS",
+            "check": "check_local_reference",
+            "evidence": [{"path": f"reference/{rf}", "type": "file"} for rf in ref_files],
+            "message": "Локальный офлайн-справочник reference/ укомплектован (commands, config, skills)",
+        })
+
     # 7. Проверка сборки сайта и офлайн-совместимости (OFF-001, CRS-001)
     test_out = repo_root / ".learning" / "test_site"
     try:

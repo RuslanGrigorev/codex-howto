@@ -20,7 +20,7 @@
       "title": "Codex CLI Reference",
       "url": "https://developers.openai.com/codex/cli/reference",
       "checked_at": "2026-10-04",
-      "lesson_ids": ["start", "workflow"]
+      "lesson_ids": ["start", "workflow", "sessions"]
     },
     {
       "id": "CX-03",
@@ -55,7 +55,7 @@
       "title": "Codex Configuration Reference",
       "url": "https://developers.openai.com/codex/config-reference/",
       "checked_at": "2026-10-04",
-      "lesson_ids": ["safety", "extensions"]
+      "lesson_ids": ["safety", "extensions", "sessions"]
     },
     {
       "id": "CX-08",
