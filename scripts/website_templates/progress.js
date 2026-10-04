@@ -66,6 +66,10 @@
   }
 
   function markLessonRead(lessonId, revision) {
+    return setLessonRead(lessonId, true, revision);
+  }
+
+  function setLessonRead(lessonId, isRead, revision) {
     if (!state.lessons[lessonId]) {
       state.lessons[lessonId] = {
         revision: revision || 1,
@@ -76,9 +80,14 @@
         needs_review: false
       };
     }
-    state.lessons[lessonId].read = true;
+    state.lessons[lessonId].read = !!isRead;
     saveProgress();
     return state.lessons[lessonId];
+  }
+
+  function toggleLessonRead(lessonId, revision) {
+    var current = state.lessons[lessonId] ? !!state.lessons[lessonId].read : false;
+    return setLessonRead(lessonId, !current, revision);
   }
 
   function recordQuizResult(lessonId, revision, score, passed, details) {
@@ -155,6 +164,8 @@
     getState: function () { return state; },
     isStorageAvailable: function () { return isStorageAvailable; },
     markRead: markLessonRead,
+    setRead: setLessonRead,
+    toggleRead: toggleLessonRead,
     recordQuiz: recordQuizResult,
     recordExercise: recordExerciseResult,
     exportJSON: exportProgressJSON,

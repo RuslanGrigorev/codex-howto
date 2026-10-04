@@ -1,7 +1,7 @@
-/* claude-howto landing — progress tracking, terminal, scroll effects.
-   Vanilla JS, no dependencies. The page is fully usable without it:
-   every lesson link navigates, and interactive controls are hidden via
-   the `no-js` class on <html>. */
+/* landing.js - progress tracking, terminal, scroll effects for Codex CLI course.
+   Vanilla JS, no runtime external dependencies. Fully usable offline and under file://.
+   Tracks progress via CodexProgress (PRG-001 - PRG-005).
+*/
 (function () {
   "use strict";
 
@@ -9,12 +9,13 @@
   root.classList.remove("no-js");
   root.classList.add("js");
 
-  var STORAGE_KEY = "claude-howto.progress.v1";
-  var VALID_STATUS = { "not-started": true, "in-progress": true, "done": true };
+  var lang = root.getAttribute("lang") || "ru";
+  var isRu = lang === "ru";
+
   var STATUS_LABEL = {
-    "not-started": "Not started",
-    "in-progress": "In progress",
-    done: "Done",
+    "not-started": isRu ? "Не начато" : "Not started",
+    "in-progress": isRu ? "В процессе" : "In progress",
+    "done": isRu ? "Завершено" : "Done"
   };
 
   var reducedMotion = false;
@@ -23,15 +24,11 @@
       "(prefers-reduced-motion: reduce)"
     ).matches;
   } catch (e) {
-    /* matchMedia unavailable — treat as no preference */
+    /* matchMedia unavailable - treat as no preference */
   }
 
-  /* ================= Theme (shared with the docs pages) =================
-     Same localStorage key and `dark` class on <html> as page.html.j2.
-     The pre-paint inline script already applied the initial theme; this
-     wires the toggle and follows the OS scheme while nothing is saved. */
-
-  var THEME_KEY = "claude-howto-theme";
+  /* ================= Theme (shared with the docs pages) ================= */
+  var THEME_KEY = "codex-course-theme";
   var themeToggle = document.getElementById("theme-toggle");
 
   function currentTheme() {
@@ -43,14 +40,14 @@
     themeToggle.setAttribute(
       "aria-label",
       currentTheme() === "dark"
-        ? "Switch to light theme"
-        : "Switch to dark theme"
+        ? (isRu ? "Переключить на светлую тему" : "Switch to light theme")
+        : (isRu ? "Переключить на тёмную тему" : "Switch to dark theme")
     );
   }
 
   function savedTheme() {
     try {
-      return window.localStorage.getItem(THEME_KEY);
+      return window.localStorage.getItem(THEME_KEY) || window.localStorage.getItem("claude-howto-theme");
     } catch (e) {
       return null;
     }
@@ -78,7 +75,7 @@
   }
   paintThemeToggle();
 
-  /* No saved choice: follow prefers-color-scheme changes live. */
+  /* Follow prefers-color-scheme changes live if no explicit saved choice */
   try {
     var themeMq = window.matchMedia("(prefers-color-scheme: dark)");
     var followOsTheme = function (e) {
@@ -91,33 +88,7 @@
     }
   } catch (e) {}
 
-  /* ================= Progress store ================= */
-
-  var mem = { v: 1, lessons: {} };
-  var persist = true;
-
-  function loadState() {
-    if (!persist) return;
-    try {
-      var raw = window.localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      var data = JSON.parse(raw);
-      if (data && data.v === 1 && data.lessons && typeof data.lessons === "object") {
-        mem.lessons = data.lessons;
-      }
-    } catch (e) {
-      persist = false;
-    }
-  }
-
-  function saveState() {
-    if (!persist) return;
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(mem));
-    } catch (e) {
-      persist = false;
-    }
-  }
+  /* ================= Progress Store (via CodexProgress) ================= */
 
   var lessonEls = Array.prototype.slice.call(
     document.querySelectorAll(".lesson[data-lesson]")
@@ -130,41 +101,47 @@
     knownIds[el.getAttribute("data-lesson")] = true;
   });
 
+  function getLessonRecord(id) {
+    if (!window.CodexProgress) return null;
+    var state = window.CodexProgress.getState();
+    return (state && state.lessons && state.lessons[id]) || null;
+  }
+
   function lessonStatus(id) {
-    var rec = mem.lessons[id];
-    return rec && VALID_STATUS[rec.s] ? rec.s : "not-started";
+    var rec = getLessonRecord(id);
+    if (!rec) return "not-started";
+    var isRead = !!rec.read;
+    var quizPassed = rec.quiz ? !!rec.quiz.passed : null;
+    var exercisePassed = rec.exercise ? !!rec.exercise.passed : null;
+
+    if (quizPassed === false || exercisePassed === false) {
+      return "in-progress";
+    }
+    if (isRead && (quizPassed === null || quizPassed) && (exercisePassed === null || exercisePassed)) {
+      return "done";
+    }
+    if (isRead || quizPassed !== null || exercisePassed !== null) {
+      return "in-progress";
+    }
+    return "not-started";
   }
 
-  function setStatus(id, status) {
-    if (!knownIds[id]) return;
-    mem.lessons[id] = { s: status, t: Date.now() };
-    saveState();
+  function toggleRead(id) {
+    if (window.CodexProgress && window.CodexProgress.toggleRead) {
+      window.CodexProgress.toggleRead(id);
+    }
   }
 
-  function pruneUnknown() {
-    var changed = false;
-    Object.keys(mem.lessons).forEach(function (id) {
-      if (!knownIds[id]) {
-        delete mem.lessons[id];
-        changed = true;
-      }
-    });
-    if (changed) saveState();
-  }
-
-  /* Mark a lesson in progress when the user navigates to it. Shared by
-     lesson links, module title links and the Continue/Start button. */
   function markStarted(lessonEl) {
     if (!lessonEl) return;
     var id = lessonEl.getAttribute("data-lesson");
-    if (lessonStatus(id) === "not-started") {
-      setStatus(id, "in-progress");
+    var rec = getLessonRecord(id);
+    if (!rec && window.CodexProgress) {
+      window.CodexProgress.markRead(id);
       paintAll();
     }
   }
 
-  /* Mark on left-click (incl. ctrl/cmd-click — navigation still proceeds)
-     and on middle-click, which fires `auxclick` with button 1. */
   function bindMarkStarted(el, getLessonEl) {
     el.addEventListener("click", function () {
       markStarted(getLessonEl());
@@ -179,16 +156,35 @@
   function paintLesson(el) {
     var id = el.getAttribute("data-lesson");
     var status = lessonStatus(id);
+    var rec = getLessonRecord(id);
     el.setAttribute("data-status", status);
     var check = el.querySelector(".check");
     if (check) {
+      var isRead = rec ? !!rec.read : false;
       check.setAttribute(
         "aria-checked",
-        status === "done" ? "true" : status === "in-progress" ? "mixed" : "false"
+        isRead ? "true" : (status === "in-progress" ? "mixed" : "false")
+      );
+      check.setAttribute("title", isRead
+        ? (isRu ? "Отмечено как прочитанное" : "Marked as read")
+        : (isRu ? "Отметить как прочитанное" : "Mark as read")
       );
     }
     var label = el.querySelector("[data-lstatus]");
-    if (label) label.textContent = STATUS_LABEL[status];
+    if (label) {
+      var parts = [];
+      if (rec) {
+        if (rec.read) parts.push(isRu ? "Прочитано" : "Read");
+        if (rec.quiz && rec.quiz.passed) parts.push(isRu ? "Тест пройден" : "Quiz passed");
+        if (rec.exercise && rec.exercise.passed) parts.push(isRu ? "Практика сдана" : "Exercise passed");
+        if (rec.codex_run && rec.codex_run.passed) parts.push("Codex");
+      }
+      if (parts.length > 0) {
+        label.textContent = parts.join(" · ");
+      } else {
+        label.textContent = STATUS_LABEL[status];
+      }
+    }
   }
 
   function paintStation(station) {
@@ -213,7 +209,9 @@
           : "not-started";
     station.setAttribute("data-status", status);
     var pill = station.querySelector("[data-pill]");
-    if (pill) pill.textContent = STATUS_LABEL[status];
+    if (pill) {
+      pill.textContent = total === 0 ? (isRu ? "Скоро" : "Coming soon") : STATUS_LABEL[status];
+    }
     var count = station.querySelector("[data-count]");
     if (count) count.textContent = done + "/" + total;
     var bar = station.querySelector("[data-bar]");
@@ -235,11 +233,17 @@
     lessonEls.forEach(function (el) {
       var id = el.getAttribute("data-lesson");
       var s = lessonStatus(id);
+      var rec = getLessonRecord(id);
       if (s === "done") {
         done++;
       } else if (s === "in-progress") {
         inProgress++;
-        var t = mem.lessons[id] && mem.lessons[id].t ? mem.lessons[id].t : 0;
+        var t = 0;
+        if (rec && rec.quiz && rec.quiz.completed_at) {
+          t = new Date(rec.quiz.completed_at).getTime();
+        } else if (rec && rec.exercise && rec.exercise.completed_at) {
+          t = new Date(rec.exercise.completed_at).getTime();
+        }
         if (t > continueTime) {
           continueTime = t;
           continueEl = el;
@@ -261,7 +265,7 @@
     var progEl = document.getElementById("c-prog");
     if (progEl) progEl.textContent = String(inProgress);
     var todoEl = document.getElementById("c-todo");
-    if (todoEl) todoEl.textContent = String(total - done - inProgress);
+    if (todoEl) todoEl.textContent = String(Math.max(0, total - done - inProgress));
 
     var continueBtn = document.getElementById("continue-btn");
     var allDone = document.getElementById("all-done");
@@ -277,7 +281,9 @@
           var t = station.querySelector(".station-title");
           modTitle = t ? t.textContent.trim() : "";
         }
-        var verb = done + inProgress === 0 ? "Start" : "Continue";
+        var verb = done + inProgress === 0
+          ? (isRu ? "Начать" : "Start")
+          : (isRu ? "Продолжить" : "Continue");
         continueBtn.hidden = false;
         allDone.hidden = true;
         if (link) continueBtn.setAttribute("href", link.getAttribute("href"));
@@ -299,7 +305,6 @@
     var rect = subway.getBoundingClientRect();
     if (rect.height <= 0) return;
 
-    // Furthest started station keeps the line lit even above the scroll mark.
     var statusP = 0;
     stationEls.forEach(function (st) {
       if (st.getAttribute("data-status") === "not-started") return;
@@ -316,10 +321,18 @@
     fill.style.height = Math.max(scrollP, statusP) * 100 + "%";
   }
 
+  function checkStorageHealth() {
+    if (window.CodexProgress && !window.CodexProgress.isStorageAvailable()) {
+      var sw = document.getElementById("storage-warning");
+      if (sw) sw.hidden = false;
+    }
+  }
+
   function paintAll() {
     lessonEls.forEach(paintLesson);
     stationEls.forEach(paintStation);
     paintOverall();
+    checkStorageHealth();
   }
 
   /* ================= Events ================= */
@@ -330,8 +343,7 @@
     var check = el.querySelector(".check");
     if (check) {
       check.addEventListener("click", function () {
-        var s = lessonStatus(id);
-        setStatus(id, s === "done" ? "in-progress" : "done");
+        toggleRead(id);
         paintAll();
       });
     }
@@ -356,8 +368,6 @@
     var toggle = station.querySelector(".station-toggle");
     if (!toggle) return;
 
-    // Collapse by default; in-progress modules are re-expanded after the
-    // first paint once their status is known (see init below).
     setExpanded(station, false);
 
     toggle.addEventListener("click", function () {
@@ -365,8 +375,6 @@
       setExpanded(station, !open);
     });
 
-    // The module title links to the module page; treat it like opening its
-    // first lesson (Overview).
     var titleLink = station.querySelector(".station-title a");
     if (titleLink) {
       bindMarkStarted(titleLink, function () {
@@ -382,36 +390,89 @@
     });
   }
 
+  /* Export progress JSON */
+  var exportBtn = document.getElementById("export-btn");
+  if (exportBtn) {
+    exportBtn.addEventListener("click", function () {
+      try {
+        var jsonStr = window.CodexProgress ? window.CodexProgress.exportJSON() : "{}";
+        var blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = "codex-cli-course-progress.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        alert((isRu ? "Не удалось экспортировать: " : "Export failed: ") + err.message);
+      }
+    });
+  }
+
+  /* Import progress JSON */
+  var importBtn = document.getElementById("import-btn");
+  var importFile = document.getElementById("import-file");
+  if (importBtn && importFile) {
+    importBtn.addEventListener("click", function () {
+      importFile.value = "";
+      importFile.click();
+    });
+    importFile.addEventListener("change", function (e) {
+      var file = e.target.files && e.target.files[0];
+      if (!file) return;
+      if (file.size > 1024 * 1024) {
+        alert(isRu ? "Файл превышает допустимый размер (1 МиБ)." : "File exceeds maximum size (1 MiB).");
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        try {
+          var content = evt.target.result;
+          window.CodexProgress.importJSON(content);
+          paintAll();
+          alert(isRu ? "Прогресс успешно импортирован!" : "Progress successfully imported!");
+        } catch (err) {
+          alert((isRu ? "Ошибка импорта: " : "Import error: ") + err.message);
+        }
+      };
+      reader.onerror = function () {
+        alert(isRu ? "Ошибка при чтении файла." : "Error reading file.");
+      };
+      reader.readAsText(file, "UTF-8");
+    });
+  }
+
+  /* Reset progress */
   var resetBtn = document.getElementById("reset-btn");
   if (resetBtn) {
     resetBtn.addEventListener("click", function () {
-      if (!window.confirm("Reset all lesson progress? This cannot be undone.")) {
+      var confirmMsg = isRu
+        ? "Сбросить весь сохраненный прогресс по курсу Codex CLI? Это действие невозможно отменить."
+        : "Reset all progress for the Codex CLI course? This cannot be undone.";
+      if (!window.confirm(confirmMsg)) {
         return;
       }
-      mem.lessons = {};
-      saveState();
+      if (window.CodexProgress) {
+        window.CodexProgress.reset();
+      }
       paintAll();
     });
   }
 
-  /* Cross-tab sync + bfcache restore. */
+  /* Storage sync */
   window.addEventListener("storage", function (e) {
     if (e.key === THEME_KEY && e.newValue) {
       applyTheme(e.newValue, true);
       return;
     }
-    if (e.key !== STORAGE_KEY) return;
-    mem.lessons = {};
-    persist = true;
-    loadState();
-    pruneUnknown();
-    paintAll();
+    if (e.key === "codex-cli-course-ru.progress.v1") {
+      paintAll();
+    }
   });
 
   window.addEventListener("pageshow", function () {
-    mem.lessons = {};
-    loadState();
-    pruneUnknown();
     paintAll();
   });
 
@@ -430,8 +491,7 @@
   );
   window.addEventListener("resize", paintTrack);
 
-  /* ================= Terminal typing ================= */
-
+  /* ================= Terminal typing animation ================= */
   function runTerminal() {
     var term = document.getElementById("terminal");
     if (!term || reducedMotion) return;
@@ -464,7 +524,6 @@
       var t = 350;
       typed.forEach(function (item) {
         if (item.isCmd) {
-          // Command lines type character by character.
           var text = item.text;
           var start = t;
           for (var i = 0; i <= text.length; i++) {
@@ -483,7 +542,6 @@
             }, t - 380);
           })(item);
         } else {
-          // Output lines appear at once.
           (function (it, at) {
             later(function () {
               it.line.style.visibility = "visible";
@@ -492,7 +550,7 @@
           t += 260;
         }
       });
-      // Leave the caret blinking on the final prompt, hold, then loop.
+
       var last = typed[typed.length - 1];
       if (last && last.tt) {
         later(function () {
@@ -505,7 +563,6 @@
   }
 
   /* ================= Reveal on scroll ================= */
-
   var revealEls = Array.prototype.slice.call(
     document.querySelectorAll(".reveal")
   );
@@ -531,7 +588,6 @@
   }
 
   /* ================= Mobile nav ================= */
-
   var navToggle = document.getElementById("nav-toggle");
   var navMenu = document.getElementById("nav-menu");
   if (navToggle && navMenu) {
@@ -552,11 +608,11 @@
         navToggle.focus();
       }
     });
-    document.getElementById("top").classList.add("nav-enhanced");
+    var topEl = document.getElementById("top");
+    if (topEl) topEl.classList.add("nav-enhanced");
   }
 
   /* ================= Copy buttons ================= */
-
   var copyStatus = document.getElementById("copy-status");
   var copyAttempt = 0;
 
@@ -595,11 +651,13 @@
           btn.classList.toggle("copied", copied);
           if (copyStatus) {
             copyStatus.textContent = copied
-              ? "Copied to clipboard"
-              : "Unable to copy to clipboard";
+              ? (isRu ? "Скопировано в буфер" : "Copied to clipboard")
+              : (isRu ? "Не удалось скопировать" : "Unable to copy to clipboard");
           }
           if (label) {
-            label.textContent = copied ? "Copied" : "Copy failed";
+            label.textContent = copied
+              ? (isRu ? "Скопировано" : "Copied")
+              : (isRu ? "Ошибка" : "Copy failed");
             feedbackTimer = window.setTimeout(function () {
               label.textContent = originalLabel;
               btn.classList.remove("copied");
@@ -625,9 +683,6 @@
     });
 
   /* ================= Init ================= */
-
-  loadState();
-  pruneUnknown();
   paintAll();
   stationEls.forEach(function (station) {
     if (station.getAttribute("data-status") === "in-progress") {

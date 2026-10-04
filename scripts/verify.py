@@ -55,15 +55,11 @@ def get_environment_info() -> Dict[str, Any]:
 def compute_tree_sha256(root_dir: Path, exclude_dirs: Optional[List[str]] = None) -> str:
     """Вычисляет воспроизводимый SHA-256 дерева файлов, исключая генерируемые и временные файлы."""
     if exclude_dirs is None:
-        exclude_dirs = [".git", ".learning", ".pytest_cache", "__pycache__", "site", ".gemini", ".agent"]
+        exclude_dirs = [".git", ".learning", ".pytest_cache", "__pycache__", "site", "site_test", ".gemini", ".agent", ".vendor-cache"]
 
     file_hashes: List[str] = []
     for dirpath, dirnames, filenames in os.walk(root_dir):
-        rel_dir = os.path.relpath(dirpath, root_dir)
-        # Исключаем служебные директории
-        parts = Path(rel_dir).parts
-        if any(part in exclude_dirs for part in parts):
-            continue
+        dirnames[:] = [d for d in dirnames if d not in exclude_dirs]
 
         for filename in sorted(filenames):
             if filename.endswith((".pyc", ".pyo")):
@@ -209,6 +205,138 @@ def run_offline_checks(repo_root: Path) -> List[Dict[str, Any]]:
             "evidence": [{"path": str(qf.relative_to(repo_root)).replace("\\", "/"), "type": "file"} for qf in quiz_files],
             "message": f"Все викторины ({len(quiz_files)}) соответствуют детерминированной схеме",
         })
+
+    # 5. Проверка модуля прогресса (PRG-001 - PRG-005)
+    progress_js = repo_root / "scripts" / "website_templates" / "progress.js"
+    if not progress_js.exists():
+        cases.append({
+            "scenario_id": "PRG-001-S01",
+            "status": "FAIL",
+            "check": "check_progress_module",
+            "evidence": [],
+            "message": "Модуль scripts/website_templates/progress.js не найден",
+        })
+    else:
+        pjs_content = progress_js.read_text(encoding="utf-8")
+        if (
+            'STORAGE_KEY = "codex-cli-course-ru.progress.v1"' in pjs_content
+            and "1024 * 1024" in pjs_content
+            and 'COURSE_ID = "codex-cli-course-ru"' in pjs_content
+        ):
+            cases.append({
+                "scenario_id": "PRG-001-S01",
+                "status": "PASS",
+                "check": "check_progress_module",
+                "evidence": [{"path": "scripts/website_templates/progress.js", "type": "file"}],
+                "message": "Модуль progress.js соответствует спецификации схемы, лимитов (1 МиБ) и ID курса",
+            })
+        else:
+            cases.append({
+                "scenario_id": "PRG-001-S01",
+                "status": "FAIL",
+                "check": "check_progress_module",
+                "evidence": [{"path": "scripts/website_templates/progress.js", "type": "file"}],
+                "message": "progress.js не содержит требуемых констант STORAGE_KEY или COURSE_ID",
+            })
+
+    # 6. Проверка упражнения small-fix (эталон проходит, мутации падают) [VAL-003, OFF-003, TUT-004]
+    sf_dir = repo_root / "examples" / "small-fix"
+    if (sf_dir / "test.py").exists() and (sf_dir / "solution").exists():
+        sf_test = sf_dir / "test.py"
+        sol_env = os.environ.copy()
+        sol_env["PYTHONPATH"] = str(sf_dir / "solution")
+        res_sol = subprocess.run([sys.executable, str(sf_test)], cwd=str(sf_dir / "solution"), env=sol_env, capture_output=True, text=True, timeout=5)
+
+        st_env = os.environ.copy()
+        st_env["PYTHONPATH"] = str(sf_dir / "starter")
+        res_st = subprocess.run([sys.executable, str(sf_test)], cwd=str(sf_dir / "starter"), env=st_env, capture_output=True, text=True, timeout=5)
+
+        mut1_env = os.environ.copy()
+        mut1_env["PYTHONPATH"] = str(sf_dir / "broken_mutation_negative")
+        res_mut1 = subprocess.run([sys.executable, str(sf_test)], cwd=str(sf_dir / "broken_mutation_negative"), env=mut1_env, capture_output=True, text=True, timeout=5)
+
+        mut2_env = os.environ.copy()
+        mut2_env["PYTHONPATH"] = str(sf_dir / "broken_mutation_overflow")
+        res_mut2 = subprocess.run([sys.executable, str(sf_test)], cwd=str(sf_dir / "broken_mutation_overflow"), env=mut2_env, capture_output=True, text=True, timeout=5)
+
+        if res_sol.returncode == 0 and res_st.returncode != 0 and res_mut1.returncode != 0 and res_mut2.returncode != 0:
+            cases.append({
+                "scenario_id": "VAL-003-S01",
+                "status": "PASS",
+                "check": "check_exercise_small_fix",
+                "evidence": [{"path": "examples/small-fix", "type": "directory"}],
+                "message": "Упражнение small-fix: эталон PASS, starter и мутации детерминированно FAIL",
+            })
+        else:
+            cases.append({
+                "scenario_id": "VAL-003-S01",
+                "status": "FAIL",
+                "check": "check_exercise_small_fix",
+                "evidence": [{"path": "examples/small-fix", "type": "directory"}],
+                "message": f"Сбой проверки small-fix: sol={res_sol.returncode}, st={res_st.returncode}, mut1={res_mut1.returncode}, mut2={res_mut2.returncode}",
+            })
+
+    # 7. Проверка сборки сайта и офлайн-совместимости (OFF-001, CRS-001)
+    test_out = repo_root / ".learning" / "test_site"
+    try:
+        build_script = repo_root / "scripts" / "build_website.py"
+        res_build = subprocess.run(
+            [sys.executable, str(build_script), "--output", str(test_out)],
+            cwd=str(repo_root),
+            capture_output=True,
+            text=True,
+            timeout=25,
+        )
+        if res_build.returncode == 0:
+            index_html = test_out / "index.html"
+            if index_html.exists():
+                idx_content = index_html.read_text(encoding="utf-8")
+                has_lang_ru = '<html lang="ru"' in idx_content
+                has_progress_js = 'assets/progress.js' in idx_content
+                no_abs_paths = (":\\" not in idx_content and "/home/" not in idx_content and "/Users/" not in idx_content)
+                if has_lang_ru and has_progress_js and no_abs_paths:
+                    cases.append({
+                        "scenario_id": "OFF-001-S01",
+                        "status": "PASS",
+                        "check": "check_site_build",
+                        "evidence": [{"path": ".learning/test_site/index.html", "type": "file"}],
+                        "message": "Сайт собирается автономно: lang='ru', progress.js подключен, абсолютные пути отсутствуют",
+                    })
+                else:
+                    cases.append({
+                        "scenario_id": "OFF-001-S01",
+                        "status": "FAIL",
+                        "check": "check_site_build",
+                        "evidence": [],
+                        "message": f"index.html нарушает требования (lang_ru={has_lang_ru}, progress_js={has_progress_js}, no_abs={no_abs_paths})",
+                    })
+            else:
+                cases.append({
+                    "scenario_id": "OFF-001-S01",
+                    "status": "FAIL",
+                    "check": "check_site_build",
+                    "evidence": [],
+                    "message": "index.html не сгенерирован при сборке сайта",
+                })
+        else:
+            cases.append({
+                "scenario_id": "OFF-001-S01",
+                "status": "FAIL",
+                "check": "check_site_build",
+                "evidence": [],
+                "message": f"Ошибка запуска build_website.py: {res_build.stderr}",
+            })
+    except Exception as e:
+        cases.append({
+            "scenario_id": "OFF-001-S01",
+            "status": "FAIL",
+            "check": "check_site_build",
+            "evidence": [],
+            "message": f"Исключение при сборке сайта: {e}",
+        })
+    finally:
+        import shutil
+        shutil.rmtree(test_out, ignore_errors=True)
 
     return cases
 

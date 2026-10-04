@@ -146,6 +146,7 @@ class WebsiteConfig:
     language: str = "en"
     landing: bool = False  # render the marketing landing page as index.html
     roadmap_path: Path | None = None  # defaults to website_templates/roadmap.json
+    ui_strings: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass
@@ -302,13 +303,46 @@ def _disambiguate_url(url: str, used_lower: set[str], rel_source: str) -> str:
     return candidate
 
 
+def get_effective_chapter_order(config: WebsiteConfig) -> list[tuple[str, str]]:
+    """Determine chapter order from course.json if present, falling back to CHAPTER_ORDER."""
+    course_path = config.root_path / "course.json"
+    if not course_path.exists():
+        course_path = (Path(__file__).parent.parent / "course.json").resolve()
+
+    if course_path.exists():
+        is_ru = (config.language == "ru")
+        order: list[tuple[str, str]] = [("README.md", "Введение" if is_ru else "Introduction")]
+        try:
+            data = json.loads(course_path.read_text(encoding="utf-8"))
+            for mod in data.get("modules", []):
+                mid = str(mod.get("id", ""))
+                m_order = mod.get("order", 1)
+                candidates = [f"{m_order:02d}-{mid}", mid]
+                found = None
+                for cand in candidates:
+                    if (config.root_path / cand).exists():
+                        found = cand
+                        break
+                if found:
+                    order.append((found, str(mod.get("title", mid))))
+        except Exception:
+            pass
+
+        if (config.root_path / "reference").exists():
+            order.append(("reference", "Справочник" if is_ru else "Reference"))
+        return order
+
+    return CHAPTER_ORDER
+
+
 def collect_pages(config: WebsiteConfig, logger: logging.Logger) -> BuildState:
     """Walk the configured chapter order and produce a flat list of pages."""
     state = BuildState()
     seen: set[str] = set()
     used_urls: set[str] = set()
 
-    for item, display_name in CHAPTER_ORDER:
+    chapter_order = get_effective_chapter_order(config)
+    for item, display_name in chapter_order:
         item_path = config.root_path / item
         if not item_path.exists():
             logger.debug(f"Skipping missing chapter target: {item}")
@@ -821,6 +855,8 @@ def render_pages(
             ),
             github_source_url=f"{config.repo_url}/blob/{config.branch}/{page.rel_source}",
             repo_url=config.repo_url,
+            language=config.language,
+            ui=config.ui_strings,
         )
 
         out_file = config.output_path / page.output_url
@@ -926,27 +962,120 @@ def _resolve_landing_roadmap(
     return resolved_levels, module_count, lesson_count, problems
 
 
+def _resolve_course_roadmap(
+    course_json_path: Path, state: BuildState, lang: str = "ru"
+) -> tuple[list[dict[str, object]], int, int]:
+    """Resolve levels and modules from course.json (Single Source of Truth)."""
+    data = json.loads(course_json_path.read_text(encoding="utf-8"))
+    modules = data.get("modules", [])
+
+    is_ru = (lang == "ru")
+    levels_def = [
+        {
+            "id": "beginner",
+            "name": "Уровень 1 — Базовый" if is_ru else "Level 1 — Beginner",
+            "title": "Начало работы" if is_ru else "Getting Started",
+            "summary": (
+                "Подготовка окружения, первый запуск, точечные исправления, безопасность и инструкции."
+                if is_ru
+                else "Environment setup, first launch, small fixes, safety, and instructions."
+            ),
+            "module_ids": ["start", "workflow", "safety", "instructions"],
+        },
+        {
+            "id": "intermediate",
+            "name": "Уровень 2 — Практический" if is_ru else "Level 2 — Intermediate",
+            "title": "Эффективная работа" if is_ru else "Effective Workflows",
+            "summary": (
+                "Управление сессиями, собственные навыки, локальные MCP-инструменты и автоматизация."
+                if is_ru
+                else "Session management, custom skills, offline stdio MCP tools, and automation."
+            ),
+            "module_ids": ["sessions", "skills", "mcp", "automation"],
+        },
+        {
+            "id": "advanced",
+            "name": "Уровень 3 — Продвинутый" if is_ru else "Level 3 — Advanced",
+            "title": "Расширения и практика" if is_ru else "Extensions & Practice",
+            "summary": (
+                "Hooks, субагенты, плагины и итоговый самостоятельный проект с воспроизводимой проверкой."
+                if is_ru
+                else "Hooks, subagents, plugins, and the offline capstone project with automated checks."
+            ),
+            "module_ids": ["extensions", "capstone"],
+        },
+    ]
+
+    mod_by_id = {str(m.get("id", "")): m for m in modules}
+    resolved_levels = []
+    module_count = 0
+    lesson_count = 0
+
+    for ldef in levels_def:
+        resolved_modules = []
+        for mid in ldef["module_ids"]:
+            mod = mod_by_id.get(mid)
+            if not mod:
+                continue
+            module_count += 1
+            mod_lessons = []
+            for l in mod.get("lessons", []):
+                lesson_count += 1
+                lid = str(l.get("id", ""))
+                lpath = str(l.get("path", ""))
+                url = state.source_to_url.get(lpath)
+                href = relative_link("index.html", url) if url else "#"
+                mod_lessons.append({
+                    "id": lid.split(".")[-1] if "." in lid else lid,
+                    "full_id": lid,
+                    "title": l.get("title", lid),
+                    "href": href,
+                })
+
+            resolved_modules.append({
+                "id": mid,
+                "number": f"{mod.get('order', module_count):02d}",
+                "title": mod.get("title", mid),
+                "time": mod.get("time", "30–45 мин" if is_ru else "30–45 min"),
+                "tagline": mod.get("summary", ""),
+                "url": mod_lessons[0]["href"] if mod_lessons else "#",
+                "lessons": mod_lessons,
+                "lesson_count": len(mod_lessons),
+            })
+        resolved_levels.append({
+            "id": ldef["id"],
+            "name": ldef["name"],
+            "title": ldef["title"],
+            "summary": ldef["summary"],
+            "modules": resolved_modules,
+        })
+
+    return resolved_levels, module_count, lesson_count
+
+
 def render_landing(
     config: WebsiteConfig,
     state: BuildState,
     env: Environment,
     logger: logging.Logger,
 ) -> None:
-    """Render the marketing landing page as `index.html`.
-
-    The landing is generated only for the English build — translated sites
-    keep their README at index.html because their heading anchors differ.
-    """
+    """Render the landing page as `index.html`."""
     template_dir = Path(__file__).parent / "website_templates"
-    roadmap_path = config.roadmap_path or (template_dir / "roadmap.json")
-    data = json.loads(roadmap_path.read_text(encoding="utf-8"))
+    course_json_path = config.root_path / "course.json"
+    if not course_json_path.exists():
+        course_json_path = (Path(__file__).parent.parent / "course.json").resolve()
 
-    levels, module_count, lesson_count, problems = _resolve_landing_roadmap(data, state)
-    if problems:
-        raise RuntimeError(
-            "roadmap.json does not match the rendered pages:\n  - "
-            + "\n  - ".join(problems)
-        )
+    if course_json_path.exists():
+        levels, module_count, lesson_count = _resolve_course_roadmap(course_json_path, state, config.language)
+    else:
+        roadmap_path = config.roadmap_path or (template_dir / "roadmap.json")
+        data = json.loads(roadmap_path.read_text(encoding="utf-8"))
+        levels, module_count, lesson_count, problems = _resolve_landing_roadmap(data, state)
+        if problems:
+            raise RuntimeError(
+                "roadmap.json does not match the rendered pages:\n  - "
+                + "\n  - ".join(problems)
+            )
 
     version = None
     readme_text = read_source(config.root_path / "README.md")
@@ -966,6 +1095,8 @@ def render_landing(
         guide_url=state.source_to_url.get("README.md", "guide.html"),
         repo_url=config.repo_url,
         branch=config.branch,
+        language=config.language,
+        ui=config.ui_strings,
     )
 
     out_file = config.output_path / "index.html"
@@ -1025,13 +1156,18 @@ def build_website(
         render_landing(config, state, env, logger)
     copy_assets(config, state, logger)
 
-    # Self-hosted vendor assets — drop all CDN dependencies.
     assets_dir = config.output_path / "assets"
     css_source = template_dir / "site.css"
     if css_source.exists():
         css_target = assets_dir / "site.css"
         css_target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(css_source, css_target)
+
+    progress_source = template_dir / "progress.js"
+    if progress_source.exists():
+        progress_target = assets_dir / "progress.js"
+        progress_target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(progress_source, progress_target)
 
     if skip_vendor:
         logger.info("Skipping vendor asset fetch (skip_vendor=True)")
@@ -1085,9 +1221,9 @@ def main() -> int:
     parser.add_argument(
         "--lang",
         type=str,
-        default="en",
-        choices=["en", "vi", "zh", "ja", "uk"],
-        help="Language code for the source tree (default: en — root markdown)",
+        default="ru",
+        choices=["ru", "en", "vi", "zh", "ja", "uk"],
+        help="Language code for the source tree (default: ru — root markdown)",
     )
     parser.add_argument(
         "--repo-url",
@@ -1110,6 +1246,7 @@ def main() -> int:
     repo_root = (args.root or Path(__file__).parent.parent).resolve()
 
     lang_root_map = {
+        "ru": repo_root,
         "en": repo_root,
         "vi": repo_root / "vi",
         "zh": repo_root / "zh",
@@ -1118,8 +1255,23 @@ def main() -> int:
     }
     source_root = lang_root_map[args.lang].resolve()
 
-    default_output = repo_root / ("site" if args.lang == "en" else f"site-{args.lang}")
+    default_output = repo_root / ("site" if args.lang in ("ru", "en") else f"site-{args.lang}")
     output_path = (args.output or default_output).resolve()
+
+    # Load UI dictionary for selected locale if available
+    locales_dir = Path(__file__).parent / "website_templates" / "locales"
+    ui_locale_file = locales_dir / f"ui.{args.lang}.json"
+    site_title = "Курс по Codex CLI" if args.lang == "ru" else "Codex CLI Course"
+    site_subtitle = "Автономный практический справочник" if args.lang == "ru" else "Offline Practical Guide"
+    ui_strings = {}
+    if ui_locale_file.exists():
+        try:
+            ui_data = json.loads(ui_locale_file.read_text(encoding="utf-8"))
+            ui_strings = ui_data.get("strings", {})
+            site_title = ui_strings.get("site_title", site_title)
+            site_subtitle = ui_strings.get("site_tagline", site_subtitle)
+        except Exception:
+            pass
 
     logger = setup_logging(args.verbose)
     config = WebsiteConfig(
@@ -1127,8 +1279,11 @@ def main() -> int:
         output_path=output_path,
         repo_url=args.repo_url,
         branch=args.branch,
+        site_title=site_title,
+        site_subtitle=site_subtitle,
         language=args.lang,
-        landing=(args.lang == "en"),
+        landing=(args.lang in ("ru", "en")),
+        ui_strings=ui_strings,
     )
 
     try:
