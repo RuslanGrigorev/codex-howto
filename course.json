@@ -18,7 +18,8 @@
           "title": "Введение в Codex CLI",
           "revision": 1,
           "dependencies": [],
-          "path": "01-start/overview.md"
+          "path": "01-start/overview.md",
+          "quiz_path": "01-start/quiz.json"
         }
       ]
     },

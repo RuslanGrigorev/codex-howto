@@ -132,6 +132,84 @@ def run_offline_checks(repo_root: Path) -> List[Dict[str, Any]]:
             "message": "Абсолютные локальные пути в openspec отсутствуют",
         })
 
+    # 3. Проверка course.json (CRS-002)
+    course_file = repo_root / "course.json"
+    if not course_file.exists():
+        cases.append({
+            "scenario_id": "CRS-002-S01",
+            "status": "FAIL",
+            "check": "check_course_json",
+            "evidence": [],
+            "message": "Файл course.json отсутствует",
+        })
+    else:
+        try:
+            course_data = json.loads(course_file.read_text(encoding="utf-8"))
+            modules = course_data.get("modules", [])
+            lesson_ids = set()
+            duplicates = []
+            for m in modules:
+                for l in m.get("lessons", []):
+                    lid = l.get("id")
+                    if lid in lesson_ids:
+                        duplicates.append(lid)
+                    lesson_ids.add(lid)
+            if duplicates:
+                cases.append({
+                    "scenario_id": "CRS-002-S02",
+                    "status": "FAIL",
+                    "check": "check_course_json",
+                    "evidence": [],
+                    "message": f"Обнаружены дубликаты ID уроков: {duplicates}",
+                })
+            else:
+                cases.append({
+                    "scenario_id": "CRS-002-S01",
+                    "status": "PASS",
+                    "check": "check_course_json",
+                    "evidence": [{"path": "course.json", "type": "file"}],
+                    "message": f"course.json валиден, зарегистрировано уроков: {len(lesson_ids)}",
+                })
+        except Exception as e:
+            cases.append({
+                "scenario_id": "CRS-002-S01",
+                "status": "FAIL",
+                "check": "check_course_json",
+                "evidence": [],
+                "message": f"Ошибка парсинга course.json: {e}",
+            })
+
+    # 4. Проверка детерминированного оценивания тестов (CRS-006)
+    quiz_files = list(repo_root.glob("**/quiz.json"))
+    quiz_errors = []
+    for qf in quiz_files:
+        try:
+            qdata = json.loads(qf.read_text(encoding="utf-8"))
+            questions = qdata.get("questions", [])
+            for q in questions:
+                correct_count = sum(1 for opt in q.get("options", []) if opt.get("is_correct"))
+                if correct_count != 1:
+                    quiz_errors.append(f"{qf.name}: вопрос {q.get('id')} должен иметь ровно 1 правильный ответ")
+        except Exception as e:
+            quiz_errors.append(f"{qf.name}: ошибка парсинга {e}")
+
+    if quiz_errors:
+        cases.append({
+            "scenario_id": "CRS-006-S02",
+            "status": "FAIL",
+            "check": "check_quizzes",
+            "evidence": [],
+            "message": "; ".join(quiz_errors),
+        })
+    else:
+        cases.append({
+            "scenario_id": "CRS-006-S01",
+            "status": "PASS",
+            "check": "check_quizzes",
+            "evidence": [{"path": str(qf.relative_to(repo_root)).replace("\\", "/"), "type": "file"} for qf in quiz_files],
+            "message": f"Все викторины ({len(quiz_files)}) соответствуют детерминированной схеме",
+        })
+
     return cases
 
 

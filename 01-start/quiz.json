@@ -1,0 +1,69 @@
+{
+  "lesson_id": "start.overview",
+  "passing_score": 0.8,
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Какой режим песочницы (--sandbox) запрещает любые операции записи на диск?",
+      "options": [
+        {
+          "id": "opt1_1",
+          "text": "read-only",
+          "is_correct": true
+        },
+        {
+          "id": "opt1_2",
+          "text": "workspace-write",
+          "is_correct": false
+        },
+        {
+          "id": "opt1_3",
+          "text": "danger-full-access",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "Какая подкоманда Codex CLI предназначена для возобновления сохраненной интерактивной сессии?",
+      "options": [
+        {
+          "id": "opt2_1",
+          "text": "codex restart",
+          "is_correct": false
+        },
+        {
+          "id": "opt2_2",
+          "text": "codex resume",
+          "is_correct": true
+        },
+        {
+          "id": "opt2_3",
+          "text": "codex continue",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "Какой флаг позволяет подключить локальный модельный провайдер (например, Ollama)?",
+      "options": [
+        {
+          "id": "opt3_1",
+          "text": "--local-only",
+          "is_correct": false
+        },
+        {
+          "id": "opt3_2",
+          "text": "--oss --local-provider ollama",
+          "is_correct": true
+        },
+        {
+          "id": "opt3_3",
+          "text": "--offline-mode",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
