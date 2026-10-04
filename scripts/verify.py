@@ -401,6 +401,110 @@ def run_offline_checks(repo_root: Path) -> List[Dict[str, Any]]:
             "message": "Локальный офлайн-справочник reference/ укомплектован (commands, config, skills)",
         })
 
+    # 12. Проверка упражнения local-mcp (CRS-003, OFF-002)
+    mcp_dir = repo_root / "examples" / "local-mcp"
+    if (mcp_dir / "test.py").exists() and (mcp_dir / "solution").exists():
+        mcp_test = str((mcp_dir / "test.py").resolve())
+        res_sol = subprocess.run([sys.executable, mcp_test], cwd=str(mcp_dir / "solution"), env={"PYTHONPATH": str(mcp_dir / "solution")}, capture_output=True, text=True, timeout=5)
+        res_st = subprocess.run([sys.executable, mcp_test], cwd=str(mcp_dir / "starter"), env={"PYTHONPATH": str(mcp_dir / "starter")}, capture_output=True, text=True, timeout=5)
+        res_m1 = subprocess.run([sys.executable, mcp_test], cwd=str(mcp_dir / "broken_mutation_no_bounds"), env={"PYTHONPATH": str(mcp_dir / "broken_mutation_no_bounds")}, capture_output=True, text=True, timeout=5)
+        res_m2 = subprocess.run([sys.executable, mcp_test], cwd=str(mcp_dir / "broken_mutation_bad_rpc"), env={"PYTHONPATH": str(mcp_dir / "broken_mutation_bad_rpc")}, capture_output=True, text=True, timeout=5)
+
+        if res_sol.returncode == 0 and res_st.returncode != 0 and res_m1.returncode != 0 and res_m2.returncode != 0:
+            cases.append({
+                "scenario_id": "CRS-003-S01",
+                "status": "PASS",
+                "check": "check_exercise_local_mcp",
+                "evidence": [{"path": "examples/local-mcp", "type": "directory"}],
+                "message": "Упражнение local-mcp: безопасный stdio MCP сервер и блокировка Directory Traversal доказаны",
+            })
+        else:
+            cases.append({
+                "scenario_id": "CRS-003-S01",
+                "status": "FAIL",
+                "check": "check_exercise_local_mcp",
+                "evidence": [{"path": "examples/local-mcp", "type": "directory"}],
+                "message": f"Сбой проверки local-mcp: sol={res_sol.returncode}, st={res_st.returncode}, m1={res_m1.returncode}, m2={res_m2.returncode}",
+            })
+
+    # 13. Проверка упражнения cli-stream (CRS-004-S03)
+    cs_stream_dir = repo_root / "examples" / "cli-stream"
+    if (cs_stream_dir / "test.py").exists() and (cs_stream_dir / "solution").exists():
+        cs_stream_test = str((cs_stream_dir / "test.py").resolve())
+        res_sol = subprocess.run([sys.executable, cs_stream_test], cwd=str(cs_stream_dir / "solution"), env={"PYTHONPATH": str(cs_stream_dir / "solution")}, capture_output=True, text=True, timeout=5)
+        res_st = subprocess.run([sys.executable, cs_stream_test], cwd=str(cs_stream_dir / "starter"), env={"PYTHONPATH": str(cs_stream_dir / "starter")}, capture_output=True, text=True, timeout=5)
+        res_m1 = subprocess.run([sys.executable, cs_stream_test], cwd=str(cs_stream_dir / "broken_mutation_single_json"), env={"PYTHONPATH": str(cs_stream_dir / "broken_mutation_single_json")}, capture_output=True, text=True, timeout=5)
+        res_m2 = subprocess.run([sys.executable, cs_stream_test], cwd=str(cs_stream_dir / "broken_mutation_ignore_errors"), env={"PYTHONPATH": str(cs_stream_dir / "broken_mutation_ignore_errors")}, capture_output=True, text=True, timeout=5)
+
+        if res_sol.returncode == 0 and res_st.returncode != 0 and res_m1.returncode != 0 and res_m2.returncode != 0:
+            cases.append({
+                "scenario_id": "CRS-004-S03",
+                "status": "PASS",
+                "check": "check_exercise_cli_stream",
+                "evidence": [{"path": "examples/cli-stream", "type": "directory"}],
+                "message": "Упражнение cli-stream: потоковый парсинг JSONL и выявление ошибок доказаны",
+            })
+        else:
+            cases.append({
+                "scenario_id": "CRS-004-S03",
+                "status": "FAIL",
+                "check": "check_exercise_cli_stream",
+                "evidence": [{"path": "examples/cli-stream", "type": "directory"}],
+                "message": f"Сбой проверки cli-stream: sol={res_sol.returncode}, st={res_st.returncode}, m1={res_m1.returncode}, m2={res_m2.returncode}",
+            })
+
+    # 14. Проверка упражнения extension-hook (TUT-004-S03)
+    eh_dir = repo_root / "examples" / "extension-hook"
+    if (eh_dir / "test.py").exists() and (eh_dir / "solution").exists():
+        eh_test = str((eh_dir / "test.py").resolve())
+        res_sol = subprocess.run([sys.executable, eh_test], cwd=str(eh_dir / "solution"), env={"PYTHONPATH": str(eh_dir / "solution")}, capture_output=True, text=True, timeout=5)
+        res_st = subprocess.run([sys.executable, eh_test], cwd=str(eh_dir / "starter"), env={"PYTHONPATH": str(eh_dir / "starter")}, capture_output=True, text=True, timeout=5)
+        res_m1 = subprocess.run([sys.executable, eh_test], cwd=str(eh_dir / "broken_mutation_allow_insecure"), env={"PYTHONPATH": str(eh_dir / "broken_mutation_allow_insecure")}, capture_output=True, text=True, timeout=5)
+        res_m2 = subprocess.run([sys.executable, eh_test], cwd=str(eh_dir / "broken_mutation_silent_fail"), env={"PYTHONPATH": str(eh_dir / "broken_mutation_silent_fail")}, capture_output=True, text=True, timeout=5)
+
+        if res_sol.returncode == 0 and res_st.returncode != 0 and res_m1.returncode != 0 and res_m2.returncode != 0:
+            cases.append({
+                "scenario_id": "TUT-004-S03",
+                "status": "PASS",
+                "check": "check_exercise_extension_hook",
+                "evidence": [{"path": "examples/extension-hook", "type": "directory"}],
+                "message": "Упражнение extension-hook: валидация событий хуков и блокировка опасных команд доказаны",
+            })
+        else:
+            cases.append({
+                "scenario_id": "TUT-004-S03",
+                "status": "FAIL",
+                "check": "check_exercise_extension_hook",
+                "evidence": [{"path": "examples/extension-hook", "type": "directory"}],
+                "message": f"Сбой проверки extension-hook: sol={res_sol.returncode}, st={res_st.returncode}, m1={res_m1.returncode}, m2={res_m2.returncode}",
+            })
+
+    # 15. Проверка упражнения capstone-project (CRS-003-S03)
+    cp_dir = repo_root / "examples" / "capstone-project"
+    if (cp_dir / "test.py").exists() and (cp_dir / "solution").exists():
+        cp_test = str((cp_dir / "test.py").resolve())
+        res_sol = subprocess.run([sys.executable, cp_test], cwd=str(cp_dir / "solution"), env={"PYTHONPATH": str(cp_dir / "solution")}, capture_output=True, text=True, timeout=5)
+        res_st = subprocess.run([sys.executable, cp_test], cwd=str(cp_dir / "starter"), env={"PYTHONPATH": str(cp_dir / "starter")}, capture_output=True, text=True, timeout=5)
+        res_m1 = subprocess.run([sys.executable, cp_test], cwd=str(cp_dir / "broken_mutation_validation"), env={"PYTHONPATH": str(cp_dir / "broken_mutation_validation")}, capture_output=True, text=True, timeout=5)
+        res_m2 = subprocess.run([sys.executable, cp_test], cwd=str(cp_dir / "broken_mutation_edge_case"), env={"PYTHONPATH": str(cp_dir / "broken_mutation_edge_case")}, capture_output=True, text=True, timeout=5)
+
+        if res_sol.returncode == 0 and res_st.returncode != 0 and res_m1.returncode != 0 and res_m2.returncode != 0:
+            cases.append({
+                "scenario_id": "CRS-003-S03",
+                "status": "PASS",
+                "check": "check_exercise_capstone_project",
+                "evidence": [{"path": "examples/capstone-project", "type": "directory"}],
+                "message": "Упражнение capstone-project: комплексная обработка, валидация и граничные случаи доказаны",
+            })
+        else:
+            cases.append({
+                "scenario_id": "CRS-003-S03",
+                "status": "FAIL",
+                "check": "check_exercise_capstone_project",
+                "evidence": [{"path": "examples/capstone-project", "type": "directory"}],
+                "message": f"Сбой проверки capstone-project: sol={res_sol.returncode}, st={res_st.returncode}, m1={res_m1.returncode}, m2={res_m2.returncode}",
+            })
+
     # 7. Проверка сборки сайта и офлайн-совместимости (OFF-001, CRS-001)
     test_out = repo_root / ".learning" / "test_site"
     try:

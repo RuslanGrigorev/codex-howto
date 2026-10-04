@@ -113,28 +113,68 @@
       "title": "Внешние инструменты без внешней сети",
       "summary": "Разобрать и испытать локальный read-only stdio-пример; Docs MCP — дополнительный сетевой пример.",
       "order": 7,
-      "lessons": []
+      "lessons": [
+        {
+          "id": "mcp.local-stdio",
+          "title": "Локальный безопасный Stdio MCP сервер",
+          "revision": 1,
+          "dependencies": ["skills.custom"],
+          "path": "07-mcp/local-stdio.md",
+          "exercise_id": "local-mcp",
+          "quiz_path": "07-mcp/quiz.json"
+        }
+      ]
     },
     {
       "id": "automation",
       "title": "Неинтерактивная работа",
       "summary": "Различить поток событий JSONL и итоговый результат, проверить обработку ошибки.",
       "order": 8,
-      "lessons": []
+      "lessons": [
+        {
+          "id": "automation.non-interactive",
+          "title": "Автоматизация и обработка потока JSONL",
+          "revision": 1,
+          "dependencies": ["mcp.local-stdio"],
+          "path": "08-automation/non-interactive.md",
+          "exercise_id": "cli-stream",
+          "quiz_path": "08-automation/quiz.json"
+        }
+      ]
     },
     {
       "id": "extensions",
       "title": "Hooks, субагенты и плагины",
       "summary": "Разобрать минимальные локальные примеры, области действия и доверие.",
       "order": 9,
-      "lessons": []
+      "lessons": [
+        {
+          "id": "extensions.plugins-hooks",
+          "title": "Локальные хуки и изоляция расширений",
+          "revision": 1,
+          "dependencies": ["automation.non-interactive"],
+          "path": "09-extensions/plugins-hooks.md",
+          "exercise_id": "extension-hook",
+          "quiz_path": "09-extensions/quiz.json"
+        }
+      ]
     },
     {
       "id": "capstone",
       "title": "Итоговая практика",
       "summary": "Исправить ограниченную ошибку, выполнить проверки и сохранить раздельные результаты.",
       "order": 10,
-      "lessons": []
+      "lessons": [
+        {
+          "id": "capstone.final-project",
+          "title": "Итоговый комплексный проект курса",
+          "revision": 1,
+          "dependencies": ["extensions.plugins-hooks"],
+          "path": "10-capstone/final-project.md",
+          "exercise_id": "capstone-project",
+          "quiz_path": "10-capstone/quiz.json"
+        }
+      ]
     }
   ]
 }
