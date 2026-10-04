@@ -22,6 +22,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+import zipfile
 
 
 def get_repo_root() -> Path:
@@ -705,6 +706,207 @@ def run_exercise_check(exercise_id: str, workspace_path: Path) -> int:
         return 2
 
 
+def run_live_checks(repo_root: Path, env_info: Dict[str, Any]) -> List[Dict[str, Any]]:
+    cases: List[Dict[str, Any]] = []
+    codex_ver = env_info.get("codex")
+    if not codex_ver:
+        cases.append({
+            "scenario_id": "VAL-004-S02",
+            "status": "BLOCKED",
+            "check": "check_codex_availability",
+            "evidence": [],
+            "message": "Codex CLI не найден в окружении PATH для live-профиля",
+        })
+        return cases
+
+    cases.append({
+        "scenario_id": "VAL-004-S01",
+        "status": "PASS",
+        "check": "check_codex_availability",
+        "evidence": [{"command": "codex --version", "output": codex_ver}],
+        "message": f"Codex CLI обнаружен и отвечает: {codex_ver}",
+    })
+
+    # Проверка справки CLI
+    try:
+        r_help = subprocess.run(["codex", "--help"], capture_output=True, text=True, timeout=5)
+        if r_help.returncode == 0:
+            cases.append({
+                "scenario_id": "VAL-004-S03",
+                "status": "PASS",
+                "check": "check_codex_help",
+                "evidence": [{"command": "codex --help"}],
+                "message": "Codex CLI выводит встроенную справку по командам",
+            })
+    except Exception as e:
+        cases.append({
+            "scenario_id": "VAL-004-S03",
+            "status": "FAIL",
+            "check": "check_codex_help",
+            "evidence": [],
+            "message": f"Ошибка вызова codex --help: {e}",
+        })
+
+    # Проверка наличия и структуры учебного наставника learn
+    learn_skill = repo_root / ".agents" / "skills" / "learn" / "SKILL.md"
+    if learn_skill.exists():
+        content = learn_skill.read_text(encoding="utf-8")
+        if "name: learn" in content and "Codex" in content:
+            cases.append({
+                "scenario_id": "TUT-001-S01",
+                "status": "PASS",
+                "check": "check_learn_tutor_skill",
+                "evidence": [{"path": ".agents/skills/learn/SKILL.md", "type": "file"}],
+                "message": "Учебный наставник .agents/skills/learn/SKILL.md активен и настроен для Codex",
+            })
+        else:
+            cases.append({
+                "scenario_id": "TUT-001-S01",
+                "status": "FAIL",
+                "check": "check_learn_tutor_skill",
+                "evidence": [{"path": ".agents/skills/learn/SKILL.md", "type": "file"}],
+                "message": "SKILL.md не содержит name: learn или упоминания Codex",
+            })
+    else:
+        cases.append({
+            "scenario_id": "TUT-001-S01",
+            "status": "FAIL",
+            "check": "check_learn_tutor_skill",
+            "evidence": [],
+            "message": "Файл .agents/skills/learn/SKILL.md отсутствует",
+        })
+
+    return cases
+
+
+def run_release_checks(repo_root: Path, evidence_dir: Optional[Path]) -> List[Dict[str, Any]]:
+    cases: List[Dict[str, Any]] = []
+
+    # 1. Прогон всех офлайн-проверок
+    offline_cases = run_offline_checks(repo_root)
+    cases.extend(offline_cases)
+
+    # 2. Проверка отсутствия FAIL/BLOCKED/NOT_RUN среди обязательных проверок (VAL-005)
+    failing = [c for c in offline_cases if c["status"] != "PASS"]
+    if failing:
+        cases.append({
+            "scenario_id": "VAL-005-S01",
+            "status": "FAIL",
+            "check": "check_release_evidence_gate",
+            "evidence": [],
+            "message": f"Отказ релиза: обнаружены непрошедшие проверки ({len(failing)})",
+        })
+    else:
+        cases.append({
+            "scenario_id": "VAL-005-S01",
+            "status": "PASS",
+            "check": "check_release_evidence_gate",
+            "evidence": [{"cases_count": len(offline_cases)}],
+            "message": f"Все обязательные сценарии ({len(offline_cases)}) завершились со статусом PASS",
+        })
+
+    # 3. Сборка и валидация чистоты релизного пакета (OFF-006, UPD-004)
+    rel_site = repo_root / ".learning" / "release_site"
+    dist_dir = repo_root / ".learning" / "dist"
+    dist_dir.mkdir(parents=True, exist_ok=True)
+    zip_path = dist_dir / "codex-course-release.zip"
+
+    try:
+        build_script = repo_root / "scripts" / "build_website.py"
+        r_b = subprocess.run([sys.executable, str(build_script), "--output", str(rel_site)], cwd=str(repo_root), capture_output=True, text=True, timeout=30)
+        if r_b.returncode != 0:
+            cases.append({
+                "scenario_id": "OFF-006-S01",
+                "status": "FAIL",
+                "check": "build_release_package",
+                "evidence": [],
+                "message": f"Сбой сборки релизного сайта: {r_b.stderr}",
+            })
+            return cases
+
+        # Проверка манифеста и упаковка
+        manifest_entries = {}
+        for root, _, files in os.walk(rel_site):
+            for file in files:
+                fp = Path(root) / file
+                rel = os.path.relpath(fp, rel_site).replace("\\", "/")
+                with open(fp, "rb") as f:
+                    manifest_entries[rel] = hashlib.sha256(f.read()).hexdigest()
+
+        manifest_file = rel_site / "manifest.json"
+        manifest_file.write_text(json.dumps(manifest_entries, indent=2, sort_keys=True), encoding="utf-8")
+
+        # Создание zip
+        with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
+            for root, _, files in os.walk(rel_site):
+                for file in files:
+                    fp = Path(root) / file
+                    arcname = os.path.relpath(fp, rel_site)
+                    zf.write(fp, arcname)
+
+        # Проверка отсутствия секретов и абсолютных путей в архиве (OFF-006-S02)
+        has_bad_items = False
+        bad_reason = ""
+        with zipfile.ZipFile(zip_path, "r") as zf:
+            namelist = zf.namelist()
+            for name in namelist:
+                if ".env" in name or ".git" in name or "progress.json" in name:
+                    has_bad_items = True
+                    bad_reason = f"Обнаружен запрещенный файл в архиве: {name}"
+                    break
+                if name.startswith("assets/vendor/"):
+                    continue
+                if name.endswith((".html", ".js", ".json")):
+                    raw = zf.read(name).decode("utf-8", errors="ignore")
+                    if 'href="file:///' in raw or 'src="file:///' in raw or 'href="C:\\' in raw or 'src="C:\\' in raw:
+                        has_bad_items = True
+                        bad_reason = f"Обнаружена абсолютная локальная ссылка в {name}"
+                        break
+                    if "projects/codex-howto" in raw or "projects\\codex-howto" in raw:
+                        has_bad_items = True
+                        bad_reason = f"Обнаружена утечка локального пути проекта в {name}"
+                        break
+
+        if has_bad_items:
+            cases.append({
+                "scenario_id": "OFF-006-S02",
+                "status": "FAIL",
+                "check": "check_package_cleanliness",
+                "evidence": [],
+                "message": f"В релизном архиве обнаружены нарушения: {bad_reason}",
+            })
+        else:
+            cases.append({
+                "scenario_id": "OFF-006-S02",
+                "status": "PASS",
+                "check": "check_package_cleanliness",
+                "evidence": [{"path": str(zip_path.relative_to(repo_root)), "type": "archive"}],
+                "message": "Релизный архив не содержит секретов, .env и абсолютных путей",
+            })
+
+        cases.append({
+            "scenario_id": "OFF-006-S01",
+            "status": "PASS",
+            "check": "build_release_package",
+            "evidence": [{"archive": str(zip_path.relative_to(repo_root)), "files_count": len(manifest_entries)}],
+            "message": f"Релизный архив собран: {len(manifest_entries)} файлов с манифестом SHA-256",
+        })
+
+    except Exception as e:
+        cases.append({
+            "scenario_id": "OFF-006-S01",
+            "status": "FAIL",
+            "check": "build_release_package",
+            "evidence": [],
+            "message": f"Исключение при сборке релиза: {e}",
+        })
+    finally:
+        import shutil
+        shutil.rmtree(rel_site, ignore_errors=True)
+
+    return cases
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Единая точка проверки и верификации проекта (scripts/verify.py)")
     group = parser.add_mutually_exclusive_group(required=True)
@@ -734,41 +936,17 @@ def main() -> int:
 
     if profile == "offline":
         cases = run_offline_checks(repo_root)
-        if any(c["status"] == "FAIL" for c in cases):
-            overall = "FAIL"
-        elif any(c["status"] == "BLOCKED" for c in cases):
-            overall = "BLOCKED"
-        elif not cases:
-            overall = "NOT_RUN"
     elif profile == "live":
-        # Профиль live требует доступного Codex CLI и настроенного тестового окружения
-        if not env_info.get("codex"):
-            cases.append({
-                "scenario_id": "VAL-004-S02",
-                "status": "BLOCKED",
-                "check": "check_codex_availability",
-                "evidence": [],
-                "message": "Codex CLI не найден в окружении PATH для live-профиля",
-            })
-            overall = "BLOCKED"
-        else:
-            cases.append({
-                "scenario_id": "VAL-004-S01",
-                "status": "PASS",
-                "check": "check_codex_availability",
-                "evidence": [],
-                "message": f"Codex CLI обнаружен: {env_info['codex']}",
-            })
+        cases = run_live_checks(repo_root, env_info)
     elif profile == "release":
-        # Профиль release сверяет отчёты и доказательства
+        cases = run_release_checks(repo_root, args.evidence_dir)
+
+    if any(c["status"] == "FAIL" for c in cases):
+        overall = "FAIL"
+    elif any(c["status"] == "BLOCKED" for c in cases):
+        overall = "BLOCKED"
+    elif not cases:
         overall = "NOT_RUN"
-        cases.append({
-            "scenario_id": "VAL-005-S01",
-            "status": "NOT_RUN",
-            "check": "check_release_evidence",
-            "evidence": [],
-            "message": "Сборка релизного отчёта ожидает полного набора доказательств",
-        })
 
     report_data = {
         "schema_version": 1,
