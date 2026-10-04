@@ -17,7 +17,7 @@
     // Apply the saved theme before paint to avoid flash of unstyled content.
     (function () {
       try {
-        var saved = localStorage.getItem('codex-course-theme') || localStorage.getItem('claude-howto-theme');
+        var saved = localStorage.getItem('codex-course-theme');
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         var theme = saved || (prefersDark ? 'dark' : 'light');
         if (theme === 'dark') {

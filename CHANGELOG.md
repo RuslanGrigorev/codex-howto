@@ -1,6 +1,22 @@
 # Changelog
 
+## [v3.0.0] — 2026-10-04
+
+### Полный переход на OpenAI Codex CLI (Русскоязычный курс и справочник)
+
+Репозиторий полностью переориентирован на **Codex CLI**:
+- **10 структурированных модулей**: `01-start`, `02-workflow`, `03-safety`, `04-instructions`, `05-sessions`, `06-skills`, `07-mcp`, `08-automation`, `09-extensions`, `10-capstone`.
+- **7 изолированных практических упражнений**: `examples/` с эталонными решениями, тестами и ошибочными мутациями.
+- **Интерактивный наставник `$learn`**: навык для диалога с Codex CLI (`.agents/skills/learn/SKILL.md`).
+- **Справочник**: `reference/commands.md`, `reference/config.md`, `reference/skills.md`.
+- **Статический сайт**: 100% офлайн генерация через `scripts/build_website.py`, поддержка `file://`, интерактивный прогресс и улучшенная темная тема с нативными скроллбарами.
+- **Единый инструмент приёмки**: `scripts/verify.py` с профилями `offline`, `live`, `release`.
+- **Инструмент контроля обновлений**: `scripts/check_updates.py`.
+
+---
+
 ## [v2.1.245] — 2026-08-25
+
 
 ### Documentation sync against Claude Code v2.1.245
 

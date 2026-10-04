@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>{{ page_title }} — {{ site_title }}</title>
   <meta name="description" content="{{ site_subtitle }}" />
-  <link rel="icon" href="{{ assets_prefix }}resources/logos/claude-howto-logo.svg" type="image/svg+xml" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="{{ assets_prefix }}resources/logos/codex-logo.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="{{ assets_prefix }}vendor/fonts/fonts.css" />
   <link rel="stylesheet" href="{{ assets_prefix }}tailwind.css" />
   <link rel="stylesheet" href="{{ assets_prefix }}site.css" />
@@ -13,7 +14,7 @@
     // Apply the saved theme before paint to avoid flash of unstyled content.
     (function () {
       try {
-        var saved = localStorage.getItem('claude-howto-theme');
+        var saved = localStorage.getItem('codex-course-theme');
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         var theme = saved || (prefersDark ? 'dark' : 'light');
         if (theme === 'dark') {
@@ -39,13 +40,13 @@
       </button>
       <a href="{{ base_path }}index.html" class="flex items-center gap-2 font-semibold tracking-tight">
         <img
-          src="{{ assets_prefix }}resources/logos/claude-howto-logo.svg"
+          src="{{ assets_prefix }}resources/logos/codex-logo.svg"
           alt=""
           class="h-7 w-auto dark:hidden"
           onerror="this.style.display='none'"
         />
         <img
-          src="{{ assets_prefix }}resources/logos/claude-howto-logo-dark.svg"
+          src="{{ assets_prefix }}resources/logos/codex-logo-dark.svg"
           alt=""
           class="hidden h-7 w-auto dark:block"
           onerror="this.style.display='none'"
@@ -220,7 +221,7 @@
         toggle.addEventListener('click', function () {
           var isDark = document.documentElement.classList.toggle('dark');
           try {
-            localStorage.setItem('claude-howto-theme', isDark ? 'dark' : 'light');
+            localStorage.setItem('codex-course-theme', isDark ? 'dark' : 'light');
           } catch (e) {}
         });
       }

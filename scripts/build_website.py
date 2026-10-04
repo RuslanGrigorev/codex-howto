@@ -67,13 +67,15 @@ from vendor_assets import (
 # Configuration
 # =============================================================================
 
-REPO_URL = "https://github.com/luongnv89/claude-howto"
+REPO_URL = "https://github.com/RuslanGrigorev/codex-howto"
 DEFAULT_BRANCH = "main"
 
 # Files/dirs that exist in the repo but should not appear on the site.
 EXCLUDE_DIRS = {
     ".git",
     ".github",
+    ".gemini",
+    ".agent",
     ".venv",
     "venv",
     "env",
@@ -100,36 +102,44 @@ EXCLUDE_DIRS = {
     "zh",
     "ja",
     "uk",
+    "docs",
 }
 
 # Top-level markdown files that should not be rendered as standalone pages.
 EXCLUDE_TOP_LEVEL = {
     "CLAUDE.md",
     "README.backup.md",
+    "AGENTS.md",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "CHANGELOG.md",
+    "clean-code-rules.md",
+    "claude_concepts_guide.md",
+    "CATALOG.md",
+    "INDEX.md",
+    "QUICK_REFERENCE.md",
+    "LEARNING-ROADMAP.md",
+    "STYLE_GUIDE.md",
+    "resources.md",
 }
 
 EXCLUDE_TOP_LEVEL_PREFIXES = ("update-plan",)
 
-# Match the EPUB chapter ordering.
+# Match the course curriculum chapter ordering.
 CHAPTER_ORDER: list[tuple[str, str]] = [
-    ("README.md", "Introduction"),
-    ("LEARNING-ROADMAP.md", "Learning Roadmap"),
-    ("QUICK_REFERENCE.md", "Quick Reference"),
-    ("claude_concepts_guide.md", "Claude Concepts Guide"),
-    ("01-slash-commands", "Slash Commands"),
-    ("02-memory", "Memory"),
-    ("03-skills", "Skills"),
-    ("04-subagents", "Subagents"),
-    ("05-mcp", "MCP Protocol"),
-    ("06-hooks", "Hooks"),
-    ("07-plugins", "Plugins"),
-    ("08-checkpoints", "Checkpoints"),
-    ("09-advanced-features", "Advanced Features"),
-    ("10-cli", "CLI Reference"),
-    ("CATALOG.md", "Feature Catalog"),
-    ("INDEX.md", "Index"),
-    ("STYLE_GUIDE.md", "Style Guide"),
-    ("resources.md", "Resources"),
+    ("README.md", "Введение"),
+    ("01-start", "01. Начало работы"),
+    ("02-workflow", "02. Рабочий цикл"),
+    ("03-safety", "03. Безопасность"),
+    ("04-instructions", "04. Инструкции"),
+    ("05-sessions", "05. Сессии"),
+    ("06-skills", "06. Навыки"),
+    ("07-mcp", "07. MCP"),
+    ("08-automation", "08. Автоматизация"),
+    ("09-extensions", "09. Расширения"),
+    ("10-capstone", "10. Итоговый проект"),
+    ("reference", "Справочник"),
 ]
 
 
@@ -141,9 +151,9 @@ class WebsiteConfig:
     output_path: Path
     repo_url: str = REPO_URL
     branch: str = DEFAULT_BRANCH
-    site_title: str = "Claude Code How-To Guide"
-    site_subtitle: str = "Master Claude Code in a Weekend"
-    language: str = "en"
+    site_title: str = "Codex CLI: интерактивный курс и справочник"
+    site_subtitle: str = "Практическое руководство и автономный справочник по Codex CLI"
+    language: str = "ru"
     landing: bool = False  # render the marketing landing page as index.html
     roadmap_path: Path | None = None  # defaults to website_templates/roadmap.json
     ui_strings: dict[str, str] = field(default_factory=dict)
@@ -1134,6 +1144,17 @@ def build_website(
     if not config.root_path.is_dir():
         raise RuntimeError(f"Root path is not a directory: {config.root_path}")
 
+    if config.output_path.exists():
+        for item in list(config.output_path.iterdir()):
+            if item.name == "assets":
+                continue
+            if item.is_dir():
+                shutil.rmtree(item, ignore_errors=True)
+            elif item.suffix == ".html":
+                try:
+                    item.unlink()
+                except OSError:
+                    pass
     config.output_path.mkdir(parents=True, exist_ok=True)
 
     template_dir = Path(__file__).parent / "website_templates"

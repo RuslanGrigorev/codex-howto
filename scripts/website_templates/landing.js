@@ -47,7 +47,7 @@
 
   function savedTheme() {
     try {
-      return window.localStorage.getItem(THEME_KEY) || window.localStorage.getItem("claude-howto-theme");
+      return window.localStorage.getItem(THEME_KEY);
     } catch (e) {
       return null;
     }
