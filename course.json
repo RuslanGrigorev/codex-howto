@@ -45,14 +45,34 @@
       "title": "Разрешения и безопасные изменения",
       "summary": "Определить область записи и выполнить восстановление в учебном Git-репозитории.",
       "order": 3,
-      "lessons": []
+      "lessons": [
+        {
+          "id": "safety.permissions",
+          "title": "Разрешения, песочница и безопасность Git",
+          "revision": 1,
+          "dependencies": ["workflow.small-fix"],
+          "path": "03-safety/permissions.md",
+          "exercise_id": "safety-guard",
+          "quiz_path": "03-safety/quiz.json"
+        }
+      ]
     },
     {
       "id": "instructions",
       "title": "Инструкции и контекст",
       "summary": "Создать AGENTS.md; отличить инструкции, данные, память и политики команд.",
       "order": 4,
-      "lessons": []
+      "lessons": [
+        {
+          "id": "instructions.agents-md",
+          "title": "Инструкции проекта и AGENTS.md",
+          "revision": 1,
+          "dependencies": ["safety.permissions"],
+          "path": "04-instructions/agents-md.md",
+          "exercise_id": "agents-rules",
+          "quiz_path": "04-instructions/quiz.json"
+        }
+      ]
     },
     {
       "id": "sessions",

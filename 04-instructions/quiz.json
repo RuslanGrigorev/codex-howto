@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "module_id": "instructions",
+  "title": "Тест: Инструкции проекта и AGENTS.md",
+  "questions": [
+    {
+      "id": "instructions_q1_file",
+      "text": "Какой файл в корне репозитория служит каноническим источником инструкций для Codex CLI?",
+      "options": [
+        {
+          "id": "opt_i1_agents",
+          "text": "AGENTS.md",
+          "is_correct": true
+        },
+        {
+          "id": "opt_i1_claude",
+          "text": "CLAUDE.md",
+          "is_correct": false
+        },
+        {
+          "id": "opt_i1_prompt",
+          "text": "PROMPT.txt",
+          "is_correct": false
+        },
+        {
+          "id": "opt_i1_rules",
+          "text": "rules.json",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": "instructions_q2_antipattern",
+      "text": "Что категорически не рекомендуется размещать в файле AGENTS.md?",
+      "options": [
+        {
+          "id": "opt_i2_secrets",
+          "text": "Секреты, API-ключи, пароли и абсолютные пути конкретного компьютера",
+          "is_correct": true
+        },
+        {
+          "id": "opt_i2_commands",
+          "text": "Команды сборки и проверки тестов",
+          "is_correct": false
+        },
+        {
+          "id": "opt_i2_style",
+          "text": "Требования к форматированию и стилю кода",
+          "is_correct": false
+        },
+        {
+          "id": "opt_i2_arch",
+          "text": "Краткое резюме структуры репозитория",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": "instructions_q3_hierarchy",
+      "text": "Как обрабатываются инструкции AGENTS.md при наличии локального файла во вложенном каталоге?",
+      "options": [
+        {
+          "id": "opt_i3_hierarchy",
+          "text": "Инструкции объединяются с приоритетом локального AGENTS.md для задач внутри подкаталога",
+          "is_correct": true
+        },
+        {
+          "id": "opt_i3_ignore",
+          "text": "Вложенные файлы AGENTS.md всегда игнорируются",
+          "is_correct": false
+        },
+        {
+          "id": "opt_i3_error",
+          "text": "Возникает ошибка несовместимости конфигурации",
+          "is_correct": false
+        },
+        {
+          "id": "opt_i3_desktop",
+          "text": "Вложенный файл перезаписывает системные настройки Codex Desktop",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}

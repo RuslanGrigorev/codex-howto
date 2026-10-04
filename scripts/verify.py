@@ -276,6 +276,58 @@ def run_offline_checks(repo_root: Path) -> List[Dict[str, Any]]:
                 "message": f"Сбой проверки small-fix: sol={res_sol.returncode}, st={res_st.returncode}, mut1={res_mut1.returncode}, mut2={res_mut2.returncode}",
             })
 
+    # 7. Проверка упражнения safety-guard (CRS-004, TUT-004)
+    sg_dir = repo_root / "examples" / "safety-guard"
+    if (sg_dir / "test.py").exists() and (sg_dir / "solution").exists():
+        sg_test = str((sg_dir / "test.py").resolve())
+        res_sol = subprocess.run([sys.executable, sg_test], cwd=str(sg_dir / "solution"), env={"PYTHONPATH": str(sg_dir / "solution")}, capture_output=True, text=True, timeout=5)
+        res_st = subprocess.run([sys.executable, sg_test], cwd=str(sg_dir / "starter"), env={"PYTHONPATH": str(sg_dir / "starter")}, capture_output=True, text=True, timeout=5)
+        res_m1 = subprocess.run([sys.executable, sg_test], cwd=str(sg_dir / "broken_mutation_relative"), env={"PYTHONPATH": str(sg_dir / "broken_mutation_relative")}, capture_output=True, text=True, timeout=5)
+        res_m2 = subprocess.run([sys.executable, sg_test], cwd=str(sg_dir / "broken_mutation_allow_all"), env={"PYTHONPATH": str(sg_dir / "broken_mutation_allow_all")}, capture_output=True, text=True, timeout=5)
+
+        if res_sol.returncode == 0 and res_st.returncode != 0 and res_m1.returncode != 0 and res_m2.returncode != 0:
+            cases.append({
+                "scenario_id": "TUT-004-S01",
+                "status": "PASS",
+                "check": "check_exercise_safety_guard",
+                "evidence": [{"path": "examples/safety-guard", "type": "directory"}],
+                "message": "Упражнение safety-guard: изоляция путей и защита от обхода каталога доказана",
+            })
+        else:
+            cases.append({
+                "scenario_id": "TUT-004-S01",
+                "status": "FAIL",
+                "check": "check_exercise_safety_guard",
+                "evidence": [{"path": "examples/safety-guard", "type": "directory"}],
+                "message": f"Сбой проверки safety-guard: sol={res_sol.returncode}, st={res_st.returncode}, m1={res_m1.returncode}, m2={res_m2.returncode}",
+            })
+
+    # 8. Проверка упражнения agents-rules (CRS-004)
+    ar_dir = repo_root / "examples" / "agents-rules"
+    if (ar_dir / "test.py").exists() and (ar_dir / "solution").exists():
+        ar_test = str((ar_dir / "test.py").resolve())
+        res_sol = subprocess.run([sys.executable, ar_test], cwd=str(ar_dir / "solution"), env={"PYTHONPATH": str(ar_dir / "solution")}, capture_output=True, text=True, timeout=5)
+        res_st = subprocess.run([sys.executable, ar_test], cwd=str(ar_dir / "starter"), env={"PYTHONPATH": str(ar_dir / "starter")}, capture_output=True, text=True, timeout=5)
+        res_m1 = subprocess.run([sys.executable, ar_test], cwd=str(ar_dir / "broken_mutation_secrets"), env={"PYTHONPATH": str(ar_dir / "broken_mutation_secrets")}, capture_output=True, text=True, timeout=5)
+        res_m2 = subprocess.run([sys.executable, ar_test], cwd=str(ar_dir / "broken_mutation_paths"), env={"PYTHONPATH": str(ar_dir / "broken_mutation_paths")}, capture_output=True, text=True, timeout=5)
+
+        if res_sol.returncode == 0 and res_st.returncode != 0 and res_m1.returncode != 0 and res_m2.returncode != 0:
+            cases.append({
+                "scenario_id": "CRS-004-S01",
+                "status": "PASS",
+                "check": "check_exercise_agents_rules",
+                "evidence": [{"path": "examples/agents-rules", "type": "directory"}],
+                "message": "Упражнение agents-rules: валидация AGENTS.md, блокировка секретов и путей доказана",
+            })
+        else:
+            cases.append({
+                "scenario_id": "CRS-004-S01",
+                "status": "FAIL",
+                "check": "check_exercise_agents_rules",
+                "evidence": [{"path": "examples/agents-rules", "type": "directory"}],
+                "message": f"Сбой проверки agents-rules: sol={res_sol.returncode}, st={res_st.returncode}, m1={res_m1.returncode}, m2={res_m2.returncode}",
+            })
+
     # 7. Проверка сборки сайта и офлайн-совместимости (OFF-001, CRS-001)
     test_out = repo_root / ".learning" / "test_site"
     try:

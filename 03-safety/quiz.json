@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "module_id": "safety",
+  "title": "Тест: Разрешения, песочница и безопасность Git",
+  "questions": [
+    {
+      "id": "safety_q1_sandbox",
+      "text": "Какой режим песочницы (--sandbox <MODE>) в Codex CLI запрещает запись на диск и позволяет модели только читать файлы проекта?",
+      "options": [
+        {
+          "id": "opt_s1_readonly",
+          "text": "read-only",
+          "is_correct": true
+        },
+        {
+          "id": "opt_s1_workspacewrite",
+          "text": "workspace-write",
+          "is_correct": false
+        },
+        {
+          "id": "opt_s1_danger",
+          "text": "danger-full-access",
+          "is_correct": false
+        },
+        {
+          "id": "opt_s1_noaccess",
+          "text": "no-access",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": "safety_q2_outside_write",
+      "text": "Что произойдет в режиме --sandbox workspace-write при попытке изменить глобальные файлы конфигурации за пределами рабочего каталога?",
+      "options": [
+        {
+          "id": "opt_s2_blocked",
+          "text": "Песочница отклонит операцию, защитив файлы вне рабочего каталога проекта",
+          "is_correct": true
+        },
+        {
+          "id": "opt_s2_overwrite",
+          "text": "Файл перезапишется без предупреждения",
+          "is_correct": false
+        },
+        {
+          "id": "opt_s2_desktop",
+          "text": "Конфигурация переместится в приложение Codex Desktop",
+          "is_correct": false
+        },
+        {
+          "id": "opt_s2_global",
+          "text": "Codex создаст глобальный форк настроек всей операционной системы",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": "safety_q3_git_recovery",
+      "text": "Какая команда позволяет быстро и безопасно вернуть рабочее дерево файлов к последнему коммиту, если предложенный diff содержит ошибки?",
+      "options": [
+        {
+          "id": "opt_s3_restore",
+          "text": "git restore .",
+          "is_correct": true
+        },
+        {
+          "id": "opt_s3_amend",
+          "text": "git commit --amend",
+          "is_correct": false
+        },
+        {
+          "id": "opt_s3_push",
+          "text": "git push -f",
+          "is_correct": false
+        },
+        {
+          "id": "opt_s3_del",
+          "text": "rm -rf .git",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
