@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "lesson_id": "automation.app-server",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "id": "q1",
+      "question": "Можно ли использовать парсер exec для любого app-server сообщения?",
+      "explanation": "Нет: интерфейсы имеют разные контракты и проверяются отдельно.",
+      "options": [
+        {
+          "id": "misconception",
+          "text": "Да: JSON гарантирует одинаковую семантику всех событий.",
+          "is_correct": false
+        },
+        {
+          "id": "understood",
+          "text": "Нет: интерфейсы имеют разные контракты и проверяются отдельно.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "question": "Нужен ли собственный app-server-клиент для чтения курса?",
+      "explanation": "Нет: это продвинутая интеграция, а учебник уже статический.",
+      "options": [
+        {
+          "id": "incorrect",
+          "text": "Да: без него не открываются локальные HTML-страницы.",
+          "is_correct": false
+        },
+        {
+          "id": "correct",
+          "text": "Нет: это продвинутая интеграция, а учебник уже статический.",
+          "is_correct": true
+        }
+      ]
+    }
+  ]
+}

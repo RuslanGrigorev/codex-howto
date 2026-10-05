@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "automation.events",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Что представляет собой JSONL?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Отдельный JSON-объект на каждой строке.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Один объект с произвольными переносами.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Текстовый лог без структуры.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Каждую непустую строку разбирают отдельно.",
+      "id": "automation.events.q1"
+    },
+    {
+      "question": "Можно ли засчитать пустой поток?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Да, ошибок ведь нет.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Да, если файл создан.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Нет, результата задачи он не подтверждает.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Отсутствие доказательства не является успехом.",
+      "id": "automation.events.q2"
+    },
+    {
+      "question": "Что делать с turn.failed после текстового ответа?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Удалить ошибочную строку.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Считать ход неуспешным.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Оставить success=true.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Промежуточный текст не отменяет итоговую ошибку.",
+      "id": "automation.events.q3"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "sessions.restore",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Что сохраняет fork беседы?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Отдельную линию разговора, а не автоматически отдельное дерево Git.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Всегда новый Git-коммит.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Резервную копию всего диска.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Рабочие файлы контролируются отдельно.",
+      "id": "sessions.restore.q1"
+    },
+    {
+      "question": "Что сделать до восстановления файла?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Удалить все тесты.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Очистить историю сессий.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Посмотреть diff и сохранить нужные изменения.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Восстановление может уничтожить текущую правку.",
+      "id": "sessions.restore.q2"
+    },
+    {
+      "question": "Какой масштаб подходит для упражнения?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Все ветки общего проекта.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Один заранее выбранный файл в учебной копии.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Весь домашний каталог.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Ограниченная область делает последствия понятными.",
+      "id": "sessions.restore.q3"
+    }
+  ]
+}

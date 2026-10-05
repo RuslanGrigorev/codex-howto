@@ -1,13 +1,6 @@
-"""examples/cli-stream/starter/stream_parser.py - Заготовка для упражнения."""
-
-from __future__ import annotations
-from typing import Any, Dict, Iterable
-
-
+"""Заготовка парсера событий codex exec --json. Не готовое решение."""
 class CodexStreamParser:
-    """Парсер потокового вывода Codex CLI (--stream-json) в формате JSON Lines."""
-
-    def parse_stream(self, stream_lines: Iterable[str]) -> Dict[str, Any]:
-        # TODO: Реализовать построчную обработку JSONL потока,
-        # сборку текста из item_delta, распознавание ошибок и exit_code
-        raise NotImplementedError("parse_stream не реализован")
+    def parse_stream(self, lines, process_exit_code=0):
+        # Разберите отдельные JSONL-события, терминальное состояние и код процесса.
+        # Пустой поток, turn.failed и повреждённый JSON не могут дать успех.
+        raise NotImplementedError('Сначала изучите test.py и нативные события')

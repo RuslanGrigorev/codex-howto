@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "lesson_id": "extensions.subagents",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "id": "q1",
+      "question": "Можно ли без проверки принять вывод субагента как доказательство?",
+      "explanation": "Нет: основной процесс должен сверить вывод с кодом и независимыми проверками.",
+      "options": [
+        {
+          "id": "misconception",
+          "text": "Да: параллельность сама гарантирует правильность.",
+          "is_correct": false
+        },
+        {
+          "id": "understood",
+          "text": "Нет: основной процесс должен сверить вывод с кодом и независимыми проверками.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "question": "Где находится определение пользовательского субагента проекта?",
+      "explanation": "В .codex/agents/*.toml с назначением и инструкциями роли.",
+      "options": [
+        {
+          "id": "incorrect",
+          "text": "В любом quiz.json, содержащем слово agent.",
+          "is_correct": false
+        },
+        {
+          "id": "correct",
+          "text": "В .codex/agents/*.toml с назначением и инструкциями роли.",
+          "is_correct": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "start.updates",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Какой идентификатор полезен в отчёте об ошибке?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Полный номер CLI и способ установки.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Слово latest.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Только номер урока.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Версия и способ запуска позволяют воспроизвести среду.",
+      "id": "start.updates.q1"
+    },
+    {
+      "question": "Нужно ли автоматически обновлять личный CLI ради обновления курса?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Да, при каждом открытии сайта.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Да, без подтверждения пользователя.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Нет: это разные действия с разными рисками.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Учебный пакет не управляет личной установкой.",
+      "id": "start.updates.q2"
+    },
+    {
+      "question": "Что проверить после обновления?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Число строк в CHANGELOG.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Тот же сценарий на новой версии.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Только наличие файла codex.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Установка и функциональная совместимость — разные проверки.",
+      "id": "start.updates.q3"
+    }
+  ]
+}

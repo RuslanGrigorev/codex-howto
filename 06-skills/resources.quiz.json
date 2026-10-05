@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "skills.resources",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Почему справочник можно вынести из SKILL.md?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Чтобы читать нужные детали по необходимости.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Чтобы скрыть требования от пользователя.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Чтобы заменить проверки.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Основная инструкция должна оставаться обозримой.",
+      "id": "skills.resources.q1"
+    },
+    {
+      "question": "Даёт ли навык скрипту дополнительные права?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Да, автоматически.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Только при длинном description.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Нет.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Действуют ограничения клиента и системы.",
+      "id": "skills.resources.q2"
+    },
+    {
+      "question": "Как проверять путь к ресурсу?",
+      "options": [
+        {
+          "id": "c",
+          "text": "По расширению файла.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Реальным чтением и отрицательным сценарием.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Только по красивому дереву в README.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Существование и разрешение пути нужно подтвердить.",
+      "id": "skills.resources.q3"
+    }
+  ]
+}

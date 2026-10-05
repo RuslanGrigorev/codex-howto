@@ -90,6 +90,30 @@ class TestLocalMcpHandler(unittest.TestCase):
         self.assertNotIn("SUPER_SECRET_KEY_123", text, "Секретный файл вне workspace не должен быть прочитан!")
 
 
+    def test_transport(self):
+        import subprocess, json, mcp_server
+        request='\n'.join(json.dumps(x) for x in [
+            {'jsonrpc':'2.0','id':1,'method':'initialize','params':{'protocolVersion':'2025-11-25'}},
+            {'jsonrpc':'2.0','method':'notifications/initialized'},
+            {'jsonrpc':'2.0','id':2,'method':'tools/list'},
+            {'jsonrpc':'2.0','id':3,'method':'tools/call','params':{'name':'read_file_safe','arguments':{'path':'sample.txt'}}},
+            {'jsonrpc':'2.0','id':4,'method':'tools/call','params':{'name':'read_file_safe','arguments':{'path':'../secrets/secret.key'}}}
+        ])+'\n'
+        proc=subprocess.run([sys.executable,'-S',mcp_server.__file__,'--root',str(self.workspace)],input=request,text=True,capture_output=True,timeout=5)
+        self.assertEqual(proc.returncode,0,proc.stderr)
+        replies=[json.loads(line) for line in proc.stdout.splitlines()]
+        self.assertEqual([r['id'] for r in replies],[1,2,3,4])
+        self.assertEqual(replies[2]['result']['content'][0]['text'],'Hello from inside workspace!')
+        self.assertTrue(replies[3]['result']['isError'])
+
+    def test_windows_path_rejected(self):
+        r=self.handler.handle_request({'jsonrpc':'2.0','id':4,'method':'tools/call','params':{'name':'read_file_safe','arguments':{'path':'C:\\Windows\\example'}}})
+        self.assertTrue(r['result']['isError'])
+
+    def test_notifications_no_response(self):
+        self.assertIsNone(self.handler.handle_request({'jsonrpc':'2.0','method':'notifications/initialized'}))
+
+
 if __name__ == "__main__":
     runner = unittest.TextTestRunner(verbosity=2)
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestLocalMcpHandler)

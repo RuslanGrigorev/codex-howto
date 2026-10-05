@@ -1,17 +1,6 @@
 #!/usr/bin/env python3
-"""Validate Markdown rendering correctness in tutorial README files.
-
-Catches mechanical rendering bugs that look fine in a diff but render wrong
-on GitHub / in the EPUB build: inner backticks in inline code, unescaped
-pipes in table cells, stray $ARGUMENTS / $N outside code, mismatched fences.
-
-Scope: `**/README.md` across the repo (tutorial modules + ja/uk/vi/zh
-translations). Excludes `.venv`, `node_modules`, `.git`, `blog-posts`,
-`.agents`, `.claude`, and `openspec` — these are not tutorial output.
-
-Each rule is a function `(file_path, content) -> list[str]`. To add a new
-rule: write the function, append `(name, fn)` to `RULES`, add fixtures in
-`tests/test_check_markdown_rendering.py`.
+"""Проверка механических ошибок Markdown русского курса.
+Проверяет ограждения кода, таблицы и встроенные литералы. Сеть не используется.
 """
 
 from __future__ import annotations
@@ -23,13 +12,13 @@ from pathlib import Path
 
 IGNORE_DIRS = {
     ".venv",
-    "node_modules",
+    "node_modules", ".learning", "site", "site_test", "dist",
     ".git",
     "blog-posts",
     "openspec",
     "prompts",
     ".agents",
-    ".claude",
+
 }
 
 Rule = Callable[[Path, str], list[str]]
@@ -38,7 +27,7 @@ Rule = Callable[[Path, str], list[str]]
 def iter_readme_files() -> list[Path]:
     return [
         f
-        for f in Path().rglob("README.md")
+        for f in Path().rglob("*.md")
         if not any(part in IGNORE_DIRS for part in f.parts)
     ]
 

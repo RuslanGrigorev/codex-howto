@@ -1,0 +1,729 @@
+{
+  "schema_version": 1,
+  "required_cases": [
+    {
+      "scenario_id": "OFF-001-S01",
+      "method": "automated",
+      "artifact_required": true,
+      "requirement_id": "OFF-001",
+      "expected": "все страницы и ресурсы доступны, ошибок загрузки нет, ни одной попытки внешнего запроса не зарегистрировано",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "OFF-001-S02",
+      "method": "automated",
+      "artifact_required": true,
+      "requirement_id": "OFF-001",
+      "expected": "проверка завершается FAIL и указывает страницу и внешний адрес, даже если ресурс был бы доступен из кеша",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "OFF-002-S01",
+      "method": "manual",
+      "artifact_required": true,
+      "requirement_id": "OFF-002",
+      "expected": "для каждого обязательного действия достаточно файлов пакета; ссылки на исходники открывают локальные файлы или их локальные представления",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "OFF-002-S02",
+      "method": "automated",
+      "artifact_required": true,
+      "requirement_id": "OFF-002",
+      "expected": "выпуск блокируется с ID урока и отсутствующим путём",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "OFF-003-S01",
+      "method": "automated",
+      "artifact_required": true,
+      "requirement_id": "OFF-003",
+      "expected": "проверки выполняются без pip install, npm install и скачивания дополнительных материалов",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "OFF-003-S02",
+      "method": "manual",
+      "artifact_required": true,
+      "requirement_id": "OFF-003",
+      "expected": "указано, какой инструмент нужен и как подготовить его заранее; чтение, вопросы и разбор решения остаются доступны; практический запуск не засчитывается",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "OFF-004-S01",
+      "method": "automated",
+      "artifact_required": true,
+      "requirement_id": "OFF-004",
+      "expected": "доступны объяснения, тесты, локальные упражнения, подсказки и решения; отдельная отметка практики Codex остаётся неподтверждённой",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "OFF-004-S02",
+      "method": "manual",
+      "artifact_required": true,
+      "requirement_id": "OFF-004",
+      "expected": "получает указание подготовить модель заранее; курс не скачивает модель и не переключается молча на облачный провайдер",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "OFF-005-S01",
+      "method": "automated",
+      "artifact_required": true,
+      "requirement_id": "OFF-005",
+      "expected": "команду можно выделить вручную, текущий прогресс можно экспортировать, ошибки не ломают страницу",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "OFF-005-S02",
+      "method": "automated",
+      "artifact_required": true,
+      "requirement_id": "OFF-005",
+      "expected": "текст, навигация и решения читаются; сообщение noscript по-русски объясняет недоступность интерактивных тестов и прогресса",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "OFF-006-S01",
+      "method": "automated",
+      "artifact_required": true,
+      "requirement_id": "OFF-006",
+      "expected": "содержимое поставки совпадает по хешам, за исключением явно исключённых технических метаданных времени; отсутствуют личные данные",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "OFF-006-S02",
+      "method": "automated",
+      "artifact_required": true,
+      "requirement_id": "OFF-006",
+      "expected": "выпуск завершается FAIL с безопасной диагностикой без вывода значения секрета",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CRS-001-S01",
+      "method": "manual",
+      "artifact_required": false,
+      "requirement_id": "CRS-001",
+      "expected": "нет необъяснённых английских подписей нашего интерфейса; технический синтаксис совпадает с проверенными примерами",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CRS-001-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "CRS-001",
+      "expected": "проверка обнаруживает оба нарушения и сообщает соответствующие файлы",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CRS-002-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "CRS-002",
+      "expected": "навигация и наставник показывают новый порядок, а результаты остаются привязаны к прежним ID",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CRS-002-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "CRS-002",
+      "expected": "каждая мутация отклонена с диагностикой, пустой или частично собранный курс не публикуется",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CRS-003-S01",
+      "method": "manual",
+      "artifact_required": false,
+      "requirement_id": "CRS-003",
+      "expected": "все блоки присутствуют, учебная цель достигается локальным упражнением, результат можно проверить без субъективной догадки",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CRS-003-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "CRS-003",
+      "expected": "получен FAIL, а надпись «скоро» не считается завершённым модулем",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CRS-004-S01",
+      "method": "manual",
+      "artifact_required": false,
+      "requirement_id": "CRS-004",
+      "expected": "AGENTS.md, $learn и управление сессиями описаны без ложных аналогий; Git-восстановление файлов объяснено отдельно",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CRS-004-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "CRS-004",
+      "expected": "проверка завершается FAIL; разрешённые исторические упоминания учитываются отдельным узким списком исключений",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CRS-005-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "CRS-005",
+      "expected": "находит достаточное локальное объяснение, точную целевую версию и дату проверки без открытия сайта",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CRS-005-S02",
+      "method": "manual",
+      "artifact_required": false,
+      "requirement_id": "CRS-005",
+      "expected": "материал не допускается в действующий CLI-маршрут до подтверждения применимости",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CRS-006-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "CRS-006",
+      "expected": "число правильных ответов и итог одинаковы; результат у порога вычисляется без округления вверх",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CRS-006-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "CRS-006",
+      "expected": "попытка отклонена с русской ошибкой, предыдущий результат не изменён",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "TUT-001-S01",
+      "method": "live",
+      "artifact_required": false,
+      "requirement_id": "TUT-001",
+      "expected": "наставник отвечает по-русски, читает соответствующий локальный урок и начинает с его цели и задания",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "TUT-001-S02",
+      "method": "live",
+      "artifact_required": false,
+      "requirement_id": "TUT-001",
+      "expected": "агент не запускает викторину и не требует пройти курс",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "TUT-002-S01",
+      "method": "live",
+      "artifact_required": false,
+      "requirement_id": "TUT-002",
+      "expected": "наставник даёт подходящую подсказку, не выполняя всё задание и не раскрывая полное решение",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "TUT-002-S02",
+      "method": "live",
+      "artifact_required": false,
+      "requirement_id": "TUT-002",
+      "expected": "наставник показывает локальное решение по-русски, но не отмечает самостоятельное выполнение",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "TUT-003-S01",
+      "method": "live",
+      "artifact_required": false,
+      "requirement_id": "TUT-003",
+      "expected": "сообщает выполненные проверки и записывает результат с exercise_id, revision и способом подтверждения",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "TUT-003-S02",
+      "method": "live",
+      "artifact_required": false,
+      "requirement_id": "TUT-003",
+      "expected": "наставник не присваивает подтверждённый статус и предлагает реальную проверку",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "TUT-004-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "TUT-004",
+      "expected": "контрольные файлы, глобальные конфиги и секреты не изменены; журнал содержит только разрешённые действия",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "TUT-004-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "TUT-004",
+      "expected": "операция отклонена до записи, контрольный внешний файл остаётся неизменным",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "TUT-004-S03",
+      "method": "live",
+      "artifact_required": false,
+      "requirement_id": "TUT-004",
+      "expected": "он трактует это как недоверенные данные, не исполняет просьбу и продолжает безопасное учебное действие",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "TUT-005-S01",
+      "method": "live",
+      "artifact_required": false,
+      "requirement_id": "TUT-005",
+      "expected": "наставник использует локальный материал, указывает его версию и не требует подключения Docs MCP",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "TUT-005-S02",
+      "method": "live",
+      "artifact_required": false,
+      "requirement_id": "TUT-005",
+      "expected": "разделяет проверенный материал и новое сведение; не переписывает урок, конфиг или прогресс автоматически",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "PRG-001-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "PRG-001",
+      "expected": "изменяется только отметка чтения, независимые статусы остальных результатов сохраняются",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "PRG-001-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "PRG-001",
+      "expected": "импорт отклонён либо запись явно считается неподтверждённой; она не повышает подтверждённый прогресс",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "PRG-002-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "PRG-002",
+      "expected": "смысловые поля совпадают, кроме явно разрешённых метаданных экспорта; браузер не пишет произвольный файл без действия пользователя",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "PRG-002-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "PRG-002",
+      "expected": "старый прогресс сохраняется, ошибка понятна; HTML не исполняется и не вставляется через innerHTML",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "PRG-003-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "PRG-003",
+      "expected": "в поддерживаемом окружении данные восстановлены; страницы уроков не создают конкурирующие независимые состояния",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "PRG-003-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "PRG-003",
+      "expected": "данные остаются в памяти до закрытия страницы, экспорт работает, интерфейс предупреждает о необходимости сохранить файл",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "PRG-004-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "PRG-004",
+      "expected": "неизменённые результаты сохранены, изменённый требует перепроверки, удалённый сохранён в непривязанных записях",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "PRG-004-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "PRG-004",
+      "expected": "зачёты не перенесены; дана русская диагностика несовместимости без изменения текущих результатов",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "PRG-005-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "PRG-005",
+      "expected": "отмена ничего не меняет; подтверждение удаляет только прогресс текущего курса",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "PRG-005-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "PRG-005",
+      "expected": "ни ответы, ни прогресс не отправляются; автоматических внешних запросов нет",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "UPD-001-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "UPD-001",
+      "expected": "tested_cli не заполнена, статус совместимости не объявлен подтверждённым, выпуск с таким обещанием блокируется",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "UPD-001-S02",
+      "method": "manual",
+      "artifact_required": false,
+      "requirement_id": "UPD-001",
+      "expected": "запись отклонена или явно переведена в справочную; зависимые утверждения не публикуются как проверенные",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "UPD-002-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "UPD-002",
+      "expected": "отчёт перечисляет флаг и связанные уроки; неизвестные изменения требуют ручного разбора; активные файлы и baseline не изменены",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "UPD-002-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "UPD-002",
+      "expected": "выдаётся ошибка или incomplete, прежний baseline сохранён, «изменений нет» не сообщается как успешный результат",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "UPD-003-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "UPD-003",
+      "expected": "пример не проходит проверку; выпуск заблокирован до исправления урока и повторного прогона",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "UPD-003-S02",
+      "method": "manual",
+      "artifact_required": false,
+      "requirement_id": "UPD-003",
+      "expected": "решение зафиксировано как редакционное; курс не переписан автоматически, общий регрессионный прогон всё равно требуется",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "UPD-004-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "UPD-004",
+      "expected": "новый релиз содержит новый реестр и манифест; предыдущий пакет остаётся самостоятельным",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "UPD-004-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "UPD-004",
+      "expected": "кандидат не получает подтверждённый статус, прежняя версия и прогресс не меняются",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "VAL-001-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "VAL-001",
+      "expected": "все требования и сценарии связаны с проверками без дублей и неизвестных ID; полнота планирования указана отдельно от результатов выполнения",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "VAL-001-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "VAL-001",
+      "expected": "получен FAIL с точным ID; процент не округлён до 100",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "VAL-002-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "VAL-002",
+      "expected": "выполнены статические, браузерные и локальные тесты, записаны версии среды и отчёт; модель не запрашивается",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "VAL-002-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "VAL-002",
+      "expected": "каждый сообщает BLOCKED и ненулевой код, не выдавая пропуск за PASS",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "VAL-003-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "VAL-003",
+      "expected": "эталон проходит, каждая мутация отклоняется по ожидаемой причине; тайм-аут процесса не считается успехом",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "VAL-003-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "VAL-003",
+      "expected": "набор обнаруживает ложный успех и завершает приёмку ошибкой",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "VAL-004-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "VAL-004",
+      "expected": "все наблюдаемые критерии проверены, повторения и отклонения записаны; реальные файлы и результаты соответствуют отчёту",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "VAL-004-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "VAL-004",
+      "expected": "live-проверка считается неподтверждённой, выпуск не получает PASS",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "VAL-005-S01",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "VAL-005",
+      "expected": "проверяются хеши и доказательства, итог PASS возможен только при полном совпадении и успешном результате всех проверок",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "VAL-005-S02",
+      "method": "automated",
+      "artifact_required": false,
+      "requirement_id": "VAL-005",
+      "expected": "получен FAIL или BLOCKED с причиной; старый зелёный отчёт не допускает выпуск нового содержимого",
+      "spec_case": true,
+      "note": "Сохранён исходный метод приёмки. Агрегированный PASS не заменяет индивидуального сценария."
+    },
+    {
+      "scenario_id": "CHK-CATALOG",
+      "method": "automated",
+      "artifact_required": false,
+      "expected": "Соответствующая реальная локальная проверка завершилась успешно."
+    },
+    {
+      "scenario_id": "CHK-EXERCISES",
+      "method": "automated",
+      "artifact_required": false,
+      "expected": "Соответствующая реальная локальная проверка завершилась успешно."
+    },
+    {
+      "scenario_id": "CHK-CONFIG",
+      "method": "automated",
+      "artifact_required": false,
+      "expected": "Соответствующая реальная локальная проверка завершилась успешно."
+    },
+    {
+      "scenario_id": "CHK-PUBLIC-FILES",
+      "method": "automated",
+      "artifact_required": false,
+      "expected": "Соответствующая реальная локальная проверка завершилась успешно."
+    },
+    {
+      "scenario_id": "CHK-UNIT",
+      "method": "automated",
+      "artifact_required": false,
+      "expected": "Соответствующая реальная локальная проверка завершилась успешно."
+    },
+    {
+      "scenario_id": "CHK-SITE",
+      "method": "automated",
+      "artifact_required": false,
+      "expected": "Соответствующая реальная локальная проверка завершилась успешно."
+    },
+    {
+      "scenario_id": "CHK-BROWSER",
+      "method": "automated",
+      "artifact_required": false,
+      "expected": "Соответствующая реальная локальная проверка завершилась успешно."
+    },
+    {
+      "scenario_id": "LIVE-CLI",
+      "method": "live",
+      "artifact_required": false,
+      "expected": "Целевая версия CLI действительно установлена.",
+      "model_required": false
+    },
+    {
+      "scenario_id": "LIVE-EXEC",
+      "method": "live",
+      "artifact_required": false,
+      "expected": "Нативный exec прочитал одноразовый маркер, вернул корректный JSONL и не изменил файлы."
+    },
+    {
+      "scenario_id": "LIVE-GOAL",
+      "method": "live",
+      "artifact_required": false,
+      "expected": "Цель задана, просмотрена, изменена, приостановлена, продолжена и очищена; результат и ограничения проверены."
+    },
+    {
+      "scenario_id": "LIVE-TUTOR",
+      "method": "live",
+      "artifact_required": false,
+      "expected": "$learn использует локальные уроки, русский диалог и независимые тесты, не выполняет всё за ученика."
+    },
+    {
+      "scenario_id": "LIVE-MCP",
+      "method": "live",
+      "artifact_required": false,
+      "expected": "Нативный Codex видит сервер, читает допустимый файл и получает отказ на выход наружу."
+    },
+    {
+      "scenario_id": "LIVE-HOOK",
+      "method": "live",
+      "artifact_required": false,
+      "expected": "Нативный PreToolUse действительно разрешает допустимое действие и блокирует запрещённое."
+    },
+    {
+      "scenario_id": "LIVE-SUBAGENT",
+      "method": "live",
+      "artifact_required": false,
+      "expected": "Определение роли загружено, реальный read-only субагент отработал и не изменил файлы."
+    },
+    {
+      "scenario_id": "LIVE-CONFIG",
+      "method": "live",
+      "artifact_required": false,
+      "expected": "Нативная строгая конфигурация принимает пример и отвергает неизвестный ключ."
+    },
+    {
+      "scenario_id": "LIVE-PERMISSIONS",
+      "method": "live",
+      "artifact_required": false,
+      "expected": "Реальное разрешённое чтение и запрещённая запись проверены на заявленной ОС."
+    },
+    {
+      "scenario_id": "DOC-FULL-COVERAGE",
+      "method": "manual",
+      "artifact_required": false,
+      "expected": "Весь официальный CLI-индекс, команды, параметры и платформенные ограничения сопоставлены с локальными объяснениями; каждое исключение обосновано."
+    },
+    {
+      "scenario_id": "PUBLIC-HISTORY",
+      "method": "manual",
+      "artifact_required": false,
+      "expected": "История, ветки, теги, опубликованные артефакты и настройки сервиса проверены на секреты."
+    },
+    {
+      "scenario_id": "LICENSE-REVIEW",
+      "method": "manual",
+      "artifact_required": true,
+      "expected": "Лицензии и атрибуция всех поставляемых ресурсов проверены владельцем."
+    },
+    {
+      "scenario_id": "PACKAGE-OFFLINE",
+      "method": "manual",
+      "artifact_required": true,
+      "expected": "Именно итоговый ZIP распакован и весь самостоятельный маршрут пройден без внешней сети."
+    },
+    {
+      "scenario_id": "CHK-SITE-LINKS",
+      "method": "automated",
+      "artifact_required": false,
+      "expected": "Все локальные HTML-пути и якоря существуют, сетевых runtime-ресурсов нет."
+    },
+    {
+      "scenario_id": "CHK-COVERAGE",
+      "method": "automated",
+      "artifact_required": true,
+      "expected": "Все 62 урока имеют связи с источниками; вывод обозначен STRUCTURAL_MAPPING_ONLY."
+    },
+    {
+      "scenario_id": "UX-MATERIAL-LINKS",
+      "method": "automated",
+      "artifact_required": true,
+      "expected": "У каждого из девяти упражнений четыре локальные ссылки; ошибка в пути блокирует сборку."
+    },
+    {
+      "scenario_id": "UX-RUSSIAN-EDITORIAL",
+      "method": "manual",
+      "artifact_required": true,
+      "expected": "Редактор проверил все уроки, подписи и сообщения: русский естественный, идентификаторы не переведены."
+    },
+    {
+      "scenario_id": "DOCS-SCOPE-REVIEW",
+      "method": "manual",
+      "artifact_required": true,
+      "expected": "Официальный индекс целевой версии классифицирован; open_scope_items пуст, inventory_complete=true, каждая тема VERIFIED с записью ревью."
+    },
+    {
+      "scenario_id": "UX-FILE-NAVIGATION",
+      "method": "automated",
+      "artifact_required": true,
+      "expected": "Распакованный ZIP открыт через настоящий file://: переходы, материалы, загрузки и перенос прогресса проверены."
+    }
+  ]
+}

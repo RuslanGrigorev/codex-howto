@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Optional
 
 
 class SessionManager:
-    """Менеджер сессий Codex CLI, обеспечивающий разделение состояния диалога и файлового дерева."""
+    """Вспомогательная учебная модель истории и файлов; не реализация хранилища Codex CLI."""
 
     def __init__(self) -> None:
         self._sessions: Dict[str, Dict[str, Any]] = {}

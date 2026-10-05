@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "workflow.planning",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Что подтверждает наличие плана?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Согласованный подход, но не выполнение действий.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Что все тесты уже прошли.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Что файлы восстановлены.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "План и доказательство исполнения различаются.",
+      "id": "workflow.planning.q1"
+    },
+    {
+      "question": "Что должно быть у каждого шага?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Только красивое название.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Обязательный сетевой вызов.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Наблюдаемый результат и способ проверки.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Проверяемость делает план полезным.",
+      "id": "workflow.planning.q2"
+    },
+    {
+      "question": "Когда переходить к /goal?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Вместо проверки результата.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "После уточнения результата и ограничений.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "До понимания требований.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Длительное выполнение требует ясной цели.",
+      "id": "workflow.planning.q3"
+    }
+  ]
+}

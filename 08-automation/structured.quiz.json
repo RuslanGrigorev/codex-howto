@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "lesson_id": "automation.structured",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "id": "q1",
+      "question": "Для чего нужен --output-schema?",
+      "explanation": "Для структуры итогового ответа; это не формат потока событий --json.",
+      "options": [
+        {
+          "id": "misconception",
+          "text": "Для переименования turn.completed в произвольный ключ.",
+          "is_correct": false
+        },
+        {
+          "id": "understood",
+          "text": "Для структуры итогового ответа; это не формат потока событий --json.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "question": "Доказывает ли валидная JSON Schema фактическую правильность ответа?",
+      "explanation": "Нет: содержание и утверждения об изменениях проверяют отдельно.",
+      "options": [
+        {
+          "id": "incorrect",
+          "text": "Да: корректная структура гарантирует отсутствие фактических ошибок.",
+          "is_correct": false
+        },
+        {
+          "id": "correct",
+          "text": "Нет: содержание и утверждения об изменениях проверяют отдельно.",
+          "is_correct": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "lesson_id": "workflow.review",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "id": "q1",
+      "question": "Достаточно ли положительного ревью модели для выпуска?",
+      "explanation": "Нет: нужны независимые проверки и оценка фактического diff.",
+      "options": [
+        {
+          "id": "understood",
+          "text": "Нет: нужны независимые проверки и оценка фактического diff.",
+          "is_correct": true
+        },
+        {
+          "id": "misconception",
+          "text": "Да: после /review тесты не нужны.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "question": "Зачем проверять diff после ревью?",
+      "explanation": "Чтобы сопоставить фактические изменения с разрешённой областью задачи.",
+      "options": [
+        {
+          "id": "incorrect",
+          "text": "Diff нужен только до запуска модели.",
+          "is_correct": false
+        },
+        {
+          "id": "correct",
+          "text": "Чтобы сопоставить фактические изменения с разрешённой областью задачи.",
+          "is_correct": true
+        }
+      ]
+    }
+  ]
+}

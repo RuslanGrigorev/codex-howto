@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "mcp.tools",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Что подтверждает codex mcp list?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Состояние конфигурации подключений, но не все вызовы инструментов.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Что любой инструмент безопасен.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Что все файлы доступны.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Нужен отдельный тест конкретного действия.",
+      "id": "mcp.tools.q1"
+    },
+    {
+      "question": "Где проверять путь к файлу?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Только в описании навыка.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Нигде, модель не ошибается.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "На стороне сервера тоже.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Входные данные должны проверяться независимо.",
+      "id": "mcp.tools.q2"
+    },
+    {
+      "question": "Что проверить после отказа?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Что права стали шире.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Что допустимый запрос всё ещё работает.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Что сервер молча завершился.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Отрицательный сценарий не должен ломать нормальную работу.",
+      "id": "mcp.tools.q3"
+    }
+  ]
+}

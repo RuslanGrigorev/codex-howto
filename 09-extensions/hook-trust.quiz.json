@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "extensions.hook-trust",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Почему hook требует проверки доверия?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Он исполняет пользовательский код.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Потому что это картинка.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Чтобы изменить язык курса.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Источник и содержание исполняемого обработчика важны.",
+      "id": "extensions.hook-trust.q1"
+    },
+    {
+      "question": "Может ли событие после действия отменить внешний эффект автоматически?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Да, всегда.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Только при длинном сообщении.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Нет, рассчитывать на это нельзя.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "До- и после-события имеют разные назначения.",
+      "id": "extensions.hook-trust.q2"
+    },
+    {
+      "question": "Что подтверждает реальный отказ?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Имя файла hooks.json.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Запрещённое действие не произошло.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Только сформированный JSON в тесте.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Нужно подтвердить фактическое подключение и эффект.",
+      "id": "extensions.hook-trust.q3"
+    }
+  ]
+}

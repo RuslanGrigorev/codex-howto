@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "extensions.agent-design",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Когда полезно разделение на роли?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Когда задачи и результаты ограничены и проверяемы.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Всегда, чем больше агентов, тем лучше.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Только ради красивого отчёта.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Разделение должно уменьшать неопределённость.",
+      "id": "extensions.agent-design.q1"
+    },
+    {
+      "question": "Как разрешить конфликт выводов?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Голосованием моделей.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "По длине ответа.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Независимой проверкой спорного случая.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Доказательство важнее уверенности.",
+      "id": "extensions.agent-design.q2"
+    },
+    {
+      "question": "С каких прав начать ревьюеру?",
+      "options": [
+        {
+          "id": "c",
+          "text": "С права публикации.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "С чтения, если изменение файлов не нужно.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "С полного доступа.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Роль получает только необходимые возможности.",
+      "id": "extensions.agent-design.q3"
+    }
+  ]
+}

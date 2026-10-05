@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "workflow.inspect",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Что делает карту проекта проверяемой?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Конкретные существующие файлы и помеченные предположения.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Большой объём текста.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Обещание агента, что он всё изучил.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Вывод можно сопоставить с исходниками.",
+      "id": "workflow.inspect.q1"
+    },
+    {
+      "question": "Что делать с тестом, которого нет внутри рабочей папки?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Сообщить PASS.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Создать пустой тест и запустить его.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Уточнить его расположение, а не выдумывать результат.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Независимые тесты могут находиться отдельно.",
+      "id": "workflow.inspect.q2"
+    },
+    {
+      "question": "Когда нужно изменять код в этом уроке?",
+      "options": [
+        {
+          "id": "c",
+          "text": "До постановки задачи.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Не нужно: цель — исследование.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "После первого ответа автоматически.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Один урок проверяет одно действие без скрытого расширения задачи.",
+      "id": "workflow.inspect.q3"
+    }
+  ]
+}

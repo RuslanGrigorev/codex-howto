@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "capstone.acceptance",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Что подтверждает хеш дерева?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Принадлежность результата определённому набору файлов.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Корректность всего кода.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Отсутствие любых ошибок.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Идентичность и качество — разные свойства.",
+      "id": "capstone.acceptance.q1"
+    },
+    {
+      "question": "Можно ли считать NOT_RUN успешной проверкой?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Да, если не было ошибки.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Да, для красивого отчёта.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Нет.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Невыполненное действие не имеет положительного результата.",
+      "id": "capstone.acceptance.q2"
+    },
+    {
+      "question": "Является ли локальный progress.json сертификатом?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Да, если он на русском.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Нет, это учебная запись.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Да, его нельзя изменить.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Прогресс удобен для обучения, но не защищён от редактирования.",
+      "id": "capstone.acceptance.q3"
+    }
+  ]
+}

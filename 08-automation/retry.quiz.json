@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "automation.retry",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Что сделать перед повтором после сбоя?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Проверить, какие действия уже произошли.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Всегда повторить всё с полным доступом.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Удалить лог.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Сбой мог случиться после частичного выполнения.",
+      "id": "automation.retry.q1"
+    },
+    {
+      "question": "Зачем сохранять SESSION_ID?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Чтобы заменить тесты.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Чтобы включить сеть.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Чтобы продолжить нужную сессию, а не случайную последнюю.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Явный идентификатор улучшает воспроизводимость.",
+      "id": "automation.retry.q2"
+    },
+    {
+      "question": "Гарантирует ли ephemeral удаление данных у провайдера?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Только при --json.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Нет.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Да, всегда.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Локальное сохранение и политика провайдера различаются.",
+      "id": "automation.retry.q3"
+    }
+  ]
+}

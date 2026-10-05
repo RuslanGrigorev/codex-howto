@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "skills.create",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Как явно вызвать проектный навык Codex?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Через $имя-навыка.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Придумать встроенную /команду.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Переименовать codex.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Синтаксис навыка не следует выдавать за нативную slash-команду.",
+      "id": "skills.create.q1"
+    },
+    {
+      "question": "Что подтверждает работающий навык?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Только наличие YAML.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Красивое имя каталога.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Обнаружение и реальное выполнение его сценария.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Нужна проверка поведения клиента.",
+      "id": "skills.create.q2"
+    },
+    {
+      "question": "Зачем отрицательный тест с несуществующим файлом?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Чтобы выключить навыки.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Чтобы обнаружить выдуманное ревью.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Чтобы ускорить установку.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Навык должен корректно обработать неподходящий вход.",
+      "id": "skills.create.q3"
+    }
+  ]
+}

@@ -2,67 +2,1529 @@
   "schema_version": 1,
   "target_cli": "0.160.0",
   "tested_cli": null,
+  "docs_checked_at": "2026-10-05",
   "test_profile": {
-    "os": "Windows 11 (AMD64)",
-    "python": "3.13.0",
-    "git": "2.47.0"
+    "os": null,
+    "python": null,
+    "git": null
   },
+  "scope": "Codex CLI; самостоятельные сетевые интеграции отмечаются отдельно; не OpenAI API CLI",
   "sources": [
     {
-      "id": "CX-01",
-      "title": "Codex Release rust-v0.160.0",
-      "url": "https://github.com/openai/codex/releases/tag/rust-v0.160.0",
+      "id": "cli",
+      "title": "Интерфейс и справочник Codex CLI",
+      "url": "https://learn.chatgpt.com/docs/developer-commands?surface=cli",
       "checked_at": "2026-10-04",
-      "lesson_ids": ["start"]
+      "lesson_ids": [
+        "automation.app-server",
+        "automation.retry",
+        "automation.structured",
+        "capstone.maintenance",
+        "capstone.troubleshooting",
+        "extensions.customization",
+        "extensions.plugins",
+        "extensions.remote",
+        "extensions.subagents",
+        "instructions.context",
+        "instructions.memory",
+        "instructions.models",
+        "instructions.providers",
+        "mcp.official-docs",
+        "safety.approvals",
+        "safety.network",
+        "safety.permissions",
+        "safety.privacy",
+        "safety.sandbox-lab",
+        "sessions.archive",
+        "sessions.restore",
+        "sessions.resume",
+        "sessions.side",
+        "sessions.worktrees",
+        "skills.migration",
+        "start.auth",
+        "start.interface",
+        "start.offline",
+        "start.overview",
+        "start.updates",
+        "workflow.goal-control",
+        "workflow.inputs",
+        "workflow.inspect",
+        "workflow.plan-goal",
+        "workflow.planning",
+        "workflow.prompt",
+        "workflow.review",
+        "workflow.small-fix",
+        "workflow.tests"
+      ]
     },
     {
-      "id": "CX-02",
-      "title": "Codex CLI Reference",
-      "url": "https://developers.openai.com/codex/cli/reference",
+      "id": "release",
+      "title": "Исходный код Codex 0.160.0",
+      "url": "https://github.com/openai/codex/tree/rust-v0.160.0",
       "checked_at": "2026-10-04",
-      "lesson_ids": ["start", "workflow", "sessions"]
+      "lesson_ids": [
+        "capstone.acceptance",
+        "capstone.maintenance",
+        "capstone.troubleshooting",
+        "start.install",
+        "start.updates"
+      ]
     },
     {
-      "id": "CX-03",
-      "title": "Codex Skills",
-      "url": "https://developers.openai.com/codex/skills/",
+      "id": "install",
+      "title": "Установка Codex CLI",
+      "url": "https://learn.chatgpt.com/docs/codex/cli",
       "checked_at": "2026-10-04",
-      "lesson_ids": ["skills"]
+      "lesson_ids": [
+        "start.environment",
+        "start.install",
+        "start.overview",
+        "start.windows"
+      ]
     },
     {
-      "id": "CX-04",
-      "title": "Codex AGENTS.md Guide",
-      "url": "https://developers.openai.com/codex/guides/agents-md/",
+      "id": "auth",
+      "title": "Авторизация",
+      "url": "https://learn.chatgpt.com/docs/auth",
       "checked_at": "2026-10-04",
-      "lesson_ids": ["instructions"]
+      "lesson_ids": [
+        "safety.privacy",
+        "start.auth"
+      ]
     },
     {
-      "id": "CX-05",
-      "title": "Codex MCP",
-      "url": "https://developers.openai.com/codex/mcp/",
+      "id": "goal",
+      "title": "Длительные задачи",
+      "url": "https://learn.chatgpt.com/docs/long-running-work",
       "checked_at": "2026-10-04",
-      "lesson_ids": ["mcp"]
+      "lesson_ids": [
+        "capstone.final-project",
+        "workflow.goal-control",
+        "workflow.plan-goal",
+        "workflow.planning"
+      ]
     },
     {
-      "id": "CX-06",
-      "title": "Codex Noninteractive",
-      "url": "https://developers.openai.com/codex/noninteractive/",
+      "id": "config",
+      "title": "Справочник конфигурации",
+      "url": "https://learn.chatgpt.com/docs/config-file/config-reference",
       "checked_at": "2026-10-04",
-      "lesson_ids": ["automation"]
+      "lesson_ids": [
+        "capstone.troubleshooting",
+        "instructions.config",
+        "instructions.models",
+        "instructions.providers",
+        "safety.network",
+        "safety.permissions",
+        "start.offline"
+      ]
     },
     {
-      "id": "CX-07",
-      "title": "Codex Configuration Reference",
-      "url": "https://developers.openai.com/codex/config-reference/",
+      "id": "config-basic",
+      "title": "Слои конфигурации",
+      "url": "https://learn.chatgpt.com/docs/config-file/config-basic",
       "checked_at": "2026-10-04",
-      "lesson_ids": ["safety", "extensions", "sessions"]
+      "lesson_ids": [
+        "instructions.config"
+      ]
     },
     {
-      "id": "CX-08",
-      "title": "Codex Security",
-      "url": "https://developers.openai.com/codex/security/",
+      "id": "agents",
+      "title": "Инструкции AGENTS.md",
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
       "checked_at": "2026-10-04",
-      "lesson_ids": ["safety"]
+      "lesson_ids": [
+        "instructions.agents-md",
+        "instructions.context",
+        "instructions.memory",
+        "instructions.scope"
+      ]
+    },
+    {
+      "id": "permissions",
+      "title": "Разрешения",
+      "url": "https://learn.chatgpt.com/docs/permissions",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "safety.approvals",
+        "safety.network",
+        "safety.permissions",
+        "safety.rules",
+        "safety.sandbox-lab",
+        "start.windows",
+        "workflow.inputs",
+        "workflow.inspect"
+      ]
+    },
+    {
+      "id": "rules",
+      "title": "Правила выполнения команд",
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/rules",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "safety.rules"
+      ]
+    },
+    {
+      "id": "skills",
+      "title": "Навыки",
+      "url": "https://learn.chatgpt.com/docs/build-skills",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "capstone.final-project",
+        "skills.create",
+        "skills.custom",
+        "skills.debug",
+        "skills.migration",
+        "skills.resources"
+      ]
+    },
+    {
+      "id": "mcp",
+      "title": "MCP в Codex",
+      "url": "https://learn.chatgpt.com/docs/extend/mcp?surface=cli",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "mcp.diagnostics",
+        "mcp.local-stdio",
+        "mcp.official-docs",
+        "mcp.remote",
+        "mcp.tools"
+      ]
+    },
+    {
+      "id": "mcp-protocol",
+      "title": "Транспорт MCP",
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/transports",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "mcp.local-stdio"
+      ],
+      "update_watch": false
+    },
+    {
+      "id": "exec",
+      "title": "Неинтерактивная работа",
+      "url": "https://learn.chatgpt.com/docs/non-interactive-mode",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "automation.ci",
+        "automation.events",
+        "automation.non-interactive",
+        "automation.retry",
+        "automation.structured",
+        "capstone.final-project",
+        "workflow.small-fix"
+      ]
+    },
+    {
+      "id": "hooks",
+      "title": "Нативные hooks",
+      "url": "https://learn.chatgpt.com/docs/hooks",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "extensions.hook-trust",
+        "extensions.plugins-hooks"
+      ]
+    },
+    {
+      "id": "subagents",
+      "title": "Субагенты",
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/subagents",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "extensions.agent-design",
+        "extensions.subagents"
+      ]
+    },
+    {
+      "id": "plugins",
+      "title": "Формат плагинов",
+      "url": "https://developers.openai.com/plugins/build/plugins",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "extensions.plugins"
+      ]
+    },
+    {
+      "id": "app-server",
+      "title": "Codex app-server",
+      "url": "https://learn.chatgpt.com/docs/app-server",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "automation.app-server",
+        "extensions.remote"
+      ]
+    },
+    {
+      "id": "action",
+      "title": "GitHub Action",
+      "url": "https://learn.chatgpt.com/docs/github-action",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "automation.ci"
+      ]
+    },
+    {
+      "id": "slash-source",
+      "title": "Slash-команды в теге 0.160.0",
+      "url": "https://raw.githubusercontent.com/openai/codex/rust-v0.160.0/codex-rs/tui/src/slash_command.rs",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "extensions.customization",
+        "instructions.memory",
+        "sessions.side",
+        "start.interface",
+        "workflow.plan-goal"
+      ]
+    },
+    {
+      "id": "schema",
+      "title": "Схема config.toml в теге 0.160.0",
+      "url": "https://raw.githubusercontent.com/openai/codex/rust-v0.160.0/codex-rs/core/config.schema.json",
+      "checked_at": "2026-10-04",
+      "lesson_ids": [
+        "instructions.config"
+      ]
+    }
+  ],
+  "baseline_snapshot": {
+    "tag": "rust-v0.160.0",
+    "slash_commands": [
+      "/agents",
+      "/app",
+      "/approve",
+      "/apps",
+      "/archive",
+      "/btw",
+      "/cd",
+      "/clear",
+      "/compact",
+      "/copy",
+      "/daemon",
+      "/debug-config",
+      "/debug-m-drop",
+      "/debug-m-update",
+      "/delete",
+      "/diff",
+      "/exit",
+      "/experimental",
+      "/export",
+      "/feedback",
+      "/fork",
+      "/goal",
+      "/hooks",
+      "/ide",
+      "/import",
+      "/init",
+      "/keymap",
+      "/logout",
+      "/mcp",
+      "/memories",
+      "/mention",
+      "/model",
+      "/new",
+      "/permissions",
+      "/pets",
+      "/plan",
+      "/plugins",
+      "/ps",
+      "/pwd",
+      "/quit",
+      "/raw",
+      "/recap",
+      "/rename",
+      "/resume",
+      "/review",
+      "/rollout",
+      "/setup-default-sandbox",
+      "/side",
+      "/skills",
+      "/status",
+      "/statusline",
+      "/stop",
+      "/subagents",
+      "/test-approval",
+      "/theme",
+      "/title",
+      "/tui",
+      "/usage",
+      "/vim",
+      "/voice",
+      "/warnings",
+      "/worktree"
+    ],
+    "config_keys": [],
+    "source_hashes": {},
+    "status": "PARTIAL_MANUAL_REFERENCE_NOT_COMPLETE_UPSTREAM_SNAPSHOT"
+  },
+  "coverage": [
+    {
+      "id": "start.overview",
+      "source_id": "cli",
+      "lesson_ids": [
+        "start.overview"
+      ],
+      "local_path": "01-start/overview.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_APPLICABLE_TO_READING"
+    },
+    {
+      "id": "start.install",
+      "source_id": "release",
+      "lesson_ids": [
+        "start.install"
+      ],
+      "local_path": "01-start/install.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_APPLICABLE_TO_READING"
+    },
+    {
+      "id": "start.auth",
+      "source_id": "cli",
+      "lesson_ids": [
+        "start.auth"
+      ],
+      "local_path": "01-start/auth.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "start.interface",
+      "source_id": "cli",
+      "lesson_ids": [
+        "start.interface"
+      ],
+      "local_path": "01-start/interface.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "start.offline",
+      "source_id": "cli",
+      "lesson_ids": [
+        "start.offline"
+      ],
+      "local_path": "01-start/offline.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_APPLICABLE_TO_READING"
+    },
+    {
+      "id": "workflow.small-fix",
+      "source_id": "cli",
+      "lesson_ids": [
+        "workflow.small-fix"
+      ],
+      "local_path": "02-workflow/small-fix.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "workflow.plan-goal",
+      "source_id": "cli",
+      "lesson_ids": [
+        "workflow.plan-goal"
+      ],
+      "local_path": "02-workflow/plan-goal.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "workflow.review",
+      "source_id": "cli",
+      "lesson_ids": [
+        "workflow.review"
+      ],
+      "local_path": "02-workflow/review.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "workflow.inputs",
+      "source_id": "cli",
+      "lesson_ids": [
+        "workflow.inputs"
+      ],
+      "local_path": "02-workflow/inputs.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "safety.permissions",
+      "source_id": "cli",
+      "lesson_ids": [
+        "safety.permissions"
+      ],
+      "local_path": "03-safety/permissions.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "safety.rules",
+      "source_id": "permissions",
+      "lesson_ids": [
+        "safety.rules"
+      ],
+      "local_path": "03-safety/rules.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "safety.privacy",
+      "source_id": "cli",
+      "lesson_ids": [
+        "safety.privacy"
+      ],
+      "local_path": "03-safety/privacy.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_APPLICABLE_TO_READING"
+    },
+    {
+      "id": "instructions.agents-md",
+      "source_id": "agents",
+      "lesson_ids": [
+        "instructions.agents-md"
+      ],
+      "local_path": "04-instructions/agents-md.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "instructions.config",
+      "source_id": "config",
+      "lesson_ids": [
+        "instructions.config"
+      ],
+      "local_path": "04-instructions/config.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "instructions.models",
+      "source_id": "cli",
+      "lesson_ids": [
+        "instructions.models"
+      ],
+      "local_path": "04-instructions/models.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "instructions.memory",
+      "source_id": "cli",
+      "lesson_ids": [
+        "instructions.memory"
+      ],
+      "local_path": "04-instructions/memory.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "sessions.resume",
+      "source_id": "cli",
+      "lesson_ids": [
+        "sessions.resume"
+      ],
+      "local_path": "05-sessions/resume.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "sessions.worktrees",
+      "source_id": "cli",
+      "lesson_ids": [
+        "sessions.worktrees"
+      ],
+      "local_path": "05-sessions/worktrees.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "sessions.side",
+      "source_id": "cli",
+      "lesson_ids": [
+        "sessions.side"
+      ],
+      "local_path": "05-sessions/side.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "skills.custom",
+      "source_id": "skills",
+      "lesson_ids": [
+        "skills.custom"
+      ],
+      "local_path": "06-skills/custom-skills.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "skills.debug",
+      "source_id": "skills",
+      "lesson_ids": [
+        "skills.debug"
+      ],
+      "local_path": "06-skills/debug.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "mcp.local-stdio",
+      "source_id": "mcp",
+      "lesson_ids": [
+        "mcp.local-stdio"
+      ],
+      "local_path": "07-mcp/local-stdio.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "mcp.remote",
+      "source_id": "mcp",
+      "lesson_ids": [
+        "mcp.remote"
+      ],
+      "local_path": "07-mcp/remote.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "automation.non-interactive",
+      "source_id": "exec",
+      "lesson_ids": [
+        "automation.non-interactive"
+      ],
+      "local_path": "08-automation/non-interactive.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "automation.structured",
+      "source_id": "cli",
+      "lesson_ids": [
+        "automation.structured"
+      ],
+      "local_path": "08-automation/structured.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "automation.ci",
+      "source_id": "exec",
+      "lesson_ids": [
+        "automation.ci"
+      ],
+      "local_path": "08-automation/ci.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_APPLICABLE_TO_READING"
+    },
+    {
+      "id": "automation.app-server",
+      "source_id": "cli",
+      "lesson_ids": [
+        "automation.app-server"
+      ],
+      "local_path": "08-automation/app-server.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "extensions.plugins-hooks",
+      "source_id": "hooks",
+      "lesson_ids": [
+        "extensions.plugins-hooks"
+      ],
+      "local_path": "09-extensions/plugins-hooks.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "extensions.subagents",
+      "source_id": "cli",
+      "lesson_ids": [
+        "extensions.subagents"
+      ],
+      "local_path": "09-extensions/subagents.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "extensions.plugins",
+      "source_id": "cli",
+      "lesson_ids": [
+        "extensions.plugins"
+      ],
+      "local_path": "09-extensions/plugins.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "extensions.remote",
+      "source_id": "cli",
+      "lesson_ids": [
+        "extensions.remote"
+      ],
+      "local_path": "09-extensions/remote.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "extensions.customization",
+      "source_id": "cli",
+      "lesson_ids": [
+        "extensions.customization"
+      ],
+      "local_path": "09-extensions/customization.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "capstone.final-project",
+      "source_id": "goal",
+      "lesson_ids": [
+        "capstone.final-project"
+      ],
+      "local_path": "10-capstone/final-project.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    },
+    {
+      "id": "capstone.troubleshooting",
+      "source_id": "cli",
+      "lesson_ids": [
+        "capstone.troubleshooting"
+      ],
+      "local_path": "10-capstone/troubleshooting.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_APPLICABLE_TO_READING"
+    },
+    {
+      "id": "cli.static-slash",
+      "source_id": "slash-source",
+      "lesson_ids": [
+        "start.interface",
+        "workflow.plan-goal"
+      ],
+      "local_path": "reference/slash-commands.md",
+      "explanation": "PRESENT",
+      "native_validation": "NOT_RUN"
+    }
+  ],
+  "coverage_claim": "MAPPED_PARTIAL_INVENTORY",
+  "inventory_complete": false,
+  "open_scope_items": [
+    {
+      "id": "full-config-schema",
+      "reason": "Нужна построчная сверка всех ключей схемы тега 0.160.0, а не только учебных примеров."
+    },
+    {
+      "id": "platform-matrix",
+      "reason": "Не завершены нативные прогоны Windows, WSL, macOS и Linux; фактическая поддержка не выводится из текста."
+    },
+    {
+      "id": "all-hooks-contracts",
+      "reason": "Исполняемый пример охватывает PreToolUse; остальные протоколы требуют самостоятельных примеров и проверок."
+    },
+    {
+      "id": "remote-and-plugin-integration",
+      "reason": "Удалённый запуск, плагины и app-server описаны, но полные интеграционные сценарии не выполнены."
+    },
+    {
+      "id": "official-index-review",
+      "reason": "Полный официальный индекс и управляемые настройки ещё требуют редакционной классификации применимости к CLI."
+    }
+  ],
+  "topics": [
+    {
+      "topic_id": "start.overview",
+      "source_ids": [
+        "cli",
+        "install"
+      ],
+      "lesson_ids": [
+        "start.overview"
+      ],
+      "local_path": "01-start/overview.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_REQUIRED"
+    },
+    {
+      "topic_id": "start.environment",
+      "source_ids": [
+        "install"
+      ],
+      "lesson_ids": [
+        "start.environment"
+      ],
+      "local_path": "01-start/environment.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_REQUIRED"
+    },
+    {
+      "topic_id": "start.install",
+      "source_ids": [
+        "release",
+        "install"
+      ],
+      "lesson_ids": [
+        "start.install"
+      ],
+      "local_path": "01-start/install.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_REQUIRED"
+    },
+    {
+      "topic_id": "start.auth",
+      "source_ids": [
+        "cli",
+        "auth"
+      ],
+      "lesson_ids": [
+        "start.auth"
+      ],
+      "local_path": "01-start/auth.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "start.interface",
+      "source_ids": [
+        "cli",
+        "slash-source"
+      ],
+      "lesson_ids": [
+        "start.interface"
+      ],
+      "local_path": "01-start/interface.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "start.windows",
+      "source_ids": [
+        "install",
+        "permissions"
+      ],
+      "lesson_ids": [
+        "start.windows"
+      ],
+      "local_path": "01-start/windows.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "start.offline",
+      "source_ids": [
+        "cli",
+        "config"
+      ],
+      "lesson_ids": [
+        "start.offline"
+      ],
+      "local_path": "01-start/offline.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_REQUIRED"
+    },
+    {
+      "topic_id": "start.updates",
+      "source_ids": [
+        "cli",
+        "release"
+      ],
+      "lesson_ids": [
+        "start.updates"
+      ],
+      "local_path": "01-start/updates.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_REQUIRED"
+    },
+    {
+      "topic_id": "workflow.small-fix",
+      "source_ids": [
+        "cli",
+        "exec"
+      ],
+      "lesson_ids": [
+        "workflow.small-fix"
+      ],
+      "local_path": "02-workflow/small-fix.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "workflow.inspect",
+      "source_ids": [
+        "cli",
+        "permissions"
+      ],
+      "lesson_ids": [
+        "workflow.inspect"
+      ],
+      "local_path": "02-workflow/inspect.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "workflow.prompt",
+      "source_ids": [
+        "cli"
+      ],
+      "lesson_ids": [
+        "workflow.prompt"
+      ],
+      "local_path": "02-workflow/prompt.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "workflow.planning",
+      "source_ids": [
+        "cli",
+        "goal"
+      ],
+      "lesson_ids": [
+        "workflow.planning"
+      ],
+      "local_path": "02-workflow/planning.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "workflow.plan-goal",
+      "source_ids": [
+        "cli",
+        "goal",
+        "slash-source"
+      ],
+      "lesson_ids": [
+        "workflow.plan-goal"
+      ],
+      "local_path": "02-workflow/plan-goal.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "workflow.goal-control",
+      "source_ids": [
+        "cli",
+        "goal"
+      ],
+      "lesson_ids": [
+        "workflow.goal-control"
+      ],
+      "local_path": "02-workflow/goal-control.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "workflow.tests",
+      "source_ids": [
+        "cli"
+      ],
+      "lesson_ids": [
+        "workflow.tests"
+      ],
+      "local_path": "02-workflow/tests.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "workflow.review",
+      "source_ids": [
+        "cli"
+      ],
+      "lesson_ids": [
+        "workflow.review"
+      ],
+      "local_path": "02-workflow/review.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "workflow.inputs",
+      "source_ids": [
+        "cli",
+        "permissions"
+      ],
+      "lesson_ids": [
+        "workflow.inputs"
+      ],
+      "local_path": "02-workflow/inputs.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "safety.permissions",
+      "source_ids": [
+        "cli",
+        "config",
+        "permissions"
+      ],
+      "lesson_ids": [
+        "safety.permissions"
+      ],
+      "local_path": "03-safety/permissions.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "safety.approvals",
+      "source_ids": [
+        "cli",
+        "permissions"
+      ],
+      "lesson_ids": [
+        "safety.approvals"
+      ],
+      "local_path": "03-safety/approvals.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "safety.sandbox-lab",
+      "source_ids": [
+        "cli",
+        "permissions"
+      ],
+      "lesson_ids": [
+        "safety.sandbox-lab"
+      ],
+      "local_path": "03-safety/sandbox-lab.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "safety.network",
+      "source_ids": [
+        "cli",
+        "config",
+        "permissions"
+      ],
+      "lesson_ids": [
+        "safety.network"
+      ],
+      "local_path": "03-safety/network.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "safety.rules",
+      "source_ids": [
+        "permissions",
+        "rules"
+      ],
+      "lesson_ids": [
+        "safety.rules"
+      ],
+      "local_path": "03-safety/rules.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "safety.privacy",
+      "source_ids": [
+        "cli",
+        "auth"
+      ],
+      "lesson_ids": [
+        "safety.privacy"
+      ],
+      "local_path": "03-safety/privacy.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_REQUIRED"
+    },
+    {
+      "topic_id": "instructions.agents-md",
+      "source_ids": [
+        "agents"
+      ],
+      "lesson_ids": [
+        "instructions.agents-md"
+      ],
+      "local_path": "04-instructions/agents-md.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "instructions.scope",
+      "source_ids": [
+        "agents"
+      ],
+      "lesson_ids": [
+        "instructions.scope"
+      ],
+      "local_path": "04-instructions/scope.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "instructions.config",
+      "source_ids": [
+        "config",
+        "config-basic",
+        "schema"
+      ],
+      "lesson_ids": [
+        "instructions.config"
+      ],
+      "local_path": "04-instructions/config.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "instructions.models",
+      "source_ids": [
+        "cli",
+        "config"
+      ],
+      "lesson_ids": [
+        "instructions.models"
+      ],
+      "local_path": "04-instructions/models.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "instructions.providers",
+      "source_ids": [
+        "cli",
+        "config"
+      ],
+      "lesson_ids": [
+        "instructions.providers"
+      ],
+      "local_path": "04-instructions/providers.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "instructions.memory",
+      "source_ids": [
+        "cli",
+        "agents",
+        "slash-source"
+      ],
+      "lesson_ids": [
+        "instructions.memory"
+      ],
+      "local_path": "04-instructions/memory.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "instructions.context",
+      "source_ids": [
+        "cli",
+        "agents"
+      ],
+      "lesson_ids": [
+        "instructions.context"
+      ],
+      "local_path": "04-instructions/context.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "sessions.resume",
+      "source_ids": [
+        "cli"
+      ],
+      "lesson_ids": [
+        "sessions.resume"
+      ],
+      "local_path": "05-sessions/resume.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "sessions.side",
+      "source_ids": [
+        "cli",
+        "slash-source"
+      ],
+      "lesson_ids": [
+        "sessions.side"
+      ],
+      "local_path": "05-sessions/side.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "sessions.worktrees",
+      "source_ids": [
+        "cli"
+      ],
+      "lesson_ids": [
+        "sessions.worktrees"
+      ],
+      "local_path": "05-sessions/worktrees.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "sessions.archive",
+      "source_ids": [
+        "cli"
+      ],
+      "lesson_ids": [
+        "sessions.archive"
+      ],
+      "local_path": "05-sessions/archive.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "sessions.restore",
+      "source_ids": [
+        "cli"
+      ],
+      "lesson_ids": [
+        "sessions.restore"
+      ],
+      "local_path": "05-sessions/restore.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "skills.custom",
+      "source_ids": [
+        "skills"
+      ],
+      "lesson_ids": [
+        "skills.custom"
+      ],
+      "local_path": "06-skills/custom-skills.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "skills.create",
+      "source_ids": [
+        "skills"
+      ],
+      "lesson_ids": [
+        "skills.create"
+      ],
+      "local_path": "06-skills/create.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "skills.resources",
+      "source_ids": [
+        "skills"
+      ],
+      "lesson_ids": [
+        "skills.resources"
+      ],
+      "local_path": "06-skills/resources.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "skills.debug",
+      "source_ids": [
+        "skills"
+      ],
+      "lesson_ids": [
+        "skills.debug"
+      ],
+      "local_path": "06-skills/debug.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "skills.migration",
+      "source_ids": [
+        "cli",
+        "skills"
+      ],
+      "lesson_ids": [
+        "skills.migration"
+      ],
+      "local_path": "06-skills/migration.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "mcp.local-stdio",
+      "source_ids": [
+        "mcp",
+        "mcp-protocol"
+      ],
+      "lesson_ids": [
+        "mcp.local-stdio"
+      ],
+      "local_path": "07-mcp/local-stdio.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "mcp.tools",
+      "source_ids": [
+        "mcp"
+      ],
+      "lesson_ids": [
+        "mcp.tools"
+      ],
+      "local_path": "07-mcp/tools.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "mcp.diagnostics",
+      "source_ids": [
+        "mcp"
+      ],
+      "lesson_ids": [
+        "mcp.diagnostics"
+      ],
+      "local_path": "07-mcp/diagnostics.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "mcp.remote",
+      "source_ids": [
+        "mcp"
+      ],
+      "lesson_ids": [
+        "mcp.remote"
+      ],
+      "local_path": "07-mcp/remote.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "mcp.official-docs",
+      "source_ids": [
+        "cli",
+        "mcp"
+      ],
+      "lesson_ids": [
+        "mcp.official-docs"
+      ],
+      "local_path": "07-mcp/official-docs.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "automation.non-interactive",
+      "source_ids": [
+        "exec"
+      ],
+      "lesson_ids": [
+        "automation.non-interactive"
+      ],
+      "local_path": "08-automation/non-interactive.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "automation.events",
+      "source_ids": [
+        "exec"
+      ],
+      "lesson_ids": [
+        "automation.events"
+      ],
+      "local_path": "08-automation/events.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "automation.structured",
+      "source_ids": [
+        "cli",
+        "exec"
+      ],
+      "lesson_ids": [
+        "automation.structured"
+      ],
+      "local_path": "08-automation/structured.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "automation.retry",
+      "source_ids": [
+        "cli",
+        "exec"
+      ],
+      "lesson_ids": [
+        "automation.retry"
+      ],
+      "local_path": "08-automation/retry.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "automation.ci",
+      "source_ids": [
+        "exec",
+        "action"
+      ],
+      "lesson_ids": [
+        "automation.ci"
+      ],
+      "local_path": "08-automation/ci.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_REQUIRED"
+    },
+    {
+      "topic_id": "automation.app-server",
+      "source_ids": [
+        "cli",
+        "app-server"
+      ],
+      "lesson_ids": [
+        "automation.app-server"
+      ],
+      "local_path": "08-automation/app-server.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "extensions.plugins-hooks",
+      "source_ids": [
+        "hooks"
+      ],
+      "lesson_ids": [
+        "extensions.plugins-hooks"
+      ],
+      "local_path": "09-extensions/plugins-hooks.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "extensions.hook-trust",
+      "source_ids": [
+        "hooks"
+      ],
+      "lesson_ids": [
+        "extensions.hook-trust"
+      ],
+      "local_path": "09-extensions/hook-trust.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "extensions.subagents",
+      "source_ids": [
+        "cli",
+        "subagents"
+      ],
+      "lesson_ids": [
+        "extensions.subagents"
+      ],
+      "local_path": "09-extensions/subagents.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "extensions.agent-design",
+      "source_ids": [
+        "subagents"
+      ],
+      "lesson_ids": [
+        "extensions.agent-design"
+      ],
+      "local_path": "09-extensions/agent-design.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "extensions.plugins",
+      "source_ids": [
+        "cli",
+        "plugins"
+      ],
+      "lesson_ids": [
+        "extensions.plugins"
+      ],
+      "local_path": "09-extensions/plugins.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "extensions.remote",
+      "source_ids": [
+        "cli",
+        "app-server"
+      ],
+      "lesson_ids": [
+        "extensions.remote"
+      ],
+      "local_path": "09-extensions/remote.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "extensions.customization",
+      "source_ids": [
+        "cli",
+        "slash-source"
+      ],
+      "lesson_ids": [
+        "extensions.customization"
+      ],
+      "local_path": "09-extensions/customization.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "capstone.final-project",
+      "source_ids": [
+        "goal",
+        "skills",
+        "exec"
+      ],
+      "lesson_ids": [
+        "capstone.final-project"
+      ],
+      "local_path": "10-capstone/final-project.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_RUN"
+    },
+    {
+      "topic_id": "capstone.acceptance",
+      "source_ids": [
+        "release"
+      ],
+      "lesson_ids": [
+        "capstone.acceptance"
+      ],
+      "local_path": "10-capstone/acceptance.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_REQUIRED"
+    },
+    {
+      "topic_id": "capstone.maintenance",
+      "source_ids": [
+        "cli",
+        "release"
+      ],
+      "lesson_ids": [
+        "capstone.maintenance"
+      ],
+      "local_path": "10-capstone/maintenance.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_REQUIRED"
+    },
+    {
+      "topic_id": "capstone.troubleshooting",
+      "source_ids": [
+        "cli",
+        "release",
+        "config"
+      ],
+      "lesson_ids": [
+        "capstone.troubleshooting"
+      ],
+      "local_path": "10-capstone/troubleshooting.md",
+      "review_status": "PENDING",
+      "native_status": "NOT_REQUIRED"
     }
   ]
 }

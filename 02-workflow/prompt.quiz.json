@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "workflow.prompt",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Какой критерий проверяемый?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Названный вход и ожидаемый выход.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Сделать идеально.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Работать как хороший разработчик.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Конкретный случай проверяется независимо от модели.",
+      "id": "workflow.prompt.q1"
+    },
+    {
+      "question": "Зачем указывать запрещённые действия?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Чтобы заменить настройки песочницы.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Чтобы ускорить модель гарантированно.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Чтобы ограничить область задачи.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Инструкции дополняют, а не заменяют ограничения среды.",
+      "id": "workflow.prompt.q2"
+    },
+    {
+      "question": "Что делать с неоднозначным требованием?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Засчитать любой результат.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Согласовать его до изменения.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Молча выбрать трактовку.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Иначе успешность задачи нельзя однозначно проверить.",
+      "id": "workflow.prompt.q3"
+    }
+  ]
+}

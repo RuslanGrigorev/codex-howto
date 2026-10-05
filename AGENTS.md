@@ -1,18 +1,21 @@
-<!-- OPENSPEC:START -->
-# OpenSpec Instructions
+# Работа над репозиторием
 
-These instructions are for AI assistants working in this project.
+Этот проект — русскоязычный автономный практикум **Codex CLI**. Объяснения пользователю, уроки и сообщения наших инструментов пишите по-русски; команды, ключи конфигурации и имена API сохраняйте в оригинале.
 
-Always open `@/openspec/AGENTS.md` when the request:
-- Mentions planning or proposals (words like proposal, spec, change, plan)
-- Introduces new capabilities, breaking changes, architecture shifts, or big performance/security work
-- Sounds ambiguous and you need the authoritative spec before coding
+## Область работы
 
-Use `@/openspec/AGENTS.md` to learn:
-- How to create and apply change proposals
-- Spec format and conventions
-- Project structure and guidelines
+Не включайте другие AI-клиенты в активный курс. Упоминания в NOTICE и исторической атрибуции допустимы. Не удаляйте LICENSE. Не переименовывайте команды по аналогии с другим продуктом. `/goal` — встроенная возможность Codex; `$learn` — навык этого проекта.
 
-Keep this managed block so 'openspec update' can refresh the instructions.
+## Проверки
 
-<!-- OPENSPEC:END -->
+- `python scripts/check_project.py catalog` проверяет структуру курса.
+- `python -m pytest -q scripts/tests` проверяет код и регрессии.
+- `python scripts/verify.py --profile offline` собирает и проверяет автономный маршрут.
+
+Не меняйте независимый тест только ради PASS. Новая зависимость устанавливается отдельно до автономных проверок. Не объявляйте совместимость с реальным CLI без версии, модели и журнала запуска. `BLOCKED`, `SKIP` и `NOT_RUN` не являются успехом.
+
+## Безопасность
+
+Не пишите в глобальные конфигурации пользователя и не активируйте MCP/hooks автоматически. Не переносите auth.json, ключи, .env или личные логи в исходники. Учебную работу создавайте в `.learning/workspaces` штатной командой `--prepare` без перезаписи существующего каталога.
+
+Репозиторий обслуживается как проект; обучающий диалог включается только при явном вызове `$learn` или просьбе учиться. Подробности методики находятся в `.agents/skills/learn/SKILL.md`.

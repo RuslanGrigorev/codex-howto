@@ -1,24 +1,12 @@
-"""solution/guard.py - Эталонная реализация проверки путей песочницы."""
-
-from pathlib import Path
+"""Учебная проверка относительных путей. Не замена системной песочнице."""
+from pathlib import Path, PureWindowsPath
 from typing import Optional
 
-
 def validate_target_path(path_str: str, workspace_root: Path) -> Optional[Path]:
-    """Проверяет, что путь path_str находится строго внутри каталога workspace_root.
-    Возвращает разрешенный Path или None, если путь выходит за пределы workspace.
-    """
-    ws = Path(workspace_root).resolve()
-    
-    # Запрещаем обращение к домашней директории пользователя через тильду
-    if path_str.startswith("~"):
+    if not isinstance(path_str,str) or not path_str or '\x00' in path_str:
         return None
-
-    target = (ws / path_str).resolve()
-    
-    try:
-        # Проверяем, что target является потомком ws
-        target.relative_to(ws)
-        return target
-    except ValueError:
+    if path_str.startswith(('~','/','\\')) or PureWindowsPath(path_str).drive or '\\' in path_str:
         return None
+    root=Path(workspace_root).resolve()
+    target=(root/path_str).resolve()
+    return target if target!=root and target.is_relative_to(root) else None

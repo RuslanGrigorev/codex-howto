@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "mcp.official-docs",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Обязателен ли Docs MCP для курса?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Нет, это дополнительный источник.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Да, без него нет текста уроков.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Да, для открытия решений.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Основной материал поставляется локально.",
+      "id": "mcp.official-docs.q1"
+    },
+    {
+      "question": "Чем различаются openai и codex?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Это всегда синонимы одной команды.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Различается только язык.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Это разные инструменты с разными интерфейсами.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Не переносите команды между продуктами механически.",
+      "id": "mcp.official-docs.q2"
+    },
+    {
+      "question": "Когда можно подтвердить совместимость?",
+      "options": [
+        {
+          "id": "c",
+          "text": "После ответа поиска.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "После соответствующего реального прогона.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "После найденной ссылки.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Документальная сверка и проверка исполнения различаются.",
+      "id": "mcp.official-docs.q3"
+    }
+  ]
+}

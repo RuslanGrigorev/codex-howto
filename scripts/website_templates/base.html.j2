@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Практический курс по Codex CLI на русском: уроки, локальные материалы и проверка знаний.">
+<title>{% block title %}{{ site_title }}{% endblock %}</title>
+<link rel="stylesheet" href="{{ assets_prefix|default('assets/') }}site.css">
+<script id="course-data" type="application/json">{{ course|tojson }}</script>
+<script src="{{ assets_prefix|default('assets/') }}progress.js" defer></script>
+<script src="{{ assets_prefix|default('assets/') }}search-index.js" defer></script>
+<script src="{{ assets_prefix|default('assets/') }}site.js" defer></script>
+{% block head %}{% endblock %}
+</head>
+<body data-base="{{ base_path|default('') }}">
+<a class="skip" href="#content">Перейти к содержанию</a>
+<header><a class="brand" href="{{ base_path|default('') }}index.html">Codex CLI <span>Курс на русском</span></a>
+<nav aria-label="Основная навигация">{% if course.get("modules") %}<a href="{{ base_path|default('') }}index.html#roadmap">Модули</a>
+<a href="{{ base_path|default('') }}reference/index.html">Справочник</a>
+<a href="{{ base_path|default('') }}materials/index.html">Материалы</a>
+{% endif %}<button id="theme-toggle" type="button" aria-label="Переключить светлую и тёмную тему">Сменить тему</button></nav></header>
+<div class="toolbar"><label class="search-label" for="course-search">Поиск по курсу</label><input id="course-search" type="search" placeholder="/goal, цель, MCP, разрешения…" autocomplete="off" aria-controls="search-results">
+<details class="progress-menu"><summary>Мой прогресс</summary><div>
+<button id="export-progress" type="button">Экспортировать JSON</button>
+<label class="button import-label" for="import-progress">Импортировать JSON<input id="import-progress" type="file" accept=".json,application/json"></label>
+<button id="reset-progress" type="button">Сбросить прогресс</button></div></details></div>
+<div id="status" class="notice" role="status" aria-live="polite"></div><ul id="search-results" aria-label="Результаты поиска" hidden></ul>
+<noscript><p class="notice">JavaScript выключен: уроки, оглавление и решения доступны. Поиск, проверка знаний и учёт прогресса требуют JavaScript.</p></noscript>
+{% block body %}{% endblock %}
+<footer><p><strong>Курс по Codex CLI</strong> — независимый учебный проект, не официальный продукт OpenAI.</p>
+{% if course.get("modules") %}<nav aria-label="О проекте"><a href="{{ base_path|default('') }}guide.html">О курсе</a><a href="{{ base_path|default('') }}materials/index.html">Материалы</a><a href="{{ base_path|default('') }}materials/LICENSE.html">Лицензия MIT</a><a href="{{ base_path|default('') }}NOTICE.html">Происхождение материалов</a><a href="{{ repo_url|default('https://github.com/RuslanGrigorev/codex-howto') }}">GitHub</a></nav>
+<p>Материалы читаются без сети. Для работы Codex нужен доступ к выбранной модели. Совместимость и полнота описаны в <a href="{{ base_path|default('') }}reference/coverage.html">карте покрытия</a>.</p>{% endif %}</footer>
+</body></html>

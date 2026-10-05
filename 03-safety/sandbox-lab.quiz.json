@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "safety.sandbox-lab",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "На каком файле проверять ограничения?",
+      "options": [
+        {
+          "id": "a",
+          "text": "На безвредном контрольном файле в учебной папке.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "На настоящем приватном ключе.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "На системной конфигурации.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Для проверки не нужны реальные чувствительные данные.",
+      "id": "safety.sandbox-lab.q1"
+    },
+    {
+      "question": "Чем подтвердить отсутствие изменения?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Спросить только модель.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Посмотреть название режима в статье.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Проверить файл независимо после сессии.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Наблюдение должно относиться к фактическому запуску.",
+      "id": "safety.sandbox-lab.q2"
+    },
+    {
+      "question": "Что делать при неподдерживаемой песочнице?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Включить полный доступ и сообщить успех.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Записать BLOCKED и причину.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Считать Python-имитацию эквивалентом.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Недоступность среды не заменяется имитацией.",
+      "id": "safety.sandbox-lab.q3"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "skills.migration",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Что нужно после автоматического импорта?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Проверить получившееся поведение в Codex.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Ничего: совместимость гарантирована.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Удалить все лицензии.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Перенос файлов не является функциональной проверкой.",
+      "id": "skills.migration.q1"
+    },
+    {
+      "question": "На чём строить новые повторяемые сценарии?",
+      "options": [
+        {
+          "id": "b",
+          "text": "На выдуманных встроенных командах.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "На копии всего профиля с ключами.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "На навыках с явными входами и проверкой.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Минимальный навык легче проверить и сопровождать.",
+      "id": "skills.migration.q2"
+    },
+    {
+      "question": "Нужно ли импортировать внешний профиль для курса?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Да, чтобы открыть HTML.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Нет, это отдельная необязательная функция.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Да, для каждого урока.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Основной маршрут не зависит от другого клиента.",
+      "id": "skills.migration.q3"
+    }
+  ]
+}

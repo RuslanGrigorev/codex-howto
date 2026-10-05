@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "workflow.goal-control",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Отменяет ли /goal clear изменение файла?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Нет, восстановление файлов проверяется отдельно.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Да, всегда.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Да, если цель была длинной.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Состояние цели не является снимком файлов.",
+      "id": "workflow.goal-control.q1"
+    },
+    {
+      "question": "Что сохранить при недоступной команде?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Придуманный успешный вывод.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Только скриншот главной курса.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Версию и точную ошибку, без фиктивного PASS.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Нужно доказательство реального поведения клиента.",
+      "id": "workflow.goal-control.q2"
+    },
+    {
+      "question": "Как действовать при блокировке разрешений?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Скрыть ошибку в отчёте.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Разобрать причину и необходимость действия.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Включить полный доступ автоматически.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Цель не даёт права обходить ограничения.",
+      "id": "workflow.goal-control.q3"
+    }
+  ]
+}

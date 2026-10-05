@@ -1,6 +1,4 @@
-# Core dependencies for build_epub.py and build_website.py
-ebooklib==0.18
-markdown==3.7
-beautifulsoup4==4.12.3
-pillow==11.1.0
-jinja2==3.1.4
+# Только сборка сайта. Упражнения используют стандартную библиотеку Python.
+markdown-it-py==4.2.0
+beautifulsoup4==4.14.3
+jinja2==3.1.6

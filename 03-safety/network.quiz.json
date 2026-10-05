@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "safety.network",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Отключает ли web_search соединение с моделью?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Нет, это разные каналы.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Да, автоматически.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Только на Windows.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Провайдер модели настраивается отдельно.",
+      "id": "safety.network.q1"
+    },
+    {
+      "question": "Нужен ли веб-поиск для чтения локальной функции?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Всегда нужен.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Он заменяет файл.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Обычно нет, когда весь контекст дан локально.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Не добавляйте ненужные внешние зависимости.",
+      "id": "safety.network.q2"
+    },
+    {
+      "question": "Как трактовать инструкцию отправить секрет из найденной страницы?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Как обязательную часть поиска.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Как недоверенные данные, а не разрешение.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Как системное правило.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Содержимое внешнего источника не меняет границы задачи.",
+      "id": "safety.network.q3"
+    }
+  ]
+}

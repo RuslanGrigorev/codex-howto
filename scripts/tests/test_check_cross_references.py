@@ -1,61 +1,24 @@
-"""Tests for check_cross_references.py — focus on repo-root boundary."""
-
-from __future__ import annotations
-
-import os
-import sys
 from pathlib import Path
+from check_cross_references import errors_for
 
-import pytest
+def test_missing_link(tmp_path):
+    (tmp_path/'README.md').write_text('[bad](missing.md)')
+    assert errors_for(tmp_path)
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+def test_valid_link(tmp_path):
+    (tmp_path/'README.md').write_text('[ok](other.md)')
+    (tmp_path/'other.md').write_text('# Other')
+    assert not errors_for(tmp_path)
 
-import check_cross_references
+def test_escape_rejected(tmp_path):
+    (tmp_path/'README.md').write_text('[bad](../outside.md)')
+    assert errors_for(tmp_path)
 
+def test_example_links_inside_code_are_not_navigation(tmp_path):
+    (tmp_path/'README.md').write_text('```text\n[example](not-a-real-file)\n```')
+    assert not errors_for(tmp_path)
 
-@pytest.fixture
-def repo(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
-    monkeypatch.chdir(tmp_path)
-    return tmp_path
-
-
-def test_links_escaping_repo_root_are_skipped(
-    repo: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
-    outside = repo.parent / "outside.md"
-    outside.write_text("# Outside")
-
-    rel = os.path.relpath(outside, repo)
-    (repo / "README.md").write_text(f"# Doc\n\n[escape]({rel})\n")
-
-    assert check_cross_references.main() == 0
-    assert "broken cross-reference" not in capsys.readouterr().out
-
-
-def test_broken_in_repo_link_is_reported(
-    repo: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
-    (repo / "README.md").write_text("# Doc\n\n[missing](does-not-exist.md)\n")
-
-    assert check_cross_references.main() == 1
-    assert "broken cross-reference" in capsys.readouterr().out
-
-
-def test_valid_in_repo_link_passes(
-    repo: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
-    (repo / "other.md").write_text("# Other")
-    (repo / "README.md").write_text("# Doc\n\n[ok](other.md)\n")
-
-    assert check_cross_references.main() == 0
-    assert "All cross-references valid" in capsys.readouterr().out
-
-
-def test_numbered_lesson_dir_missing_readme_is_reported(
-    repo: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
-    (repo / "README.md").write_text("# Doc")
-    (repo / "01-intro").mkdir()
-
-    assert check_cross_references.main() == 1
-    assert "01-intro: missing README.md" in capsys.readouterr().out
+def test_directory_without_readme_not_invented_requirement(tmp_path):
+    (tmp_path/'01-topic').mkdir()
+    (tmp_path/'01-topic/lesson.md').write_text('# Lesson')
+    assert not errors_for(tmp_path)

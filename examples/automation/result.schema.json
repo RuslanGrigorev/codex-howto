@@ -1,0 +1,1 @@
+{"type":"object","properties":{"summary":{"type":"string"},"changed":{"type":"boolean"}},"required":["summary","changed"],"additionalProperties":false}

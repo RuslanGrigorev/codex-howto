@@ -1,0 +1,4 @@
+# Образец; не копируется автоматически в пользовательский профиль.
+approval_policy = "on-request"
+sandbox_mode = "read-only"
+web_search = "disabled"

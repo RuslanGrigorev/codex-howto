@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "sessions.archive",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Заменяет ли архив сессии Git?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Нет, история разговора и файлы различаются.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Да, полностью.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Да, если сессия длинная.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Для файлов нужен отдельный контроль версий.",
+      "id": "sessions.archive.q1"
+    },
+    {
+      "question": "Что проверить перед удалением?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Только название модуля.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Число сообщений в курсе.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Точный идентификатор и ценность истории.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Удаление может быть необратимым.",
+      "id": "sessions.archive.q2"
+    },
+    {
+      "question": "Нужно ли удаление для прохождения курса?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Да, перед каждым /goal.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Нет, оно не должно выполняться автоматически.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Да, после каждого урока.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Обучение не требует уничтожать личную историю.",
+      "id": "sessions.archive.q3"
+    }
+  ]
+}

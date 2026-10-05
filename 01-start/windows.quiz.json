@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "start.windows",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Почему один и тот же путь может не работать в WSL?",
+      "options": [
+        {
+          "id": "a",
+          "text": "У среды другое представление путей.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Codex не умеет читать файлы.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Нужно отключить песочницу.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Сначала определите среду и реальное расположение файла.",
+      "id": "start.windows.q1"
+    },
+    {
+      "question": "Что фиксировать в отчёте Windows-практики?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Пароль учётной записи.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Содержимое auth.json.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "ОС, оболочку, версии и обезличенный путь.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Достаточно сведений о среде без секретов.",
+      "id": "start.windows.q2"
+    },
+    {
+      "question": "Что делать при отказе доступа?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Удалять настройки.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Изучить путь, политику и точную ошибку.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Всегда включать полный доступ.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Диагностика предшествует изменению разрешений.",
+      "id": "start.windows.q3"
+    }
+  ]
+}

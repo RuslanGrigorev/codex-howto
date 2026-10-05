@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "instructions.scope",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Зачем нужен вложенный AGENTS.md?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Для правил определённой части проекта.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Для хранения API-ключа.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Для замены всех настроек клиента.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Инструкции задают рабочий контекст, а не хранилище секретов.",
+      "id": "instructions.scope.q1"
+    },
+    {
+      "question": "Как проверить изменённые правила?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Только по наличию файла.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "По старому скриншоту.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "В новой сессии с зафиксированным рабочим каталогом.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Важно фактическое обнаружение инструкций.",
+      "id": "instructions.scope.q2"
+    },
+    {
+      "question": "Как избежать конфликтов правил?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Добавлять противоречащие запреты.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Делать локальные уточнения короткими и явными.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Копировать весь текст в каждую папку.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Меньше дублирования — легче понять применимые правила.",
+      "id": "instructions.scope.q3"
+    }
+  ]
+}

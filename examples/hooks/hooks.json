@@ -1,0 +1,9 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {"matcher": "^(Bash|apply_patch)$", "hooks": [
+        {"type": "command", "command": "python hook_runner.py", "timeout": 5}
+      ]}
+    ]
+  }
+}

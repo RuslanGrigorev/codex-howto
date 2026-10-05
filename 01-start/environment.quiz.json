@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "start.environment",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Где выполнять python scripts/verify.py?",
+      "options": [
+        {
+          "id": "a",
+          "text": "В терминале из корня исходников курса.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "В адресной строке браузера.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Как slash-команду внутри Codex.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Скрипт проверки — обычная программа Python.",
+      "id": "start.environment.q1"
+    },
+    {
+      "question": "Что означает отсутствие Codex при наличии Python?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Весь учебник перестаёт открываться.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Можно засчитать записанный пример как реальный запуск.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Живая практика Codex недоступна, но локальные упражнения можно выполнять.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Не смешивайте доступность учебных материалов и модели.",
+      "id": "start.environment.q2"
+    },
+    {
+      "question": "Что проверить первым при ошибке course.json not found?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Удалить все настройки Python.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Текущий каталог и наличие файла.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Увеличить права Codex.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Большинство таких ошибок относится к пути запуска, а не правам агента.",
+      "id": "start.environment.q3"
+    }
+  ]
+}

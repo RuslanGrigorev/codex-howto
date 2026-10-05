@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "instructions.context",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Что сохранять перед сжатием?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Решение, ограничения и следующий проверяемый шаг.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Секреты из окружения.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Только настроение беседы.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Сводка должна помогать продолжить работу.",
+      "id": "instructions.context.q1"
+    },
+    {
+      "question": "Удаляет ли /compact все данные сессии?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Да, это гарантированное удаление.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Да, вместе с файлами проекта.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Такой вывод делать нельзя.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Сжатие контекста и удаление данных — разные операции.",
+      "id": "instructions.context.q2"
+    },
+    {
+      "question": "Где смотреть фактическое состояние сеанса?",
+      "options": [
+        {
+          "id": "c",
+          "text": "По длине Markdown-урока.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "В интерфейсе клиента, например /status.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "В самодельной формуле символы/4 как точном измерителе.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Приблизительная оценка не заменяет показатели клиента.",
+      "id": "instructions.context.q3"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "capstone.maintenance",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Что делает обновлятор?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Выявляет изменения и связанные материалы.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Автоматически подтверждает новую версию.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Незаметно устанавливает CLI.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Сбор наблюдений отделён от принятия изменений.",
+      "id": "capstone.maintenance.q1"
+    },
+    {
+      "question": "Что означает INCOMPLETE?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Всё совместимо.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Продукт сломан.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Не хватает данных для вывода.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Это статус знания, а не положительная или отрицательная совместимость.",
+      "id": "capstone.maintenance.q2"
+    },
+    {
+      "question": "Когда менять tested_cli?",
+      "options": [
+        {
+          "id": "c",
+          "text": "После открытия страницы документации.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "После реального подтверждения выбранной версии.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "После объявления релиза.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Метаданные должны следовать доказательствам.",
+      "id": "capstone.maintenance.q3"
+    }
+  ]
+}

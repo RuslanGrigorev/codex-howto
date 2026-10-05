@@ -1,202 +1,114 @@
 #!/usr/bin/env python3
-"""scripts/check_updates.py - Автономный инструмент проверки обновлений и совместимости.
-
-Сравнивает локальный baseline (из sources.json) с кандидатом релиза без автоматического
-внесения изменений в курс, системный конфиг или окружение пользователя.
-"""
-
+"""Сбор/сравнение официальных источников. Никогда не устанавливает CLI и не правит курс."""
 from __future__ import annotations
-
-import argparse
-import json
-import sys
+import argparse,hashlib,json,re,sys,urllib.request,urllib.parse
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from course_core import load_json
+ALLOWED={'api.github.com','github.com','raw.githubusercontent.com','developers.openai.com','learn.chatgpt.com'}
+LIMIT=8*1024*1024
 
+def approved(url):
+    p=urllib.parse.urlsplit(url)
+    if p.scheme!='https' or p.hostname not in ALLOWED or p.username or p.password or p.port not in (None,443):raise ValueError('Источник не входит в HTTPS allowlist')
+    return url
+class Redirects(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self,req,fp,code,msg,headers,newurl):
+        approved(newurl)
+        return super().redirect_request(req,fp,code,msg,headers,newurl)
 
-def load_json(path: Path) -> Dict[str, Any]:
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+def fetch_bytes(url):
+    approved(url)
+    request=urllib.request.Request(url,headers={'User-Agent':'codex-course-maintenance/0.2','Accept':'application/json,text/plain,text/html'})
+    with urllib.request.build_opener(Redirects()).open(request,timeout=20) as r:
+        approved(r.geturl());data=r.read(LIMIT+1)
+    if len(data)>LIMIT:raise ValueError('Источник превышает лимит 8 МиБ')
+    return data
 
+def parse_slash_commands(source):
+    match=re.search(r'pub enum SlashCommand\s*\{(.*?)\n\}',source,re.S)
+    if not match:raise ValueError('Не найден enum SlashCommand')
+    names=[];attrs=''
+    for line in match.group(1).splitlines():
+        line=line.strip()
+        if not line or line.startswith('//'):continue
+        if line.startswith('#['):attrs+=' '+line;continue
+        m=re.fullmatch(r'([A-Z][A-Za-z0-9]+),',line)
+        if not m:raise ValueError('Изменился синтаксис enum; нужен ручной разбор')
+        override=re.search(r'to_string\s*=\s*"([^"]+)"',attrs) or re.search(r'serialize\s*=\s*"([^"]+)"',attrs)
+        name=override.group(1) if override else re.sub(r'(?<!^)(?=[A-Z])','-',m.group(1)).lower()
+        names.append('/'+name);attrs=''
+    if len(names)<10:raise ValueError('Неполный список команд')
+    return sorted(set(names))
 
-def compare_candidate(baseline_data: Dict[str, Any], candidate_data: Dict[str, Any]) -> Dict[str, Any]:
-    """Сравнивает кандидата с baseline и формирует аналитический отчет."""
-    baseline_cli = baseline_data.get("target_cli", "0.160.0")
-    candidate_cli = candidate_data.get("candidate_cli")
+def fetch_candidate(baseline):
+    release=json.loads(fetch_bytes('https://api.github.com/repos/openai/codex/releases/latest'))
+    tag=release['tag_name']
+    if not re.fullmatch(r'rust-v\d+\.\d+\.\d+',tag):raise ValueError('Неизвестный формат стабильного релиза')
+    base='https://raw.githubusercontent.com/openai/codex/'+tag+'/'
+    source=fetch_bytes(base+'codex-rs/tui/src/slash_command.rs')
+    schema=fetch_bytes(base+'codex-rs/core/config.schema.json')
+    parsed=json.loads(schema)
+    if not isinstance(parsed.get('properties'),dict):raise ValueError('Неизвестная структура официальной схемы')
+    snapshots={}
+    for item in baseline['sources']:
+        if item.get('update_watch',True):snapshots[item['id']]=hashlib.sha256(fetch_bytes(item['url'])).hexdigest()
+    return {'schema_version':1,'candidate_cli':tag.removeprefix('rust-v'),
+            'slash_commands':parse_slash_commands(source.decode()),
+            'config_keys':sorted(parsed['properties']),
+            'config_schema_sha256':hashlib.sha256(schema).hexdigest(),
+            'source_hashes':snapshots,'release_url':release['html_url']}
 
-    affected_lessons: List[str] = []
-    issues: List[Dict[str, Any]] = []
-    status = "COMPATIBLE"
-    is_editorial_only = False
+def compare_candidate(baseline,candidate):
+    if not isinstance(candidate,dict) or not re.fullmatch(r'\d+\.\d+\.\d+',str(candidate.get('candidate_cli',''))):
+        return {'status':'INCOMPLETE','issues':['Нет точной версии кандидата'],'affected_lessons':[]}
+    required=['slash_commands','config_keys','source_hashes','config_schema_sha256']
+    if any(not candidate.get(k) for k in required):
+        return {'status':'INCOMPLETE','issues':['Недостаточно наблюдаемых данных: нужны команды, ключи схемы и хеши источников'],'affected_lessons':[]}
+    snapshot=baseline.get('baseline_snapshot',{})
+    issues=[];affected=set()
+    old=set(snapshot.get('slash_commands',[]));new=set(candidate['slash_commands'])
+    if old-new:issues.append({'removed_commands':sorted(old-new)})
+    if new-old:issues.append({'added_commands':sorted(new-old)})
+    for source in baseline.get('sources',[]):
+        sid=source['id']
+        if not source.get('update_watch',True):continue
+        old_hash=snapshot.get('source_hashes',{}).get(sid)
+        new_hash=candidate['source_hashes'].get(sid)
+        if not old_hash or not new_hash or old_hash!=new_hash:
+            affected.update(source.get('lesson_ids',[]));issues.append({'source_changed_or_unbaselined':sid})
+    if snapshot.get('config_keys')!=candidate['config_keys'] or snapshot.get('config_schema_sha256')!=candidate['config_schema_sha256']:issues.append({'config_review_required':True})
+    complete=all(snapshot.get(k) for k in required)
+    same=complete and candidate['candidate_cli']==baseline['target_cli'] and not issues
+    status='UNCHANGED' if same else 'REVIEW_REQUIRED' if complete else 'INCOMPLETE'
+    return {'status':status,'baseline_cli':baseline['target_cli'],'candidate_cli':candidate['candidate_cli'],
+            'affected_lessons':sorted(affected),'issues':issues,
+            'note':'UNCHANGED означает равенство снимков, не проверенную совместимость новой модели/версии.'}
 
-    # 1. Проверка наличия версии кандидата
-    if not candidate_cli:
-        return {
-            "status": "INCOMPLETE",
-            "message": "В данных кандидата не указана версия candidate_cli",
-            "affected_lessons": [],
-            "issues": [{"type": "missing_version", "severity": "error"}],
-            "editorial_only": False,
-        }
-
-    # 2. Проверка удаленных или измененных флагов/команд
-    removed_flags = candidate_data.get("removed_flags", [])
-    if removed_flags:
-        status = "INCOMPATIBLE"
-        for rf in removed_flags:
-            flag_name = rf.get("name") if isinstance(rf, dict) else str(rf)
-            lessons = rf.get("lessons", ["safety", "workflow"]) if isinstance(rf, dict) else ["safety", "workflow"]
-            affected_lessons.extend(lessons)
-            issues.append({
-                "type": "removed_flag",
-                "flag": flag_name,
-                "severity": "critical",
-                "lessons": lessons,
-            })
-
-    # 3. Проверка неизвестных/недокументированных возможностей
-    unknown_commands = candidate_data.get("unknown_commands", [])
-    if unknown_commands:
-        if status != "INCOMPATIBLE":
-            status = "INCOMPLETE"
-        for uc in unknown_commands:
-            issues.append({
-                "type": "unknown_command",
-                "command": uc,
-                "severity": "warning",
-            })
-
-    # 4. Проверка редакционных правок документации
-    doc_changes = candidate_data.get("doc_changes", [])
-    if doc_changes and not removed_flags and not unknown_commands:
-        is_editorial_only = True
-        for dc in doc_changes:
-            lessons = dc.get("lessons", ["start"])
-            affected_lessons.extend(lessons)
-            issues.append({
-                "type": "editorial_change",
-                "source_id": dc.get("source_id"),
-                "severity": "info",
-                "lessons": lessons,
-            })
-
-    # Удаление дубликатов в затронутых уроках
-    affected_lessons = sorted(list(set(affected_lessons)))
-
-    return {
-        "status": status,
-        "baseline_cli": baseline_cli,
-        "candidate_cli": candidate_cli,
-        "affected_lessons": affected_lessons,
-        "issues": issues,
-        "editorial_only": is_editorial_only,
-    }
-
-
-def migrate_progress_record(
-    imported_progress: Dict[str, Any],
-    current_course_id: str,
-    current_lessons_revision: Dict[str, int],
-) -> Dict[str, Any]:
-    """Миграция прогресса согласно требованию PRG-004."""
-    # 1. Проверка чужого course_id (например Claude)
-    imported_course_id = imported_progress.get("course_id")
-    if imported_course_id != current_course_id:
-        return {
-            "success": False,
-            "error": f"Несовместимый курс: импортирован '{imported_course_id}', ожидается '{current_course_id}'",
-            "migrated_data": None,
-        }
-
-    lessons = imported_progress.get("lessons", {})
-    migrated_lessons: Dict[str, Any] = {}
-    unlinked_records: Dict[str, Any] = {}
-
-    for lid, ldata in lessons.items():
-        if lid not in current_lessons_revision:
-            # Урок удален или неизвестен в новой версии
-            unlinked_records[lid] = ldata
-            continue
-
-        curr_rev = current_lessons_revision[lid]
-        imported_rev = ldata.get("revision", 1)
-
-        new_entry = dict(ldata)
-        if imported_rev < curr_rev:
-            # Редакция изменилась - требуется повторная проверка
-            new_entry["needs_recheck"] = True
-            new_entry["revision"] = curr_rev
-        else:
-            new_entry["needs_recheck"] = False
-
-        migrated_lessons[lid] = new_entry
-
-    result = {
-        "schema_version": imported_progress.get("schema_version", 1),
-        "course_id": current_course_id,
-        "lessons": migrated_lessons,
-        "unlinked_records": unlinked_records,
-    }
-
-    return {
-        "success": True,
-        "error": None,
-        "migrated_data": result,
-    }
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description="scripts/check_updates.py - Анализ обновлений Codex CLI")
-    parser.add_argument("--baseline", type=Path, default=Path("sources.json"), help="Путь к baseline (sources.json)")
-    parser.add_argument("--candidate", type=Path, default=None, help="Путь к фикстуре кандидата")
-    parser.add_argument("--fetch", action="store_true", help="Явно запросить сетевой сбор (по умолчанию выключен)")
-    parser.add_argument("--output", type=Path, default=None, help="Путь для сохранения отчета JSON")
-
-    args = parser.parse_args()
-
-    if args.fetch:
-        # Сеть отключена по умолчанию и в соответствии с автономностью курса
-        print("ОШИБКА: Сетевой сбор недоступен в автономном режиме. Используйте локальные фикстуры (--candidate).", file=sys.stderr)
-        return 1
-
-    if not args.baseline.exists():
-        print(f"ОШИБКА: Файл baseline {args.baseline} не найден.", file=sys.stderr)
-        return 1
-
-    baseline_data = load_json(args.baseline)
-
-    if not args.candidate:
-        print("Локальный baseline загружен. Кандидат не указан (--candidate). Завершение без изменений.")
-        return 0
-
-    if not args.candidate.exists():
-        print(f"ОШИБКА: Кандидат {args.candidate} не существует.", file=sys.stderr)
-        return 1
-
+def migrate_progress_record(data,course_id,revisions):
+    from progress import migrate,COURSE_ID
     try:
-        candidate_data = load_json(args.candidate)
-    except Exception as e:
-        print(f"ОШИБКА: Поврежденный файл кандидата: {e}", file=sys.stderr)
-        return 2
+        if course_id!=COURSE_ID:raise ValueError('Чужой курс')
+        return {'success':True,'error':None,'migrated_data':migrate(data,revisions)}
+    except (ValueError,TypeError,KeyError) as exc:return {'success':False,'error':str(exc),'migrated_data':None}
 
-    report = compare_candidate(baseline_data, candidate_data)
-
-    if args.output:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        with open(args.output, "w", encoding="utf-8") as f:
-            json.dump(report, f, indent=2, ensure_ascii=False)
-        print(f"Отчет сохранен в: {args.output}")
-
-    print(f"Статус совместимости: {report['status']}")
-    if report["affected_lessons"]:
-        print(f"Затронутые уроки: {', '.join(report['affected_lessons'])}")
-
-    if report["status"] == "INCOMPATIBLE":
-        return 1
-    elif report["status"] == "INCOMPLETE":
-        return 2
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+def main():
+    ap=argparse.ArgumentParser(description='Обновления источников: локально по умолчанию, сеть только с --fetch')
+    ap.add_argument('--baseline',type=Path,default=Path(__file__).resolve().parent.parent/'sources.json')
+    ap.add_argument('--candidate',type=Path);ap.add_argument('--fetch',action='store_true');ap.add_argument('--output',type=Path)
+    args=ap.parse_args()
+    try:
+        baseline=load_json(args.baseline)
+        if args.fetch:
+            if not args.output:raise ValueError('Для --fetch задайте --output; курс не изменяется')
+            if args.output.resolve()==args.baseline.resolve():raise ValueError('Нельзя перезаписывать baseline')
+            data=fetch_candidate(baseline)
+        elif args.candidate:data=compare_candidate(baseline,load_json(args.candidate))
+        else:data={'status':'INCOMPLETE','issues':['Кандидат не указан. Совместимость не оценивалась.']}
+        if args.output:
+            if args.output.resolve()==args.baseline.resolve():raise ValueError('Нельзя перезаписывать baseline')
+            args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8')
+        print(json.dumps(data,ensure_ascii=False,indent=2))
+        return 0 if args.fetch or data.get('status')=='UNCHANGED' else 2
+    except (OSError,ValueError,KeyError,TypeError) as exc:
+        print(json.dumps({'status':'INCOMPLETE','error':str(exc)},ensure_ascii=False),file=sys.stderr);return 2
+if __name__=='__main__':sys.exit(main())

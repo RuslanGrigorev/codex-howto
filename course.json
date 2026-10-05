@@ -1,180 +1,918 @@
 {
   "schema_version": 1,
   "course_id": "codex-cli-course-ru",
-  "title": "Автономный курс Codex CLI",
-  "description": "Практическое руководство и локальный интерактивный справочник по Codex CLI",
-  "version": "0.1.0",
+  "title": "Курс по Codex CLI на русском",
+  "description": "Многоурочный практикум: понятные объяснения, локальные материалы, самостоятельная практика и проверка результатов.",
+  "version": "0.3.0",
   "default_locale": "ru",
-  "supported_locales": ["ru"],
+  "supported_locales": [
+    "ru"
+  ],
   "modules": [
     {
       "id": "start",
       "title": "Подготовка и первый запуск",
-      "summary": "Различить режимы курса, проверить подготовленную среду и прочитать локальную справку.",
+      "summary": "Подготовить среду, войти в Codex и выбрать автономный или интерактивный способ обучения.",
       "order": 1,
       "lessons": [
         {
           "id": "start.overview",
-          "title": "Введение в Codex CLI",
-          "revision": 1,
+          "title": "Начало: что изучаем и как проверяем результат",
+          "revision": 3,
           "dependencies": [],
           "path": "01-start/overview.md",
-          "quiz_path": "01-start/quiz.json"
+          "quiz_path": "01-start/quiz.json",
+          "live_required": false,
+          "outcome": "Выбрать маршрут обучения и отличать чтение, проверку знаний, упражнение и реальный запуск Codex.",
+          "practice_kind": "offline"
+        },
+        {
+          "id": "start.environment",
+          "title": "Подготовка среды: терминал, Python и Git",
+          "revision": 1,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "01-start/environment.md",
+          "quiz_path": "01-start/environment.quiz.json",
+          "live_required": false,
+          "outcome": "Проверять необходимые программы и отличать оболочку, Codex и браузерный учебник.",
+          "practice_kind": "offline"
+        },
+        {
+          "id": "start.install",
+          "title": "Установка, обновление и платформы",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "01-start/install.md",
+          "quiz_path": "01-start/install.quiz.json",
+          "live_required": false,
+          "outcome": "Подготовить подходящую установку Codex и проверить её версию до начала практики.",
+          "practice_kind": "offline"
+        },
+        {
+          "id": "start.auth",
+          "title": "Авторизация и защита учётных данных",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "01-start/auth.md",
+          "quiz_path": "01-start/auth.quiz.json",
+          "live_required": true,
+          "outcome": "Выбрать способ входа и не включить учётные данные в учебные файлы или отчёт.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "start.interface",
+          "title": "Терминальный интерфейс, справка и ввод",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "01-start/interface.md",
+          "quiz_path": "01-start/interface.quiz.json",
+          "live_required": true,
+          "outcome": "Ориентироваться в терминальном интерфейсе и отличать команды оболочки от команд Codex.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "start.windows",
+          "title": "Windows, WSL и пути к учебным файлам",
+          "revision": 1,
+          "dependencies": [
+            "start.environment"
+          ],
+          "path": "01-start/windows.md",
+          "quiz_path": "01-start/windows.quiz.json",
+          "live_required": true,
+          "outcome": "Выбирать одну среду запуска и диагностировать различия путей, оболочек и разрешений.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "start.offline",
+          "title": "Автономное обучение и локальная модель",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "01-start/offline.md",
+          "quiz_path": "01-start/offline.quiz.json",
+          "live_required": false,
+          "outcome": "Подготовить автономный пакет и понимать, какие действия требуют заранее доступной модели.",
+          "practice_kind": "offline"
+        },
+        {
+          "id": "start.updates",
+          "title": "Версии, обновление и возврат к проверенной установке",
+          "revision": 1,
+          "dependencies": [
+            "start.install"
+          ],
+          "path": "01-start/updates.md",
+          "quiz_path": "01-start/updates.quiz.json",
+          "live_required": false,
+          "outcome": "Обновлять CLI осознанно и сохранять возможность повторить учебный сценарий на прежней версии.",
+          "practice_kind": "offline"
         }
-      ]
+      ],
+      "path": "01-start/README.md"
     },
     {
       "id": "workflow",
       "title": "Повседневная работа",
-      "summary": "Сформулировать ограниченную задачу, разобрать план, diff и результат тестов.",
+      "summary": "Исследовать проект, поставить задачу, управлять планом и целью, проверить изменения.",
       "order": 2,
       "lessons": [
         {
           "id": "workflow.small-fix",
-          "title": "Точечное исправление бага (small-fix)",
-          "revision": 1,
-          "dependencies": ["start.overview"],
+          "title": "Ограниченное исправление: запрос, diff и тест",
+          "revision": 3,
+          "dependencies": [
+            "start.overview"
+          ],
           "path": "02-workflow/small-fix.md",
+          "quiz_path": "02-workflow/quiz.json",
+          "live_required": true,
           "exercise_id": "small-fix",
-          "quiz_path": "02-workflow/quiz.json"
+          "outcome": "Исправить небольшую ошибку, проверить независимый тест и объяснить каждый изменённый участок.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "workflow.inspect",
+          "title": "Исследование проекта без изменения файлов",
+          "revision": 1,
+          "dependencies": [
+            "workflow.small-fix"
+          ],
+          "path": "02-workflow/inspect.md",
+          "quiz_path": "02-workflow/inspect.quiz.json",
+          "live_required": true,
+          "outcome": "Получать карту незнакомого проекта и проверять утверждения агента по конкретным файлам.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "workflow.prompt",
+          "title": "Постановка задачи с проверяемым результатом",
+          "revision": 1,
+          "dependencies": [
+            "workflow.inspect"
+          ],
+          "path": "02-workflow/prompt.md",
+          "quiz_path": "02-workflow/prompt.quiz.json",
+          "live_required": true,
+          "outcome": "Описывать результат, ограничения и критерии завершения вместо неопределённого «сделай лучше».",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "workflow.planning",
+          "title": "Планирование в /plan: от требований к шагам",
+          "revision": 1,
+          "dependencies": [
+            "workflow.prompt"
+          ],
+          "path": "02-workflow/planning.md",
+          "quiz_path": "02-workflow/planning.quiz.json",
+          "live_required": true,
+          "outcome": "Получать исполнимый план и отличать обсуждение от изменения проекта.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "workflow.plan-goal",
+          "title": "Длительная задача: /plan и /goal",
+          "revision": 2,
+          "dependencies": [
+            "workflow.small-fix"
+          ],
+          "path": "02-workflow/plan-goal.md",
+          "quiz_path": "02-workflow/plan-goal.quiz.json",
+          "live_required": true,
+          "outcome": "Преобразовать согласованный план в ограниченную цель с проверяемым условием завершения.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "workflow.goal-control",
+          "title": "Управление /goal: пауза, изменение и завершение",
+          "revision": 1,
+          "dependencies": [
+            "workflow.plan-goal"
+          ],
+          "path": "02-workflow/goal-control.md",
+          "quiz_path": "02-workflow/goal-control.quiz.json",
+          "live_required": true,
+          "outcome": "Управлять целью и не путать её состояние с состоянием файлов.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "workflow.tests",
+          "title": "Тесты, diff и независимая проверка результата",
+          "revision": 1,
+          "dependencies": [
+            "workflow.small-fix"
+          ],
+          "path": "02-workflow/tests.md",
+          "quiz_path": "02-workflow/tests.quiz.json",
+          "live_required": true,
+          "outcome": "Проверять исправление по тесту и фактическим изменениям, а не по сообщению «готово».",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "workflow.review",
+          "title": "Ревью изменений и независимая проверка",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "02-workflow/review.md",
+          "quiz_path": "02-workflow/review.quiz.json",
+          "live_required": true,
+          "outcome": "Получить замечания по изменениям и проверить их, не принимая вывод агента на веру.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "workflow.inputs",
+          "title": "Файлы, изображения, поиск и границы контекста",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "02-workflow/inputs.md",
+          "quiz_path": "02-workflow/inputs.quiz.json",
+          "live_required": true,
+          "outcome": "Передать нужные файлы и изображения, не раскрывая лишние данные и не подменяя их содержимое догадкой.",
+          "practice_kind": "native-cli"
         }
-      ]
+      ],
+      "path": "02-workflow/README.md"
     },
     {
       "id": "safety",
-      "title": "Разрешения и безопасные изменения",
-      "summary": "Определить область записи и выполнить восстановление в учебном Git-репозитории.",
+      "title": "Разрешения и безопасная работа",
+      "summary": "Понять границы песочницы, запросы подтверждения, сетевой доступ и защиту данных.",
       "order": 3,
       "lessons": [
         {
           "id": "safety.permissions",
-          "title": "Разрешения, песочница и безопасность Git",
-          "revision": 1,
-          "dependencies": ["workflow.small-fix"],
+          "title": "Разрешения, песочница и безопасные пути",
+          "revision": 3,
+          "dependencies": [
+            "start.overview"
+          ],
           "path": "03-safety/permissions.md",
+          "quiz_path": "03-safety/quiz.json",
+          "live_required": true,
           "exercise_id": "safety-guard",
-          "quiz_path": "03-safety/quiz.json"
+          "outcome": "Выбрать минимальные права для задачи и проверить действующие ограничения.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "safety.approvals",
+          "title": "Запросы подтверждения и минимальные разрешения",
+          "revision": 1,
+          "dependencies": [
+            "safety.permissions"
+          ],
+          "path": "03-safety/approvals.md",
+          "quiz_path": "03-safety/approvals.quiz.json",
+          "live_required": true,
+          "outcome": "Разбирать запрос на действие и разрешать только необходимую область работы.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "safety.sandbox-lab",
+          "title": "Проверка песочницы на безопасном примере",
+          "revision": 1,
+          "dependencies": [
+            "safety.approvals"
+          ],
+          "path": "03-safety/sandbox-lab.md",
+          "quiz_path": "03-safety/sandbox-lab.quiz.json",
+          "live_required": true,
+          "outcome": "Проверять фактическое ограничение записи без экспериментов с личными файлами.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "safety.network",
+          "title": "Сеть, веб-поиск и передача контекста",
+          "revision": 1,
+          "dependencies": [
+            "safety.permissions"
+          ],
+          "path": "03-safety/network.md",
+          "quiz_path": "03-safety/network.quiz.json",
+          "live_required": true,
+          "outcome": "Отличать сетевую функцию от локального чтения и выбирать безопасную границу данных.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "safety.rules",
+          "title": "Политики команд и доверие к расширениям",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "03-safety/rules.md",
+          "quiz_path": "03-safety/rules.quiz.json",
+          "live_required": true,
+          "outcome": "Отличать правила выполнения команд от инструкций на естественном языке.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "safety.privacy",
+          "title": "Секреты, журналы и подготовка к публикации",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "03-safety/privacy.md",
+          "quiz_path": "03-safety/privacy.quiz.json",
+          "live_required": false,
+          "outcome": "Исключить ключи и персональные данные из контекста, журнала и публичного архива.",
+          "practice_kind": "offline"
         }
-      ]
+      ],
+      "path": "03-safety/README.md"
     },
     {
       "id": "instructions",
-      "title": "Инструкции и контекст",
-      "summary": "Создать AGENTS.md; отличить инструкции, данные, память и политики команд.",
+      "title": "Настройки, инструкции и контекст",
+      "summary": "Настроить клиент, определить правила проекта и управлять контекстом без смешения механизмов.",
       "order": 4,
       "lessons": [
         {
           "id": "instructions.agents-md",
-          "title": "Инструкции проекта и AGENTS.md",
-          "revision": 1,
-          "dependencies": ["safety.permissions"],
+          "title": "AGENTS.md: инструкции проекта и области действия",
+          "revision": 3,
+          "dependencies": [
+            "start.overview"
+          ],
           "path": "04-instructions/agents-md.md",
+          "quiz_path": "04-instructions/quiz.json",
+          "live_required": true,
           "exercise_id": "agents-rules",
-          "quiz_path": "04-instructions/quiz.json"
+          "outcome": "Описать команды и правила проекта в AGENTS.md, не превращая инструкции в хранилище секретов.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "instructions.scope",
+          "title": "Область действия AGENTS.md и вложенные инструкции",
+          "revision": 1,
+          "dependencies": [
+            "instructions.agents-md"
+          ],
+          "path": "04-instructions/scope.md",
+          "quiz_path": "04-instructions/scope.quiz.json",
+          "live_required": true,
+          "outcome": "Размещать правила рядом с кодом, к которому они относятся, и проверять их загрузку.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "instructions.config",
+          "title": "config.toml: реальные ключи и приоритеты",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "04-instructions/config.md",
+          "quiz_path": "04-instructions/config.quiz.json",
+          "live_required": true,
+          "outcome": "Объяснить приоритет настроек и проверить конфигурацию установленного CLI.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "instructions.models",
+          "title": "Модели, провайдеры, reasoning и ограничения",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "04-instructions/models.md",
+          "quiz_path": "04-instructions/models.quiz.json",
+          "live_required": true,
+          "outcome": "Выбрать доступную модель под задачу, не полагаясь на устаревшее название из примера.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "instructions.providers",
+          "title": "Локальный провайдер и границы автономного запуска",
+          "revision": 1,
+          "dependencies": [
+            "start.offline",
+            "instructions.models"
+          ],
+          "path": "04-instructions/providers.md",
+          "quiz_path": "04-instructions/providers.quiz.json",
+          "live_required": true,
+          "outcome": "Подключать заранее подготовленную локальную модель и проверять её пригодность для курса.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "instructions.memory",
+          "title": "Память, сжатие контекста и сводки",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "04-instructions/memory.md",
+          "quiz_path": "04-instructions/memory.quiz.json",
+          "live_required": true,
+          "outcome": "Отличать память клиента от обязательных инструкций и учебного прогресса.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "instructions.context",
+          "title": "Контекст беседы, /status и /compact",
+          "revision": 1,
+          "dependencies": [
+            "instructions.memory"
+          ],
+          "path": "04-instructions/context.md",
+          "quiz_path": "04-instructions/context.quiz.json",
+          "live_required": true,
+          "outcome": "Управлять объёмом текущей беседы и сохранять важные решения перед сжатием.",
+          "practice_kind": "native-cli"
         }
-      ]
+      ],
+      "path": "04-instructions/README.md"
     },
     {
       "id": "sessions",
       "title": "Сессии и восстановление",
-      "summary": "Различить продолжение/ветвление разговора и возврат состояния файлов.",
+      "summary": "Продолжать разговоры, разделять задачи и восстанавливать файлы средствами Git.",
       "order": 5,
       "lessons": [
         {
           "id": "sessions.resume",
-          "title": "Сессии диалога и независимость Git-файлов",
-          "revision": 1,
-          "dependencies": ["instructions.agents-md"],
+          "title": "Продолжение сессии не восстанавливает файлы",
+          "revision": 3,
+          "dependencies": [
+            "start.overview"
+          ],
           "path": "05-sessions/resume.md",
+          "quiz_path": "05-sessions/quiz.json",
+          "live_required": true,
           "exercise_id": "session-restore",
-          "quiz_path": "05-sessions/quiz.json"
+          "outcome": "Продолжить нужный разговор и отдельно проверить текущее состояние файлов.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "sessions.side",
+          "title": "Побочные вопросы и управление беседами",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "05-sessions/side.md",
+          "quiz_path": "05-sessions/side.quiz.json",
+          "live_required": true,
+          "outcome": "Разделить основной разговор и побочный вопрос, не создавая путаницу с изменениями проекта.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "sessions.worktrees",
+          "title": "Ветки, worktree и безопасное восстановление",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "05-sessions/worktrees.md",
+          "quiz_path": "05-sessions/worktrees.quiz.json",
+          "live_required": true,
+          "outcome": "Использовать отдельное рабочее дерево Git для независимой задачи.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "sessions.archive",
+          "title": "Архивирование и удаление сохранённых сессий",
+          "revision": 1,
+          "dependencies": [
+            "sessions.resume"
+          ],
+          "path": "05-sessions/archive.md",
+          "quiz_path": "05-sessions/archive.quiz.json",
+          "live_required": true,
+          "outcome": "Различать продолжение, архивирование и необратимое удаление истории.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "sessions.restore",
+          "title": "Восстановление файлов: Git не равен истории чата",
+          "revision": 1,
+          "dependencies": [
+            "sessions.resume"
+          ],
+          "path": "05-sessions/restore.md",
+          "quiz_path": "05-sessions/restore.quiz.json",
+          "live_required": true,
+          "outcome": "Сохранять исходную точку и осознанно отменять только собственные учебные изменения.",
+          "practice_kind": "native-cli"
         }
-      ]
+      ],
+      "path": "05-sessions/README.md"
     },
     {
       "id": "skills",
-      "title": "Повторяемые действия и skills",
-      "summary": "Подготовить маленький навык; не путать его со встроенной slash-командой.",
+      "title": "Навыки и повторяемые действия",
+      "summary": "Создать полезный навык, добавить материалы и проверить обнаружение и вызов в Codex.",
       "order": 6,
       "lessons": [
         {
           "id": "skills.custom",
-          "title": "Создание пользовательского навыка (SKILL.md)",
-          "revision": 1,
-          "dependencies": ["sessions.resume"],
+          "title": "Создание локального навыка Codex",
+          "revision": 3,
+          "dependencies": [
+            "start.overview"
+          ],
           "path": "06-skills/custom-skills.md",
+          "quiz_path": "06-skills/quiz.json",
+          "live_required": true,
           "exercise_id": "custom-skill",
-          "quiz_path": "06-skills/quiz.json"
+          "outcome": "Разобраться в структуре навыка и отличать локальную проверку файлов от его фактического вызова.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "skills.create",
+          "title": "Создание навыка: от SKILL.md до явного вызова",
+          "revision": 1,
+          "dependencies": [
+            "skills.custom"
+          ],
+          "path": "06-skills/create.md",
+          "quiz_path": "06-skills/create.quiz.json",
+          "live_required": true,
+          "outcome": "Создавать небольшой рабочий навык Codex и проверять его на реальном запросе.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "skills.resources",
+          "title": "Материалы и скрипты внутри навыка",
+          "revision": 1,
+          "dependencies": [
+            "skills.create"
+          ],
+          "path": "06-skills/resources.md",
+          "quiz_path": "06-skills/resources.quiz.json",
+          "live_required": true,
+          "outcome": "Отделять инструкции от справочных файлов и запускать вспомогательный код осознанно.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "skills.debug",
+          "title": "Диагностика навыка и наставник $learn",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "06-skills/debug.md",
+          "quiz_path": "06-skills/debug.quiz.json",
+          "live_required": true,
+          "outcome": "Найти причину, по которой навык не обнаруживается или не следует заданным инструкциям.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "skills.migration",
+          "title": "Перенос повторяемых запросов и /import",
+          "revision": 1,
+          "dependencies": [
+            "skills.create"
+          ],
+          "path": "06-skills/migration.md",
+          "quiz_path": "06-skills/migration.quiz.json",
+          "live_required": true,
+          "outcome": "Переносить полезные инструкции без копирования несовместимых команд и чужих секретов.",
+          "practice_kind": "native-cli"
         }
-      ]
+      ],
+      "path": "06-skills/README.md"
     },
     {
       "id": "mcp",
-      "title": "Внешние инструменты без внешней сети",
-      "summary": "Разобрать и испытать локальный read-only stdio-пример; Docs MCP — дополнительный сетевой пример.",
+      "title": "Инструменты и подключения MCP",
+      "summary": "Подключить локальный сервер, разобраться в протоколе и диагностировать сетевые интеграции.",
       "order": 7,
       "lessons": [
         {
           "id": "mcp.local-stdio",
-          "title": "Локальный безопасный Stdio MCP сервер",
-          "revision": 1,
-          "dependencies": ["skills.custom"],
+          "title": "Настоящий локальный MCP через stdio",
+          "revision": 3,
+          "dependencies": [
+            "start.overview"
+          ],
           "path": "07-mcp/local-stdio.md",
+          "quiz_path": "07-mcp/quiz.json",
+          "live_required": true,
           "exercise_id": "local-mcp",
-          "quiz_path": "07-mcp/quiz.json"
+          "outcome": "Запустить учебный stdio-сервер и проверить протокол отдельно от подключения к Codex.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "mcp.tools",
+          "title": "MCP-инструменты: список, вызов и ограничения",
+          "revision": 1,
+          "dependencies": [
+            "mcp.local-stdio"
+          ],
+          "path": "07-mcp/tools.md",
+          "quiz_path": "07-mcp/tools.quiz.json",
+          "live_required": true,
+          "outcome": "Понимать, какие действия доступны через сервер, и проверять конкретный вызов.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "mcp.diagnostics",
+          "title": "Диагностика MCP: процесс, транспорт и авторизация",
+          "revision": 1,
+          "dependencies": [
+            "mcp.tools"
+          ],
+          "path": "07-mcp/diagnostics.md",
+          "quiz_path": "07-mcp/diagnostics.quiz.json",
+          "live_required": true,
+          "outcome": "Локализовать сбой подключения, не смешивая ошибки запуска и ошибки инструмента.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "mcp.remote",
+          "title": "Сетевой MCP, авторизация и официальный Docs MCP",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "07-mcp/remote.md",
+          "quiz_path": "07-mcp/remote.quiz.json",
+          "live_required": true,
+          "outcome": "Различать транспорт, авторизацию и права удалённого MCP-сервера.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "mcp.official-docs",
+          "title": "Официальная документация через MCP — необязательное расширение",
+          "revision": 1,
+          "dependencies": [
+            "mcp.remote"
+          ],
+          "path": "07-mcp/official-docs.md",
+          "quiz_path": "07-mcp/official-docs.quiz.json",
+          "live_required": true,
+          "outcome": "Подключать внешний справочник, не превращая его в обязательную зависимость курса.",
+          "practice_kind": "native-cli"
         }
-      ]
+      ],
+      "path": "07-mcp/README.md"
     },
     {
       "id": "automation",
-      "title": "Неинтерактивная работа",
-      "summary": "Различить поток событий JSONL и итоговый результат, проверить обработку ошибки.",
+      "title": "Автоматизация Codex CLI",
+      "summary": "Управлять неинтерактивным процессом, событиями JSONL, итогом по схеме и повторными запусками.",
       "order": 8,
       "lessons": [
         {
           "id": "automation.non-interactive",
-          "title": "Автоматизация и обработка потока JSONL",
-          "revision": 1,
-          "dependencies": ["mcp.local-stdio"],
+          "title": "codex exec: процесс и события JSONL",
+          "revision": 3,
+          "dependencies": [
+            "start.overview"
+          ],
           "path": "08-automation/non-interactive.md",
+          "quiz_path": "08-automation/quiz.json",
+          "live_required": true,
           "exercise_id": "cli-stream",
-          "quiz_path": "08-automation/quiz.json"
+          "outcome": "Запустить неинтерактивную задачу и корректно обработать завершение процесса и события.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "automation.events",
+          "title": "JSONL: ход выполнения, ошибки и итоговый ответ",
+          "revision": 1,
+          "dependencies": [
+            "automation.non-interactive"
+          ],
+          "path": "08-automation/events.md",
+          "quiz_path": "08-automation/events.quiz.json",
+          "live_required": true,
+          "outcome": "Разбирать поток реальных событий и не принимать пустой или оборванный вывод за успех.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "automation.structured",
+          "title": "Итог по JSON Schema и продолжение exec",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "08-automation/structured.md",
+          "quiz_path": "08-automation/structured.quiz.json",
+          "live_required": true,
+          "outcome": "Получить итог по JSON Schema и не перепутать его с потоком JSONL.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "automation.retry",
+          "title": "Повторный запуск и продолжение автоматизированной задачи",
+          "revision": 1,
+          "dependencies": [
+            "automation.non-interactive"
+          ],
+          "path": "08-automation/retry.md",
+          "quiz_path": "08-automation/retry.quiz.json",
+          "live_required": true,
+          "outcome": "Безопасно повторять сбойный запуск и отличать новую задачу от продолжения существующей.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "automation.ci",
+          "title": "Автоматизация в CI без выдачи лишних прав",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "08-automation/ci.md",
+          "quiz_path": "08-automation/ci.quiz.json",
+          "live_required": false,
+          "outcome": "Спроектировать проверяемый запуск в CI с минимальными правами и явными условиями отказа.",
+          "practice_kind": "offline"
+        },
+        {
+          "id": "automation.app-server",
+          "title": "Граница CLI, MCP server и app-server",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "08-automation/app-server.md",
+          "quiz_path": "08-automation/app-server.quiz.json",
+          "live_required": true,
+          "outcome": "Различать обычный CLI, MCP server и app-server и выбрать подходящий интерфейс интеграции.",
+          "practice_kind": "native-cli"
         }
-      ]
+      ],
+      "path": "08-automation/README.md"
     },
     {
       "id": "extensions",
       "title": "Hooks, субагенты и плагины",
-      "summary": "Разобрать минимальные локальные примеры, области действия и доверие.",
+      "summary": "Добавлять расширения с явными правами, проверять обработчики и распределять задачи.",
       "order": 9,
       "lessons": [
         {
           "id": "extensions.plugins-hooks",
-          "title": "Локальные хуки и изоляция расширений",
-          "revision": 1,
-          "dependencies": ["automation.non-interactive"],
+          "title": "Нативные hooks: вход, решение и доверие",
+          "revision": 3,
+          "dependencies": [
+            "start.overview"
+          ],
           "path": "09-extensions/plugins-hooks.md",
+          "quiz_path": "09-extensions/quiz.json",
+          "live_required": true,
           "exercise_id": "extension-hook",
-          "quiz_path": "09-extensions/quiz.json"
+          "outcome": "Разобрать нативный hook, его вход и решение, не приписывая ему свойства системной песочницы.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "extensions.hook-trust",
+          "title": "Доверие к hooks и безопасное изменение обработчика",
+          "revision": 1,
+          "dependencies": [
+            "extensions.plugins-hooks"
+          ],
+          "path": "09-extensions/hook-trust.md",
+          "quiz_path": "09-extensions/hook-trust.quiz.json",
+          "live_required": true,
+          "outcome": "Проверять исполняемый обработчик до доверия и отличать событие до действия от события после него.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "extensions.subagents",
+          "title": "Субагенты: роли, границы и проверка результата",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "09-extensions/subagents.md",
+          "quiz_path": "09-extensions/subagents.quiz.json",
+          "live_required": true,
+          "outcome": "Разделить задачи между агентами и независимо проверить объединённый результат.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "extensions.agent-design",
+          "title": "Роли субагентов и передача результатов",
+          "revision": 1,
+          "dependencies": [
+            "extensions.subagents"
+          ],
+          "path": "09-extensions/agent-design.md",
+          "quiz_path": "09-extensions/agent-design.quiz.json",
+          "live_required": true,
+          "outcome": "Разделять исследование, исполнение и ревью без конфликтующих изменений.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "extensions.plugins",
+          "title": "Плагины: упаковка без автоматического доверия",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "09-extensions/plugins.md",
+          "quiz_path": "09-extensions/plugins.quiz.json",
+          "live_required": true,
+          "outcome": "Проверить состав плагина, его происхождение и необходимые разрешения до установки.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "extensions.remote",
+          "title": "Удалённый Codex и облачные действия из CLI",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "09-extensions/remote.md",
+          "quiz_path": "09-extensions/remote.quiz.json",
+          "live_required": true,
+          "outcome": "Различать локальную сессию, удалённое подключение и облачный запуск.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "extensions.customization",
+          "title": "Настройки интерфейса и экспериментальные возможности",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "09-extensions/customization.md",
+          "quiz_path": "09-extensions/customization.quiz.json",
+          "live_required": true,
+          "outcome": "Настроить интерфейс и включать экспериментальные функции только с пониманием их ограничений.",
+          "practice_kind": "native-cli"
         }
-      ]
+      ],
+      "path": "09-extensions/README.md"
     },
     {
       "id": "capstone",
       "title": "Итоговая практика",
-      "summary": "Исправить ограниченную ошибку, выполнить проверки и сохранить раздельные результаты.",
+      "summary": "Выполнить законченную задачу, собрать доказательства и подготовить проверяемое обновление.",
       "order": 10,
       "lessons": [
         {
           "id": "capstone.final-project",
-          "title": "Итоговый комплексный проект курса",
-          "revision": 1,
-          "dependencies": ["extensions.plugins-hooks"],
+          "title": "Итог: изменение, доказательства и воспроизводимость",
+          "revision": 3,
+          "dependencies": [
+            "start.overview"
+          ],
           "path": "10-capstone/final-project.md",
+          "quiz_path": "10-capstone/quiz.json",
+          "live_required": true,
           "exercise_id": "capstone-project",
-          "quiz_path": "10-capstone/quiz.json"
+          "outcome": "Выполнить законченный цикл изменения и сохранить воспроизводимые доказательства результата.",
+          "practice_kind": "native-cli"
+        },
+        {
+          "id": "capstone.acceptance",
+          "title": "Приёмка учебного проекта: доказательства вместо обещаний",
+          "revision": 1,
+          "dependencies": [
+            "capstone.final-project"
+          ],
+          "path": "10-capstone/acceptance.md",
+          "quiz_path": "10-capstone/acceptance.quiz.json",
+          "live_required": false,
+          "outcome": "Собирать проверяемый отчёт о результате и отделять личный прогресс от готовности релиза.",
+          "practice_kind": "offline"
+        },
+        {
+          "id": "capstone.maintenance",
+          "title": "Как проверять курс после нового релиза Codex",
+          "revision": 1,
+          "dependencies": [
+            "capstone.acceptance"
+          ],
+          "path": "10-capstone/maintenance.md",
+          "quiz_path": "10-capstone/maintenance.quiz.json",
+          "live_required": false,
+          "outcome": "Находить затронутые темы и повторять проверки без автоматического переписывания учебника.",
+          "practice_kind": "offline"
+        },
+        {
+          "id": "capstone.troubleshooting",
+          "title": "Диагностика, обновление и границы покрытия",
+          "revision": 2,
+          "dependencies": [
+            "start.overview"
+          ],
+          "path": "10-capstone/troubleshooting.md",
+          "quiz_path": "10-capstone/troubleshooting.quiz.json",
+          "live_required": false,
+          "outcome": "Локализовать ошибку среды, клиента или курса и подготовить отчёт без секретов.",
+          "practice_kind": "offline"
         }
-      ]
+      ],
+      "path": "10-capstone/README.md"
     }
-  ]
+  ],
+  "target_cli": "0.160.0"
 }

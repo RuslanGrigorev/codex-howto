@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "lesson_id": "start.interface",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "id": "q1",
+      "question": "Где вводить /status?",
+      "explanation": "В интерактивном интерфейсе Codex, а не как отдельную команду оболочки.",
+      "options": [
+        {
+          "id": "understood",
+          "text": "В интерактивном интерфейсе Codex, а не как отдельную команду оболочки.",
+          "is_correct": true
+        },
+        {
+          "id": "misconception",
+          "text": "Только в config.toml.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "question": "Гарантирует ли каталог видимость всех команд у каждого пользователя?",
+      "explanation": "Нет: видимость зависит от версии, платформы и доступных функций.",
+      "options": [
+        {
+          "id": "incorrect",
+          "text": "Да: отсутствие команды означает повреждение курса.",
+          "is_correct": false
+        },
+        {
+          "id": "correct",
+          "text": "Нет: видимость зависит от версии, платформы и доступных функций.",
+          "is_correct": true
+        }
+      ]
+    }
+  ]
+}

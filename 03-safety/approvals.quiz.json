@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "safety.approvals",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Что означает политика never?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Клиент не запрашивает интерактивные подтверждения; остальные ограничения сохраняются.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Все действия разрешены.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Песочница выключена.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Политика вопросов не отменяет ограничения исполнения.",
+      "id": "safety.approvals.q1"
+    },
+    {
+      "question": "Что проверять перед разрешением команды?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Только тон ответа агента.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Только длину команды.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Программу, аргументы, каталог и последствия.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Доверие требует понимания действия.",
+      "id": "safety.approvals.q2"
+    },
+    {
+      "question": "Какой подход предпочтителен?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Отключение защиты при любой ошибке.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Минимальные необходимые права.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Полный доступ для всех уроков.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Меньшая область прав уменьшает риск.",
+      "id": "safety.approvals.q3"
+    }
+  ]
+}

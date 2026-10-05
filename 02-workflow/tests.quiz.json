@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "workflow.tests",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Заменяет ли зелёный тест просмотр diff?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Нет, они проверяют разные свойства.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Да, всегда.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Только если агент уверен.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Тесты не перечисляют все посторонние изменения.",
+      "id": "workflow.tests.q1"
+    },
+    {
+      "question": "Где хранится независимый тест курса?",
+      "options": [
+        {
+          "id": "b",
+          "text": "В файле, который ученик может заменить незаметно.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Только на GitHub.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "В examples вне редактируемой рабочей папки.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Проверка использует доверенный путь из исходников курса.",
+      "id": "workflow.tests.q2"
+    },
+    {
+      "question": "Что делать без .git в ZIP?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Удалить рабочую папку.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Честно отметить ограничение и сравнить файлы другим способом.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Придумать Git-отчёт.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Отсутствие истории не отменяет возможность проверить сами файлы.",
+      "id": "workflow.tests.q3"
+    }
+  ]
+}

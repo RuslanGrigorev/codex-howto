@@ -1,40 +1,10 @@
 #!/usr/bin/env -S uv run --script
 # /// script
-# dependencies = ["markdown==3.7", "beautifulsoup4==4.12.3", "jinja2==3.1.4"]
+# dependencies = ["markdown-it-py==4.2.0", "beautifulsoup4==4.14.3", "jinja2==3.1.6"]
 # ///
 
-# Versions pinned to match scripts/requirements.txt — markdown 3.11+ mis-parses
-# raw `</...>` inside code spans (e.g. `read -r INPUT </dev/tty`) and silently
-# truncates the rendered page.
-"""
-Build a static website from the Claude How-To markdown files.
-
-Usage:
-    uv run scripts/build_website.py
-    uv run scripts/build_website.py --lang vi
-    uv run scripts/build_website.py --output site/ --verbose
-
-The website renders the existing markdown files as the single source of truth.
-No content is duplicated — re-running this script regenerates the entire site
-from the current state of the `.md` files.
-
-Output:
-    Creates `site/` (or the path passed to `--output`) containing one HTML page
-    per markdown source plus `assets/` with logos and copied images.
-
-Features:
-    - Renders the same chapter order as the EPUB build (curriculum order).
-    - Rewrites internal `.md` links to corresponding HTML pages on the site.
-    - Rewrites repo-file/folder references (`.json`, `.sh`, `.py`, etc.) to
-      GitHub source URLs so users can jump to the source on github.com.
-    - Self-hosted Tailwind CSS (compiled via standalone CLI), Inter font, and
-      `mermaid.min.js` — no third-party CDN scripts at runtime.
-    - Light/dark theme toggle, mobile-friendly responsive layout, sidebar.
-    - Hostable as plain static files (e.g. GitHub Pages).
-
-Vendor assets (Tailwind CLI binary, Mermaid bundle, font files) are downloaded
-on first build and cached under `scripts/.vendor-cache/`. See
-`scripts/vendor_assets.py` for details.
+"""Автономная сборка курса Codex CLI. Python, Jinja2, Markdown; сеть не используется.
+Команда: python scripts/build_website.py --output .learning/site
 """
 
 from __future__ import annotations
@@ -49,19 +19,18 @@ import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
-import markdown
+import markdown_adapter as markdown
 from bs4 import BeautifulSoup
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 # Make sibling script modules importable regardless of cwd.
 sys.path.insert(0, str(Path(__file__).parent))
 
-from vendor_assets import (
-    build_tailwind_css,
-    fetch_fonts,
-    fetch_mermaid,
-    write_vendor_manifest,
-)
+import os
+import tempfile
+from dataclasses import replace
+from course_core import tree_hash, sha256, contained, source_files, load_json, check_course
+
 
 # =============================================================================
 # Configuration
@@ -73,6 +42,8 @@ DEFAULT_BRANCH = "main"
 # Files/dirs that exist in the repo but should not appear on the site.
 EXCLUDE_DIRS = {
     ".git",
+    ".learning",
+    "third_party",
     ".github",
     ".gemini",
     ".agent",
@@ -95,7 +66,6 @@ EXCLUDE_DIRS = {
     ".asm-improver",
     ".codex",
     ".opencode",
-    ".claude",
     "site",
     "scripts",
     "vi",
@@ -107,15 +77,12 @@ EXCLUDE_DIRS = {
 
 # Top-level markdown files that should not be rendered as standalone pages.
 EXCLUDE_TOP_LEVEL = {
-    "CLAUDE.md",
     "README.backup.md",
     "AGENTS.md",
     "CODE_OF_CONDUCT.md",
-    "CONTRIBUTING.md",
     "SECURITY.md",
     "CHANGELOG.md",
     "clean-code-rules.md",
-    "claude_concepts_guide.md",
     "CATALOG.md",
     "INDEX.md",
     "QUICK_REFERENCE.md",
@@ -316,8 +283,6 @@ def _disambiguate_url(url: str, used_lower: set[str], rel_source: str) -> str:
 def get_effective_chapter_order(config: WebsiteConfig) -> list[tuple[str, str]]:
     """Determine chapter order from course.json if present, falling back to CHAPTER_ORDER."""
     course_path = config.root_path / "course.json"
-    if not course_path.exists():
-        course_path = (Path(__file__).parent.parent / "course.json").resolve()
 
     if course_path.exists():
         is_ru = (config.language == "ru")
@@ -383,6 +348,9 @@ def collect_pages(config: WebsiteConfig, logger: logging.Logger) -> BuildState:
             )
         elif item_path.is_dir():
             folder_files = collect_folder_markdown(item_path)
+            if (config.root_path / 'course.json').exists():
+                ordered = {l['path']: n for m in load_json(config.root_path / 'course.json')['modules'] for n, l in enumerate(m['lessons'])}
+                folder_files.sort(key=lambda p: ((-1 if p.name == "README.md" else ordered.get(p.relative_to(config.root_path).as_posix(), 100000)), p.name))
             for md in folder_files:
                 rel = md.relative_to(config.root_path).as_posix()
                 if rel in seen:
@@ -425,7 +393,7 @@ def collect_pages(config: WebsiteConfig, logger: logging.Logger) -> BuildState:
                 rel_source=rel,
                 output_url=url,
                 title=title,
-                section="Additional Docs",
+                section="О проекте",
                 is_section_index=False,
                 content=content,
             )
@@ -450,7 +418,7 @@ def is_external(href: str) -> bool:
 def relative_link(from_url: str, to_url: str, anchor: str = "") -> str:
     """Build a relative URL from `from_url` to `to_url` (both site-relative)."""
     if from_url == to_url:
-        return anchor or ""
+        return anchor or from_url.rsplit("/", 1)[-1]
     from_parts = from_url.split("/")[:-1]
     to_parts = to_url.split("/")
 
@@ -493,10 +461,21 @@ def _rewrite_anchor(
     config: WebsiteConfig,
     logger: logging.Logger,
 ) -> None:
-    """Rewrite a single `<a href>` to its site URL or GitHub source URL."""
+    """Rewrite a single `<a href>` to its site URL or local source URL."""
     href = a.get("href", "")  # type: ignore[attr-defined]
-    if not href or is_external(href) or href.startswith("#"):
+    from urllib.parse import urlsplit, unquote
+    if not href or href == "#":
+        raise RuntimeError(f"Пустая ссылка в {page.rel_source}")
+    parsed = urlsplit(href)
+    if parsed.scheme or parsed.netloc:
+        if parsed.scheme not in {"https", "http", "mailto", "tel"} or parsed.netloc and not parsed.scheme:
+            raise RuntimeError(f"Недопустимая URL-схема в {page.rel_source}: {href}")
         return
+    if href.startswith("#"):
+        return
+    if parsed.query:
+        raise RuntimeError(f"Параметры локальной ссылки не поддерживаются: {href}")
+    href = unquote(href)
 
     anchor = ""
     if "#" in href:
@@ -507,8 +486,7 @@ def _rewrite_anchor(
 
     rel_str = _resolve_repo_relative(href, page.source.parent, config.root_path)
     if rel_str is None:
-        logger.debug(f"Link outside repo skipped: {href} (in {page.rel_source})")
-        return
+        raise RuntimeError(f"Ссылка выходит за пределы проекта: {href} ({page.rel_source})")
 
     candidates = [rel_str]
     resolved = (page.source.parent / href).resolve()
@@ -522,12 +500,10 @@ def _rewrite_anchor(
             )
             return
 
-    github_url = _github_source_url(
-        config, rel_str, is_dir=resolved.is_dir(), anchor=anchor
-    )
-    a["href"] = github_url  # type: ignore[index]
-    a["target"] = "_blank"  # type: ignore[index]
-    a["rel"] = "noopener noreferrer"  # type: ignore[index]
+    if not resolved.exists():
+        raise RuntimeError(f"Не найдена локальная ссылка {href} в {page.rel_source}")
+    target = material_url(rel_str, resolved.is_dir())
+    a["href"] = relative_link(page.output_url, target, anchor)
 
 
 def _rewrite_asset_ref(
@@ -672,7 +648,7 @@ def render_markdown_to_soup(md_content: str) -> BeautifulSoup:
 
 
 def render_markdown(md_content: str) -> str:
-    """Convert markdown to HTML using the same extensions as the EPUB build."""
+    """Преобразовать Markdown в локальный HTML курса."""
     return str(render_markdown_to_soup(md_content))
 
 
@@ -831,7 +807,26 @@ def render_pages(
         prev_page = state.pages[idx - 1] if idx > 0 else None
         next_page = state.pages[idx + 1] if idx < total - 1 else None
 
+        course = load_json(config.root_path / "course.json") if (config.root_path / "course.json").exists() else {"modules": []}
+        lesson = next((l for m in course["modules"] for l in m["lessons"] if l["path"] == page.rel_source), None)
+        quiz = load_json(config.root_path / lesson["quiz_path"]) if lesson and lesson.get("quiz_path") else None
+        module = next((m for m in course["modules"] if lesson and lesson in m["lessons"]), None)
+        if lesson:
+            ordered_lessons = [l for m in course["modules"] for l in m["lessons"]]
+            lesson_index = next(i for i, l in enumerate(ordered_lessons) if l["id"] == lesson["id"])
+            by_source = {p.rel_source: p for p in state.pages}
+            prev_page = by_source[ordered_lessons[lesson_index - 1]["path"]] if lesson_index else None
+            next_page = by_source[ordered_lessons[lesson_index + 1]["path"]] if lesson_index + 1 < len(ordered_lessons) else None
+        material_links = []
+        if lesson and lesson.get("exercise_id"):
+            folder = 'examples/' + lesson['exercise_id']
+            for label, suffix, directory in [('Исходные файлы', 'starter', True), ('Подсказки', 'HINTS.md', False), ('Эталонное решение', 'solution', True), ('Скрипт проверки', 'test.py', False)]:
+                target = config.root_path / folder / suffix
+                if not target.exists():
+                    raise RuntimeError('Нет материала упражнения: ' + str(target))
+                material_links.append({'label': label, 'url': relative_link(page.output_url, material_url(folder + '/' + suffix, directory))})
         rendered = template.render(
+            course=course, lesson=lesson, quiz=quiz, module=module, material_links=material_links,
             site_title=config.site_title,
             site_subtitle=config.site_subtitle,
             page_title=page.title,
@@ -972,95 +967,20 @@ def _resolve_landing_roadmap(
     return resolved_levels, module_count, lesson_count, problems
 
 
-def _resolve_course_roadmap(
-    course_json_path: Path, state: BuildState, lang: str = "ru"
-) -> tuple[list[dict[str, object]], int, int]:
-    """Resolve levels and modules from course.json (Single Source of Truth)."""
-    data = json.loads(course_json_path.read_text(encoding="utf-8"))
-    modules = data.get("modules", [])
-
-    is_ru = (lang == "ru")
-    levels_def = [
-        {
-            "id": "beginner",
-            "name": "Уровень 1 — Базовый" if is_ru else "Level 1 — Beginner",
-            "title": "Начало работы" if is_ru else "Getting Started",
-            "summary": (
-                "Подготовка окружения, первый запуск, точечные исправления, безопасность и инструкции."
-                if is_ru
-                else "Environment setup, first launch, small fixes, safety, and instructions."
-            ),
-            "module_ids": ["start", "workflow", "safety", "instructions"],
-        },
-        {
-            "id": "intermediate",
-            "name": "Уровень 2 — Практический" if is_ru else "Level 2 — Intermediate",
-            "title": "Эффективная работа" if is_ru else "Effective Workflows",
-            "summary": (
-                "Управление сессиями, собственные навыки, локальные MCP-инструменты и автоматизация."
-                if is_ru
-                else "Session management, custom skills, offline stdio MCP tools, and automation."
-            ),
-            "module_ids": ["sessions", "skills", "mcp", "automation"],
-        },
-        {
-            "id": "advanced",
-            "name": "Уровень 3 — Продвинутый" if is_ru else "Level 3 — Advanced",
-            "title": "Расширения и практика" if is_ru else "Extensions & Practice",
-            "summary": (
-                "Hooks, субагенты, плагины и итоговый самостоятельный проект с воспроизводимой проверкой."
-                if is_ru
-                else "Hooks, subagents, plugins, and the offline capstone project with automated checks."
-            ),
-            "module_ids": ["extensions", "capstone"],
-        },
-    ]
-
-    mod_by_id = {str(m.get("id", "")): m for m in modules}
-    resolved_levels = []
-    module_count = 0
-    lesson_count = 0
-
-    for ldef in levels_def:
-        resolved_modules = []
-        for mid in ldef["module_ids"]:
-            mod = mod_by_id.get(mid)
-            if not mod:
-                continue
-            module_count += 1
-            mod_lessons = []
-            for l in mod.get("lessons", []):
-                lesson_count += 1
-                lid = str(l.get("id", ""))
-                lpath = str(l.get("path", ""))
-                url = state.source_to_url.get(lpath)
-                href = relative_link("index.html", url) if url else "#"
-                mod_lessons.append({
-                    "id": lid.split(".")[-1] if "." in lid else lid,
-                    "full_id": lid,
-                    "title": l.get("title", lid),
-                    "href": href,
-                })
-
-            resolved_modules.append({
-                "id": mid,
-                "number": f"{mod.get('order', module_count):02d}",
-                "title": mod.get("title", mid),
-                "time": mod.get("time", "30–45 мин" if is_ru else "30–45 min"),
-                "tagline": mod.get("summary", ""),
-                "url": mod_lessons[0]["href"] if mod_lessons else "#",
-                "lessons": mod_lessons,
-                "lesson_count": len(mod_lessons),
-            })
-        resolved_levels.append({
-            "id": ldef["id"],
-            "name": ldef["name"],
-            "title": ldef["title"],
-            "summary": ldef["summary"],
-            "modules": resolved_modules,
-        })
-
-    return resolved_levels, module_count, lesson_count
+def _resolve_course_roadmap(course_json_path, state, language="ru"):
+    data = load_json(course_json_path)
+    modules = []
+    count = 0
+    for mod in data["modules"]:
+        items = []
+        for lesson in mod["lessons"]:
+            if lesson["path"] not in state.source_to_url:
+                raise RuntimeError("Урок отсутствует в сборке: " + lesson["path"])
+            items.append({**lesson, "full_id": lesson["id"], "href": state.source_to_url[lesson["path"]]})
+        count += len(items)
+        modules.append({**mod, "lessons": items, "number": str(mod["order"]),
+                        "tagline": mod.get("summary", ""), "url": state.source_to_url.get(mod.get("path", ""), items[0]["href"])})
+    return [{"id": "course", "title": "Карта курса", "modules": modules}], len(modules), count
 
 
 def render_landing(
@@ -1072,20 +992,11 @@ def render_landing(
     """Render the landing page as `index.html`."""
     template_dir = Path(__file__).parent / "website_templates"
     course_json_path = config.root_path / "course.json"
-    if not course_json_path.exists():
-        course_json_path = (Path(__file__).parent.parent / "course.json").resolve()
 
     if course_json_path.exists():
         levels, module_count, lesson_count = _resolve_course_roadmap(course_json_path, state, config.language)
     else:
-        roadmap_path = config.roadmap_path or (template_dir / "roadmap.json")
-        data = json.loads(roadmap_path.read_text(encoding="utf-8"))
-        levels, module_count, lesson_count, problems = _resolve_landing_roadmap(data, state)
-        if problems:
-            raise RuntimeError(
-                "roadmap.json does not match the rendered pages:\n  - "
-                + "\n  - ".join(problems)
-            )
+        raise ValueError('Для карты курса нужен course.json')
 
     version = None
     readme_text = read_source(config.root_path / "README.md")
@@ -1096,6 +1007,7 @@ def render_landing(
 
     template = env.get_template("landing.html.j2")
     rendered = template.render(
+        course=load_json(course_json_path) if course_json_path.exists() else {"modules": []},
         site_title=config.site_title,
         site_subtitle=config.site_subtitle,
         levels=levels,
@@ -1130,194 +1042,181 @@ def render_landing(
 # =============================================================================
 
 
-def build_website(
-    config: WebsiteConfig,
-    logger: logging.Logger,
-    *,
-    skip_vendor: bool = False,
-) -> Path:
-    """Generate the full static site at `config.output_path`.
 
-    ``skip_vendor=True`` skips the Tailwind CLI compile and the Mermaid/font
-    downloads — used by tests that don't need network access.
-    """
-    if not config.root_path.is_dir():
-        raise RuntimeError(f"Root path is not a directory: {config.root_path}")
+BUILD_MARKER = '.codex-course-build'
 
-    if config.output_path.exists():
-        for item in list(config.output_path.iterdir()):
-            if item.name == "assets":
-                continue
-            if item.is_dir():
-                shutil.rmtree(item, ignore_errors=True)
-            elif item.suffix == ".html":
-                try:
-                    item.unlink()
-                except OSError:
-                    pass
-    config.output_path.mkdir(parents=True, exist_ok=True)
+def validate_output(root: Path, output: Path) -> Path:
+    """Разрешает новый/пустой каталог или предыдущую собственную сборку."""
+    root = root.resolve()
+    raw = output.absolute()
+    if raw.is_symlink() or any(p.is_symlink() for p in raw.parents):
+        raise ValueError('Каталог вывода не должен проходить через символическую ссылку')
+    output = raw.resolve()
+    if root.is_relative_to(output):
+        raise ValueError('Нельзя собирать в корень проекта или его предка')
+    if output.is_relative_to(root):
+        first = output.relative_to(root).parts[0]
+        if first not in {'site', 'site_test', '.learning', 'dist'}:
+            raise ValueError('Внутри проекта используйте site, dist или .learning')
+    if output.exists():
+        if not output.is_dir(): raise ValueError('Вывод не является каталогом')
+        if any(output.iterdir()) and not (output / BUILD_MARKER).is_file():
+            raise ValueError('Непустой чужой каталог: сборщик не будет его очищать')
+        if (output / '.git').exists(): raise ValueError('Нельзя заменять Git-репозиторий')
+    return output
 
-    template_dir = Path(__file__).parent / "website_templates"
-    env = Environment(
-        loader=FileSystemLoader(str(template_dir)),
-        autoescape=select_autoescape(["html", "xml"]),
-        trim_blocks=True,
-        lstrip_blocks=True,
-    )
-
-    state = collect_pages(config, logger)
-    if not state.pages:
-        raise RuntimeError(
-            f"No markdown pages found under {config.root_path}; "
-            "check that the chapter directories exist."
-        )
-
-    render_pages(config, state, env, logger)
-    if config.landing:
-        render_landing(config, state, env, logger)
-    copy_assets(config, state, logger)
-
-    assets_dir = config.output_path / "assets"
-    css_source = template_dir / "site.css"
-    if css_source.exists():
-        css_target = assets_dir / "site.css"
-        css_target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(css_source, css_target)
-
-    progress_source = template_dir / "progress.js"
-    if progress_source.exists():
-        progress_target = assets_dir / "progress.js"
-        progress_target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(progress_source, progress_target)
-
-    if skip_vendor:
-        logger.info("Skipping vendor asset fetch (skip_vendor=True)")
-    else:
-        vendor_dir = assets_dir / "vendor"
-        fetch_mermaid(vendor_dir / "mermaid", logger)
-        fonts_css = fetch_fonts(vendor_dir / "fonts", logger)
-        # Run Tailwind LAST so it can scan the rendered HTML for class usage.
-        build_tailwind_css(
-            output_css=assets_dir / "tailwind.css",
-            template_dir=template_dir,
-            site_dir=config.output_path,
-            logger=logger,
-        )
-        fonts_files = vendor_dir / "fonts" / "files"
-        write_vendor_manifest(
-            vendor_dir,
-            fonts_count=sum(1 for _ in fonts_files.iterdir())
-            if fonts_files.exists()
-            else 0,
-        )
-        logger.debug(f"Fonts CSS: {fonts_css}")
-
-    logger.info(f"Website build complete: {config.output_path}")
-    return config.output_path
+def material_url(relative, is_dir=False):
+    """Separate previews from raw files; no dependency on a GitHub branch."""
+    from urllib.parse import quote
+    rel = "" if relative == "." else str(relative).strip("/")
+    return "materials/" + quote(rel, safe="/") + ("/index.html" if is_dir and rel else "index.html" if is_dir else ".html")
 
 
-# =============================================================================
-# CLI
-# =============================================================================
+def copy_learning_sources(config):
+    """Copy the allowlist verbatim and build escaped, local code viewers."""
+    from urllib.parse import quote, unquote
+    root, output = config.root_path.resolve(), config.output_path
+    top_files = {'README.md', 'AGENTS.md', 'course.json', 'sources.json', 'LICENSE',
+                 'NOTICE.md', 'SECURITY.md', 'CONTRIBUTING.md', 'validation.json', 'ACCEPTANCE_RU.md'}
+    top_dirs = {'examples', 'reference', 'scripts', '.agents', 'openspec', 'third_party', 'resources'}
+    files = []
+    for path in source_files(root):
+        rel = path.relative_to(root)
+        if not (rel.as_posix() in top_files or rel.parts[0] in top_dirs
+                or re.fullmatch(r'\d\d-[a-z0-9-]+', rel.parts[0])):
+            continue
+        if path.name in {'.env', 'auth.json', 'id_rsa', 'id_ed25519'} or path.suffix.lower() in {'.ttf', '.woff', '.woff2', '.otf'}:
+            raise ValueError('Не допускается в учебной поставке: ' + str(rel))
+        dest = output / 'source' / rel
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(path, dest)
+        files.append((rel, path))
+    dirs = {Path('.')}
+    for rel, _ in files:
+        dirs.update(rel.parents)
+    # A source name must never silently overwrite another preview/index.
+    urls = [material_url(rel.as_posix()) for rel, _ in files] + [material_url(d.as_posix(), True) for d in dirs]
+    if len({x.casefold() for x in urls}) != len(urls):
+        raise ValueError('Конфликт имён локальных страниц материалов')
 
+    def write(url, title, body, breadcrumbs):
+        assets = relative_link(url, 'assets/site.css')
+        back = relative_link(url, 'index.html')
+        # No runtime JS is needed to read code, licenses or solutions.
+        result = ('<!doctype html><html lang="ru"><head><meta charset="utf-8">'
+                  '<meta name="viewport" content="width=device-width, initial-scale=1">'
+                  '<title>' + html.escape(title) + ' — Материалы курса</title>'
+                  '<link rel="stylesheet" href="' + assets + '"></head><body>'
+                  '<header><a class="brand" href="' + back + '">Курс по Codex CLI</a></header>'
+                  '<main id="content" class="material-page"><nav aria-label="Путь к файлу">' + breadcrumbs + '</nav>'
+                  '<h1>' + html.escape(title) + '</h1>' + body + '</main>'
+                  '<footer>Локальные материалы курса. Чтение кода не запускает его.</footer></body></html>')
+        dest = output / unquote(url)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(result, encoding='utf-8')
 
-def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Build a static website from Claude How-To markdown files."
-    )
-    parser.add_argument(
-        "--root",
-        "-r",
-        type=Path,
-        default=None,
-        help="Root directory containing markdown files (default: repo root)",
-    )
-    parser.add_argument(
-        "--output",
-        "-o",
-        type=Path,
-        default=None,
-        help="Output directory for the generated site (default: <repo>/site)",
-    )
-    parser.add_argument(
-        "--lang",
-        type=str,
-        default="ru",
-        choices=["ru", "en", "vi", "zh", "ja", "uk"],
-        help="Language code for the source tree (default: ru — root markdown)",
-    )
-    parser.add_argument(
-        "--repo-url",
-        type=str,
-        default=REPO_URL,
-        help=f"GitHub repository URL for blob links (default: {REPO_URL})",
-    )
-    parser.add_argument(
-        "--branch",
-        type=str,
-        default=DEFAULT_BRANCH,
-        help=f"Branch name for GitHub blob links (default: {DEFAULT_BRANCH})",
-    )
-    parser.add_argument(
-        "--verbose", "-v", action="store_true", help="Enable verbose logging"
-    )
-
-    args = parser.parse_args()
-
-    repo_root = (args.root or Path(__file__).parent.parent).resolve()
-
-    lang_root_map = {
-        "ru": repo_root,
-        "en": repo_root,
-        "vi": repo_root / "vi",
-        "zh": repo_root / "zh",
-        "ja": repo_root / "ja",
-        "uk": repo_root / "uk",
-    }
-    source_root = lang_root_map[args.lang].resolve()
-
-    default_output = repo_root / ("site" if args.lang in ("ru", "en") else f"site-{args.lang}")
-    output_path = (args.output or default_output).resolve()
-
-    # Load UI dictionary for selected locale if available
-    locales_dir = Path(__file__).parent / "website_templates" / "locales"
-    ui_locale_file = locales_dir / f"ui.{args.lang}.json"
-    site_title = "Курс по Codex CLI" if args.lang == "ru" else "Codex CLI Course"
-    site_subtitle = "Автономный практический справочник" if args.lang == "ru" else "Offline Practical Guide"
-    ui_strings = {}
-    if ui_locale_file.exists():
+    for rel, path in files:
+        url = material_url(rel.as_posix())
+        raw = relative_link(url, 'source/' + quote(rel.as_posix(), safe='/'))
+        parent = relative_link(url, material_url(rel.parent.as_posix(), True))
+        body = '<p><a class="button" download href="' + raw + '">Скачать исходный файл</a></p>'
         try:
-            ui_data = json.loads(ui_locale_file.read_text(encoding="utf-8"))
-            ui_strings = ui_data.get("strings", {})
-            site_title = ui_strings.get("site_title", site_title)
-            site_subtitle = ui_strings.get("site_tagline", site_subtitle)
-        except Exception:
-            pass
+            text = path.read_text(encoding='utf-8')
+            if path.name == 'HINTS.md' and rel.parts[0] == 'examples':
+                soup = render_markdown_to_soup(text)
+                # Hints are authored course documents; ordinary source files stay escaped.
+                for heading in soup.find_all('h1'):
+                    heading.name = 'h2'
+                page = PageInfo(path, rel.as_posix(), url, rel.name, 'Подсказки')
+                rewrite_links_in_soup(soup, page, BuildState(), config, logging.getLogger(__name__))
+                body += '<article class="prose">' + str(soup) + '</article>'
+            else:
+                body += '<pre class="source-code"><code>' + html.escape(text) + '</code></pre>'
+        except UnicodeError:
+            body += '<p>Двоичный файл. Для просмотра сохраните его на устройство.</p>'
+        write(url, rel.name, body, '<a href="' + parent + '">← ' + html.escape(rel.parent.as_posix()) + '</a>')
+    for directory in sorted(dirs):
+        url = material_url(directory.as_posix(), True)
+        children = [(d.name, material_url(d.as_posix(), True), True) for d in dirs if d != directory and d.parent == directory]
+        children += [(r.name, material_url(r.as_posix()), False) for r, _ in files if r.parent == directory]
+        body = '<p>Это файлы из поставки, а не ссылки на GitHub. Для выполнения команд используйте каталог <code>source</code>.</p><ul class="material-list">'
+        for name, target, is_dir in sorted(children, key=lambda x: (not x[2], x[0])):
+            body += '<li><a href="' + relative_link(url, target) + '">' + html.escape(name) + (' /' if is_dir else '') + '</a></li>'
+        body += '</ul>'
+        crumbs = '<a href="' + relative_link(url, 'index.html') + '">Карта курса</a>' if directory == Path('.') else '<a href="' + relative_link(url, material_url(directory.parent.as_posix(), True)) + '">← Назад к каталогу</a>'
+        write(url, 'Материалы курса' if directory == Path('.') else directory.as_posix(), body, crumbs)
 
-    logger = setup_logging(args.verbose)
-    config = WebsiteConfig(
-        root_path=source_root,
-        output_path=output_path,
-        repo_url=args.repo_url,
-        branch=args.branch,
-        site_title=site_title,
-        site_subtitle=site_subtitle,
-        language=args.lang,
-        landing=(args.lang in ("ru", "en")),
-        ui_strings=ui_strings,
-    )
-
+def build_website(config, logger, *, skip_vendor=False):
+    """Сначала полная сборка в staging. Старый результат меняется только после успеха.
+    skip_vendor сохранён для совместимости вызовов; сети нет в обоих режимах.
+    """
+    root = config.root_path.resolve()
+    if not root.is_dir(): raise ValueError('Корень проекта не найден')
+    output = validate_output(root, config.output_path)
+    if (root / 'course.json').exists():
+        errors = check_course(root)
+        if errors: raise ValueError('\n'.join(errors))
+    before = tree_hash(root)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    stage = Path(tempfile.mkdtemp(prefix='.codex-build-', dir=output.parent))
     try:
-        build_website(config, logger)
-        print(f"Successfully built website at: {output_path}")
+        staged = replace(config, root_path=root, output_path=stage)
+        template_dir = Path(__file__).parent / 'website_templates'
+        env = Environment(loader=FileSystemLoader(str(template_dir)),
+                          autoescape=select_autoescape(['html', 'xml', 'j2']),
+                          trim_blocks=True, lstrip_blocks=True)
+        state = collect_pages(staged, logger)
+        if not state.pages: raise RuntimeError('Нет Markdown-страниц')
+        render_pages(staged, state, env, logger)
+        if config.landing: render_landing(staged, state, env, logger)
+        copy_assets(staged, state, logger)
+        copy_learning_sources(staged)
+        assets = stage / 'assets'; assets.mkdir(exist_ok=True)
+        for name in ('site.css', 'site.js', 'progress.js', 'landing.css', 'landing.js'):
+            shutil.copy2(template_dir / name, assets / name)
+        index = [{"title": p.title, "url": p.output_url,
+                  "text": (p.content or '')} for p in state.pages]
+        payload = json.dumps(index, ensure_ascii=False).replace('<', '\\u003c')
+        (assets / 'search-index.js').write_text('window.COURSE_SEARCH = ' + payload + ';', encoding='utf-8')
+        from check_site import check as check_site
+        link_errors, _ = check_site(stage)
+        if link_errors: raise ValueError('Ошибки локальных ссылок:\n' + '\n'.join(link_errors[:30]))
+        if tree_hash(root) != before: raise ValueError('Исходники изменились во время сборки')
+        manifest = {'schema_version': 1, 'candidate_tree_sha256': before, 'files': {p.relative_to(stage).as_posix(): sha256(p) for p in sorted(stage.rglob('*')) if p.is_file()}}
+        (stage / BUILD_MARKER).write_text(json.dumps(manifest, ensure_ascii=False, sort_keys=True), encoding='utf-8')
+        backup = output.with_name(output.name + '.previous-build')
+        if backup.exists(): raise ValueError('Сначала разберите предыдущую резервную сборку: ' + str(backup))
+        had_output = output.exists()
+        if had_output: output.rename(backup)
+        try:
+            stage.rename(output)
+        except BaseException:
+            if had_output: backup.rename(output)
+            raise
+        if had_output: shutil.rmtree(backup)
+        logger.info('Автономный сайт собран: %s', output)
+        return output
+    finally:
+        if stage.exists(): shutil.rmtree(stage)
+
+def main():
+    parser = argparse.ArgumentParser(description='Сборка автономного курса Codex CLI без сети')
+    parser.add_argument('--root', '-r', type=Path, default=Path(__file__).resolve().parent.parent)
+    parser.add_argument('--output', '-o', type=Path)
+    parser.add_argument('--lang', choices=['ru'], default='ru')
+    parser.add_argument('--repo-url', default=REPO_URL)
+    parser.add_argument('--branch', default=DEFAULT_BRANCH)
+    parser.add_argument('--verbose', '-v', action='store_true')
+    args = parser.parse_args()
+    root = args.root.resolve()
+    config = WebsiteConfig(root, args.output or root / 'site', repo_url=args.repo_url,
+                           branch=args.branch, landing=True, language='ru')
+    try:
+        build_website(config, setup_logging(args.verbose))
         return 0
-    except (OSError, RuntimeError) as exc:
-        logger.error(f"Build failed: {exc}")
+    except (OSError, RuntimeError, ValueError, KeyError) as exc:
+        print('Ошибка сборки: ' + str(exc), file=sys.stderr)
         return 1
-    except KeyboardInterrupt:
-        logger.warning("Build interrupted by user")
-        return 130
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     sys.exit(main())

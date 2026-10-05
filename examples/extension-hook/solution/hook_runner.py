@@ -1,73 +1,25 @@
-"""examples/extension-hook/solution/hook_runner.py - Эталонный исполнитель хуков."""
+"""Учебный PreToolUse: ограниченный список команд, без их выполнения.
+Это демонстрация контракта hooks, не универсальная граница безопасности.
+"""
+import json,sys
+ALLOWED={'git status --short','git diff --stat'}
 
-from __future__ import annotations
+def evaluate(event):
+    if not isinstance(event,dict) or event.get('hook_event_name')!='PreToolUse':
+        raise ValueError('Ожидалось событие PreToolUse')
+    tool=event.get('tool_name');args=event.get('tool_input')
+    command=args.get('command') if isinstance(args,dict) else None
+    allow=tool=='Bash' and isinstance(command,str) and command in ALLOWED
+    if allow:return {} # Не повышает разрешения Codex.
+    return {'hookSpecificOutput':{'hookEventName':'PreToolUse','permissionDecision':'deny',
+             'permissionDecisionReason':'Учебный hook разрешает только два точных запроса чтения Git.'}}
 
-import subprocess
-import sys
-from typing import Any, Dict, List, Optional
-
-
-class HookRunner:
-    """Исполнитель и валидатор хуков расширений Codex CLI."""
-
-    ALLOWED_EVENTS = {"pre-command", "post-command", "pre-commit"}
-    BLOCKED_PATTERNS = ["curl", "wget", "rm -rf", "format ", "powershell -enc", "bash -c"]
-
-    def execute_hook(self, hook_config: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
-        event = hook_config.get("event")
-        if event not in self.ALLOWED_EVENTS:
-            return {
-                "success": False,
-                "status": "rejected",
-                "error": f"Неизвестное событие хука: '{event}'. Разрешены: {sorted(list(self.ALLOWED_EVENTS))}",
-            }
-
-        command = hook_config.get("command")
-        if not command or not isinstance(command, list):
-            return {
-                "success": False,
-                "status": "rejected",
-                "error": "Параметр command должен быть непустым списком аргументов",
-            }
-
-        cmd_str = " ".join(str(c) for c in command).lower()
-        for pattern in self.BLOCKED_PATTERNS:
-            if pattern in cmd_str:
-                return {
-                    "success": False,
-                    "status": "rejected",
-                    "error": f"Обнаружена потенциально опасная инструкция в команде хука: '{pattern}'",
-                }
-
-        # Запуск команды хука
-        try:
-            res = subprocess.run(
-                command,
-                capture_output=True,
-                text=True,
-                timeout=5,
-            )
-            if res.returncode == 0:
-                return {
-                    "success": True,
-                    "status": "executed",
-                    "error": None,
-                }
-            else:
-                return {
-                    "success": False,
-                    "status": "failed",
-                    "error": f"Хук завершился с кодом ошибки {res.returncode}: {res.stderr.strip()}",
-                }
-        except subprocess.TimeoutExpired:
-            return {
-                "success": False,
-                "status": "failed",
-                "error": "Превышен таймаут выполнения хука",
-            }
-        except Exception as e:
-            return {
-                "success": False,
-                "status": "failed",
-                "error": f"Ошибка выполнения хука: {e}",
-            }
+def main():
+    try:
+        raw=sys.stdin.buffer.read(65537)
+        if len(raw)>65536:raise ValueError('Слишком большой ввод')
+        print(json.dumps(evaluate(json.loads(raw)),ensure_ascii=False))
+        return 0
+    except (ValueError,UnicodeError) as exc:
+        print('Учебный hook: '+str(exc),file=sys.stderr);return 2
+if __name__=='__main__':sys.exit(main())

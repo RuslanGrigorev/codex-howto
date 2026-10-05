@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lesson_id": "instructions.providers",
+  "passing_score": 1.0,
+  "questions": [
+    {
+      "question": "Загружает ли --oss веса модели автоматически?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Нет, провайдер и модель готовятся отдельно.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Да, вместе с курсом.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Только при запуске /goal.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Флаг выбирает режим, а не заменяет подготовку среды.",
+      "id": "instructions.providers.q1"
+    },
+    {
+      "question": "Что доказывает точное чтение marker.txt?",
+      "options": [
+        {
+          "id": "b",
+          "text": "Полную совместимость всех возможностей.",
+          "is_correct": false
+        },
+        {
+          "id": "c",
+          "text": "Отсутствие любых сетевых запросов.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Один проверенный сценарий работы с файлом.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Область доказательства ограничена выполненным тестом.",
+      "id": "instructions.providers.q2"
+    },
+    {
+      "question": "Какой идентификатор передавать в --model?",
+      "options": [
+        {
+          "id": "c",
+          "text": "Идентификатор урока.",
+          "is_correct": false
+        },
+        {
+          "id": "a",
+          "text": "Имя модели, реально установленной у выбранного провайдера.",
+          "is_correct": true
+        },
+        {
+          "id": "b",
+          "text": "Любое красивое название.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Каталог моделей зависит от провайдера.",
+      "id": "instructions.providers.q3"
+    }
+  ]
+}
