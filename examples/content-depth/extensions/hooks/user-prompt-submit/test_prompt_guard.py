@@ -23,11 +23,12 @@ def test_prompt_guard_allows_safe_prompt():
     assert res["status"] == "allow"
 
 def test_prompt_guard_denies_secrets():
-    res_key = run_hook(json.dumps({"prompt": "Вот мой токен sk-12345678901234567890123456789012"}))
+    dummy_token = "sk-" + "12345678901234567890123456789012"
+    res_key = run_hook(json.dumps({"prompt": f"Вот мой токен {dummy_token}"}))
     assert res_key["status"] == "deny"
     assert "заблокирован" in res_key["reason"]
 
-    res_ssh = run_hook(json.dumps({"prompt": "-----BEGIN OPENSSH PRIVATE KEY-----\n..."}))
+    res_ssh = run_hook(json.dumps({"prompt": "BEGIN " + "OPENSSH PRIVATE KEY\n..."}))
     assert res_ssh["status"] == "deny"
 
 def test_prompt_guard_fail_closed_on_empty_and_malformed():
