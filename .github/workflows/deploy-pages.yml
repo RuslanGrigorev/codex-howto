@@ -36,6 +36,9 @@ jobs:
         run: |
           python scripts/build_website.py --output site
 
+      - name: Отключение Jekyll
+        run: touch site/.nojekyll
+
       - name: Загрузка артефакта страниц
         uses: actions/upload-pages-artifact@v3
         with:
