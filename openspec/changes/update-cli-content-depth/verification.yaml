@@ -1,0 +1,1194 @@
+schema_version: 1
+change_id: update-cli-content-depth
+program_task_id: codex-cli-content-depth-v1
+milestone: M1
+status: FROZEN_SPECIFICATION_NOT_EXECUTED
+target_cli: 0.160.0
+acceptance_criteria:
+- id: AC-1
+  title: Независимый frozen inventory
+  pass_condition: Все публичные пункты baseline 0.160.0, достижимые поля схемы и тематические области ADR-CD-01
+    классифицированы ровно один раз; происхождение и хеши проверены; возможности не исключены из-за доступа.
+  scenarios:
+  - INV-01
+  - INV-02
+  - FRZ-01
+- id: AC-2
+  title: Достоверный синтаксис
+  pass_condition: Нет действующего mcp-server; общая help с exit 0 не подтверждает подкоманду; применимые команды/поля
+    имеют локальные карточки; B01-B04 пройдены.
+  scenarios:
+  - SYN-01
+  - SYN-02
+- id: AC-3
+  title: Завершённые уроки
+  pass_condition: Рубрика всех 62 исходных и новых предусмотренных уроков PASS по конкретным артефактам; прежние
+    ID, десять модулей и девять упражнений сохранены.
+  scenarios:
+  - EDU-01
+  - EDU-02
+- id: AC-4
+  title: Двенадцать объяснённых схем
+  pass_condition: D01-D12 имеют согласованные mmd/SVG/пояснение, доступны file:// без JS/сети на 390 и 1440 px;
+    опасный или отсутствующий SVG отклонён.
+  scenarios:
+  - DIA-01
+  - OFF-01
+  - OFF-02
+- id: AC-5
+  title: Готовые расширения
+  pass_condition: Все H01-H04 и E01-E04 поставлены полными комплектами и проходят определённые локальные положительные/отрицательные
+    сценарии; native статус не подменён.
+  scenarios:
+  - EXT-01
+  - EXT-02
+- id: AC-6
+  title: Продвинутая практика
+  pass_condition: A01-A05 и C01 имеют полные инструкции, код/шаблоны, fixture-проверки отказа и независимые критерии;
+    один Python SDK-клиент, stdio app-server, отдельные remote/cloud.
+  scenarios:
+  - AUT-01
+  - CAP-01
+- id: AC-7
+  title: Детерминированная приёмка
+  pass_condition: Матрица покрывает все scenario IDs, stage-check реализован, evidence содержит нужные хеши и методы;
+    пропущенные/поддельные/старые доказательства отклонены.
+  scenarios:
+  - TRC-01
+  - TRC-02
+- id: AC-8
+  title: Переносимость и исходные регрессии
+  pass_condition: UTF-8 корректен без PYTHONUTF8; четыре существующих symlink-проверки реально PASS на пригодном
+    runner; полный pytest и offline PASS без ослабления тестов.
+  scenarios:
+  - ENV-01
+  - ENV-02
+- id: AC-9
+  title: Отсутствие побочных эффектов
+  pass_condition: Повторный --prepare не перезаписывает работу; профиль/секреты не читаются и не изменяются, offline
+    не обращается к сети/модели и не устанавливает зависимости; интеграции не активируются.
+  scenarios:
+  - SAFE-01
+- id: AC-10
+  title: Автономный кандидат
+  pass_condition: ZIP именно проверенного дерева валиден; полный file:// прогон распакованного пакета PASS, включая
+    материалы/схемы/поиск/quiz/прогресс.
+  scenarios:
+  - ZIP-01
+- id: AC-11
+  title: Честное завершение и ограниченное ревью
+  pass_condition: Все обязательные M1 сценарии PASS и 0 OPEN P0/P1; M1 явно candidate, M2 отдельно непроверен; tested_cli
+    не заполнен локальными стендами; loop и dedup соблюдены.
+  scenarios:
+  - GATE-01
+  - GATE-02
+  - REV-01
+  - REV-02
+batches:
+- id: T01
+  task_id: codex-cli-content-depth-v1-t01
+  depends_on: []
+  title: Достоверность baseline и переносимость
+  acceptance_criteria:
+  - AC-1
+  - AC-2
+  - AC-8
+  required_scenarios:
+  - ENV-01
+  - ENV-02
+  - INV-01
+  - INV-02
+  - SYN-01
+  - FRZ-01
+  allowed_files_or_components:
+  - sources.json
+  - reference/upstream/**
+  - reference/commands.md
+  - reference/coverage.md
+  - 08-automation/app-server.md
+  - scripts/check_content_contract.py
+  - scripts/check_coverage.py
+  - scripts/check_project.py
+  - scripts/check_updates.py
+  - scripts/course_core.py
+  - scripts/verify.py
+  - scripts/README.md
+  - scripts/tests/**
+  - scripts/fixtures/**
+  - README.md
+  - openspec/changes/update-cli-content-depth/tasks.md
+  - .learning/reports/content/**
+  - .learning/evidence/content-depth/**
+  - .learning/workspaces/**
+  - .learning/reports/**
+  - .learning/evidence/**
+  - .learning/site/**
+  - .learning/dist/**
+  - .learning/tooling/**
+  - .learning/convergence/**
+  - .pytest_cache/**
+  - '**/__pycache__/**'
+  scope_note: Критерии AC-2 на этом этапе только SYN-01, AC-1 только полный frozen baseline/план карты; итоговые
+    карточки в T03.
+  scoped_acceptance_criteria:
+    AC-1: Полный независимый inventory и категории/планы по frozen baseline согласно INV-01/INV-02; карточки и готовые
+      how-to не требуются до T03/T06.
+    AC-2: 'SYN-01: действующий mcp-server удалён, проверка help подтверждает Usage, а не exit 0 общей справки.'
+    AC-8: 'ENV-01/ENV-02 реально PASS: UTF-8 чтение/вывод и четыре исходных symlink-теста на пригодном runner; полный
+      pytest после исправления PASS.'
+- id: T02
+  task_id: codex-cli-content-depth-v1-t02
+  depends_on:
+  - T01
+  title: Офлайн-схемы и эталон MCP
+  acceptance_criteria:
+  - AC-4
+  - AC-9
+  required_scenarios:
+  - DIA-01
+  - OFF-01
+  - OFF-02
+  - SAFE-01
+  allowed_files_or_components:
+  - reference/diagrams/**
+  - reference/upstream/**
+  - scripts/build_website.py
+  - scripts/markdown_adapter.py
+  - scripts/check_content_contract.py
+  - scripts/check_site.py
+  - scripts/browser_check.py
+  - scripts/package_course.py
+  - scripts/website_templates/page.html.j2
+  - scripts/website_templates/site.css
+  - scripts/tests/**
+  - 07-mcp/**
+  - examples/local-mcp/HINTS.md
+  - sources.json
+  - 01-start/*.md
+  - 02-workflow/*.md
+  - 03-safety/*.md
+  - 04-instructions/*.md
+  - 05-sessions/*.md
+  - 06-skills/*.md
+  - openspec/changes/update-cli-content-depth/tasks.md
+  - .learning/reports/content/**
+  - .learning/evidence/content-depth/**
+  - .learning/workspaces/**
+  - .learning/reports/**
+  - .learning/evidence/**
+  - .learning/site/**
+  - .learning/dist/**
+  - .learning/tooling/**
+  - .learning/convergence/**
+  - .pytest_cache/**
+  - '**/__pycache__/**'
+  scope_note: AC-4 на этом этапе только D01-D08, pipeline/эталон; SAFE-01 для pipeline без установки/активации.
+  scoped_acceptance_criteria:
+    AC-4: D01-D08 и pipeline PASS по DIA-01/OFF-01/OFF-02 в этой подгруппе; эталон stdio-MCP имеет полный механизм,
+      пример, ошибку и проверку.
+    AC-9: Сборка/просмотр/локальный протокольный пример не изменяют настоящие профили и не активируют MCP/hooks;
+      внешнего runtime нет.
+- id: T03
+  task_id: codex-cli-content-depth-v1-t03
+  depends_on:
+  - T02
+  title: Основной CLI и справочник
+  acceptance_criteria:
+  - AC-2
+  - AC-3
+  - AC-4
+  required_scenarios:
+  - SYN-02
+  - EDU-02
+  - EDU-01
+  - DIA-01
+  - OFF-01
+  allowed_files_or_components:
+  - 01-start/**
+  - 02-workflow/**
+  - 03-safety/**
+  - 04-instructions/**
+  - 05-sessions/**
+  - 06-skills/**
+  - reference/**
+  - course.json
+  - sources.json
+  - examples/content-depth/basics/**
+  - scripts/check_content_contract.py
+  - scripts/check_coverage.py
+  - scripts/tests/**
+  - openspec/changes/update-cli-content-depth/tasks.md
+  - .learning/reports/content/**
+  - .learning/evidence/content-depth/**
+  - .learning/workspaces/**
+  - .learning/reports/**
+  - .learning/evidence/**
+  - .learning/site/**
+  - .learning/dist/**
+  - .learning/tooling/**
+  - .learning/convergence/**
+  - .pytest_cache/**
+  - '**/__pycache__/**'
+  scope_note: AC-3 на этом этапе только модули 01-06; итог EDU-01 всех уроков в T06.
+  scoped_acceptance_criteria:
+    AC-2: Все публичные применимые команды и reachable config fields frozen inventory имеют полные локальные карточки;
+      B01-B04 PASS по SYN-02.
+    AC-3: Рубрика EDU-01 PASS для уроков модулей 01-06, EDU-02 rejects hollow example; прежние ID/порядок/упражнения
+      не нарушены.
+    AC-4: D01-D08 корректно связаны с переработанными уроками, пояснения соответствуют им; новых схем здесь не требуется.
+- id: T04
+  task_id: codex-cli-content-depth-v1-t04
+  depends_on:
+  - T03
+  title: Законченные расширения
+  acceptance_criteria:
+  - AC-3
+  - AC-4
+  - AC-5
+  - AC-9
+  required_scenarios:
+  - EXT-01
+  - EXT-02
+  - SAFE-01
+  - DIA-01
+  - OFF-01
+  - OFF-02
+  - EDU-01
+  allowed_files_or_components:
+  - 06-skills/**
+  - 07-mcp/**
+  - 09-extensions/**
+  - reference/**
+  - examples/content-depth/extensions/**
+  - examples/hooks/**
+  - examples/subagents/**
+  - course.json
+  - sources.json
+  - scripts/check_content_contract.py
+  - scripts/check_project.py
+  - scripts/course_core.py
+  - scripts/verify.py
+  - scripts/tests/**
+  - openspec/changes/update-cli-content-depth/tasks.md
+  - .learning/reports/content/**
+  - .learning/evidence/content-depth/**
+  - .learning/workspaces/**
+  - .learning/reports/**
+  - .learning/evidence/**
+  - .learning/site/**
+  - .learning/dist/**
+  - .learning/tooling/**
+  - .learning/convergence/**
+  - .pytest_cache/**
+  - '**/__pycache__/**'
+  scope_note: AC-3 только модули 07/09 и связанные skills; AC-4 только D09-D11, E/H комплекты.
+  scoped_acceptance_criteria:
+    AC-3: Рубрика содержания модуля 07, extensions и связанных skills PASS, файлы и примеры доступны локально.
+    AC-4: D09-D11 PASS по DIA-01/OFF-01/OFF-02 в этой подгруппе; предыдущие восемь не сломаны.
+    AC-5: Все H01-H04 и E01-E04 PASS по EXT-01/EXT-02, остальные события baseline имеют контракт/пример.
+    AC-9: SAFE-01 реально PASS на новых prepare-комплектах и isolated fake-home canaries; прежние девять упражнений
+      сохранены.
+- id: T05
+  task_id: codex-cli-content-depth-v1-t05
+  depends_on:
+  - T04
+  title: Продвинутая автоматизация
+  acceptance_criteria:
+  - AC-3
+  - AC-4
+  - AC-6
+  - AC-9
+  required_scenarios:
+  - AUT-01
+  - DIA-01
+  - OFF-01
+  - OFF-02
+  - EDU-01
+  - SAFE-01
+  allowed_files_or_components:
+  - 08-automation/**
+  - 09-extensions/remote.md
+  - 09-extensions/remote.quiz.json
+  - 09-extensions/cloud*
+  - reference/**
+  - examples/content-depth/automation/**
+  - course.json
+  - sources.json
+  - scripts/check_content_contract.py
+  - scripts/course_core.py
+  - scripts/verify.py
+  - scripts/tests/**
+  - openspec/changes/update-cli-content-depth/tasks.md
+  - .learning/reports/content/**
+  - .learning/evidence/content-depth/**
+  - .learning/workspaces/**
+  - .learning/reports/**
+  - .learning/evidence/**
+  - .learning/site/**
+  - .learning/dist/**
+  - .learning/tooling/**
+  - .learning/convergence/**
+  - .pytest_cache/**
+  - '**/__pycache__/**'
+  scope_note: AC-3 только automation/remote/cloud/SDK, AC-4 только D12; A01-A05.
+  scoped_acceptance_criteria:
+    AC-3: Полные материалы automation, SDK, remote и cloud с rubric PASS; новые lesson ID зарегистрированы только
+      в разрешённых областях.
+    AC-4: D12 согласована с клиентом и PASS по DIA-01/OFF-01/OFF-02; предыдущие 11 схем сохранены.
+    AC-6: Все A01-A05 PASS по AUT-01; C01 ожидается в T06, здесь не требуется.
+    AC-9: Продвинутые templates/клиенты не включаются/не авторизуются автоматически; fixture-only offline не обращается
+      к модели, сети или installer.
+- id: T06
+  task_id: codex-cli-content-depth-v1-t06
+  depends_on:
+  - T05
+  title: Полная редакционная приёмка и ZIP
+  acceptance_criteria:
+  - AC-1
+  - AC-2
+  - AC-3
+  - AC-4
+  - AC-5
+  - AC-6
+  - AC-7
+  - AC-8
+  - AC-9
+  - AC-10
+  - AC-11
+  required_scenarios:
+  - TRC-01
+  - TRC-02
+  - ENV-01
+  - ENV-02
+  - GATE-01
+  - GATE-02
+  - INV-01
+  - INV-02
+  - SYN-01
+  - SYN-02
+  - EDU-01
+  - EDU-02
+  - DIA-01
+  - EXT-01
+  - EXT-02
+  - AUT-01
+  - CAP-01
+  - OFF-01
+  - OFF-02
+  - SAFE-01
+  - ZIP-01
+  - FRZ-01
+  - REV-01
+  - REV-02
+  allowed_files_or_components:
+  - 01-start/**
+  - 02-workflow/**
+  - 03-safety/**
+  - 04-instructions/**
+  - 05-sessions/**
+  - 06-skills/**
+  - 07-mcp/**
+  - 08-automation/**
+  - 09-extensions/**
+  - 10-capstone/**
+  - reference/**
+  - examples/content-depth/capstone/**
+  - course.json
+  - sources.json
+  - validation.json
+  - ACCEPTANCE_RU.md
+  - README.md
+  - CHANGELOG.md
+  - scripts/check_content_contract.py
+  - scripts/check_coverage.py
+  - scripts/check_cross_references.py
+  - scripts/check_markdown_rendering.py
+  - scripts/check_site.py
+  - scripts/browser_check.py
+  - scripts/package_course.py
+  - scripts/verify.py
+  - scripts/tests/**
+  - openspec/changes/update-cli-content-depth/tasks.md
+  - .learning/reports/content/**
+  - .learning/evidence/content-depth/**
+  - .learning/workspaces/**
+  - .learning/reports/**
+  - .learning/evidence/**
+  - .learning/site/**
+  - .learning/dist/**
+  - .learning/tooling/**
+  - .learning/convergence/**
+  - .pytest_cache/**
+  - '**/__pycache__/**'
+  scope_note: Полная M1 приёмка всех AC и сценариев, включая предыдущие batch, все 12 схем и все уроки.
+  scoped_acceptance_criteria:
+    AC-1: Все публичные пункты baseline 0.160.0, достижимые поля схемы и тематические области ADR-CD-01 классифицированы
+      ровно один раз; происхождение и хеши проверены; возможности не исключены из-за доступа.
+    AC-2: Нет действующего mcp-server; общая help с exit 0 не подтверждает подкоманду; применимые команды/поля имеют
+      локальные карточки; B01-B04 пройдены.
+    AC-3: Рубрика всех 62 исходных и новых предусмотренных уроков PASS по конкретным артефактам; прежние ID, десять
+      модулей и девять упражнений сохранены.
+    AC-4: D01-D12 имеют согласованные mmd/SVG/пояснение, доступны file:// без JS/сети на 390 и 1440 px; опасный
+      или отсутствующий SVG отклонён.
+    AC-5: Все H01-H04 и E01-E04 поставлены полными комплектами и проходят определённые локальные положительные/отрицательные
+      сценарии; native статус не подменён.
+    AC-6: A01-A05 и C01 имеют полные инструкции, код/шаблоны, fixture-проверки отказа и независимые критерии; один
+      Python SDK-клиент, stdio app-server, отдельные remote/cloud.
+    AC-7: Матрица покрывает все scenario IDs, stage-check реализован, evidence содержит нужные хеши и методы; пропущенные/поддельные/старые
+      доказательства отклонены.
+    AC-8: UTF-8 корректен без PYTHONUTF8; четыре существующих symlink-проверки реально PASS на пригодном runner;
+      полный pytest и offline PASS без ослабления тестов.
+    AC-9: Повторный --prepare не перезаписывает работу; профиль/секреты не читаются и не изменяются, offline не
+      обращается к сети/модели и не устанавливает зависимости; интеграции не активируются.
+    AC-10: ZIP именно проверенного дерева валиден; полный file:// прогон распакованного пакета PASS, включая материалы/схемы/поиск/quiz/прогресс.
+    AC-11: Все обязательные M1 сценарии PASS и 0 OPEN P0/P1; M1 явно candidate, M2 отдельно непроверен; tested_cli
+      не заполнен локальными стендами; loop и dedup соблюдены.
+diagrams:
+- id: D01
+  title: Агентный цикл
+  lesson_path: 02-workflow/small-fix.md
+  batch: T02
+  source: reference/diagrams/D01.mmd
+  svg: reference/diagrams/D01.svg
+  text_explanation: в связанном уроке; значимые узлы/стрелки и границы объяснены
+- id: D02
+  title: Слои конфигурации
+  lesson_path: 04-instructions/config.md
+  batch: T02
+  source: reference/diagrams/D02.mmd
+  svg: reference/diagrams/D02.svg
+  text_explanation: в связанном уроке; значимые узлы/стрелки и границы объяснены
+- id: D03
+  title: Область AGENTS.md
+  lesson_path: 04-instructions/scope.md
+  batch: T02
+  source: reference/diagrams/D03.mmd
+  svg: reference/diagrams/D03.svg
+  text_explanation: в связанном уроке; значимые узлы/стрелки и границы объяснены
+- id: D04
+  title: Контекст память история и файлы
+  lesson_path: 04-instructions/context.md
+  batch: T02
+  source: reference/diagrams/D04.mmd
+  svg: reference/diagrams/D04.svg
+  text_explanation: в связанном уроке; значимые узлы/стрелки и границы объяснены
+- id: D05
+  title: Обнаружение и вызов skill
+  lesson_path: 06-skills/create.md
+  batch: T02
+  source: reference/diagrams/D05.mmd
+  svg: reference/diagrams/D05.svg
+  text_explanation: в связанном уроке; значимые узлы/стрелки и границы объяснены
+- id: D06
+  title: История сессии и состояние Git
+  lesson_path: 05-sessions/resume.md
+  batch: T02
+  source: reference/diagrams/D06.mmd
+  svg: reference/diagrams/D06.svg
+  text_explanation: в связанном уроке; значимые узлы/стрелки и границы объяснены
+- id: D07
+  title: Sandbox approval rules и auto-review
+  lesson_path: 03-safety/permissions.md
+  batch: T02
+  source: reference/diagrams/D07.mmd
+  svg: reference/diagrams/D07.svg
+  text_explanation: в связанном уроке; значимые узлы/стрелки и границы объяснены
+- id: D08
+  title: MCP stdio HTTP и границы доступа
+  lesson_path: 07-mcp/local-stdio.md
+  batch: T02
+  source: reference/diagrams/D08.mmd
+  svg: reference/diagrams/D08.svg
+  text_explanation: в связанном уроке; значимые узлы/стрелки и границы объяснены
+- id: D09
+  title: Жизненный цикл hooks
+  lesson_path: 09-extensions/plugins-hooks.md
+  batch: T04
+  source: reference/diagrams/D09.mmd
+  svg: reference/diagrams/D09.svg
+  text_explanation: в связанном уроке; значимые узлы/стрелки и границы объяснены
+- id: D10
+  title: Делегация и контекст субагентов
+  lesson_path: 09-extensions/agent-design.md
+  batch: T04
+  source: reference/diagrams/D10.mmd
+  svg: reference/diagrams/D10.svg
+  text_explanation: в связанном уроке; значимые узлы/стрелки и границы объяснены
+- id: D11
+  title: Загрузка и состав плагина
+  lesson_path: 09-extensions/plugins.md
+  batch: T04
+  source: reference/diagrams/D11.mmd
+  svg: reference/diagrams/D11.svg
+  text_explanation: в связанном уроке; значимые узлы/стрелки и границы объяснены
+- id: D12
+  title: App-server initialize thread turn events
+  lesson_path: 08-automation/app-server.md
+  batch: T05
+  source: reference/diagrams/D12.mmd
+  svg: reference/diagrams/D12.svg
+  text_explanation: в связанном уроке; значимые узлы/стрелки и границы объяснены
+howto_units:
+- id: B01
+  title: Основной рабочий цикл
+  batch: T03
+  required_checks:
+  - read-only исследование без записи
+  - ограниченная правка с independent tests/diff
+  - plan перед изменением
+  - goal состояния pause/resume/edit/clear без обещания отката
+  - review известного граничного дефекта
+  native_validation: M2; локальная fixture-проверка не live
+- id: B02
+  title: Конфигурация и провайдер
+  batch: T03
+  required_checks:
+  - base/profile/project/CLI и административные ограничения
+  - валидный config и неизвестный ключ
+  - реальный выбор доступного model/reasoning без вечного ID
+  - локальный провайдер подготовлен либо диагностирован как недоступный
+  - disabled/cached/live web_search и доступность tools
+  native_validation: M2; локальная fixture-проверка не live
+- id: B03
+  title: Контекст и сессия
+  batch: T03
+  required_checks:
+  - AGENTS scope и skill explicit discovery
+  - compact/recap/memories не равны Git
+  - resume/fork плюс реальное чтение актуального файла
+  - managed worktree и отсутствие конфликтующей записи
+  - queue/public session commands documented; destructive migration reference-only
+  native_validation: M2; локальная fixture-проверка не live
+- id: B04
+  title: Входы и терминал
+  batch: T03
+  required_checks:
+  - изображение существующего fixture без секретов
+  - web-search проверка источников и untrusted input
+  - completion для PowerShell и справочная Bash/zsh/fish
+  - VISUAL/EDITOR и клавиши темы
+  - платформенная матрица native Windows/WSL/macOS/Linux без неподтверждённого PASS
+  native_validation: M2; локальная fixture-проверка не live
+- id: H01
+  title: PreToolUse
+  batch: T04
+  required_checks:
+  - положительный allow
+  - известный запрещённый harmless input не выполнен
+  - неверный JSON обнаружен; неподдерживаемый output не назван защитой
+  native_validation: M2; локальная fixture-проверка не live
+- id: H02
+  title: PostToolUse
+  batch: T04
+  required_checks:
+  - наблюдение корректного результата
+  - ошибка инструмента не названа успехом
+  - никакое post-событие не названо откатом уже выполненного действия
+  native_validation: M2; локальная fixture-проверка не live
+- id: H03
+  title: UserPromptSubmit
+  batch: T04
+  required_checks:
+  - безопасный дополнительный контекст в поддерживаемом формате
+  - неверный input/output обнаружен
+  - исходный смысл запроса не изменён скрытно
+  native_validation: M2; локальная fixture-проверка не live
+- id: H04
+  title: Stop
+  batch: T04
+  required_checks:
+  - разрешённое завершение
+  - контролируемое незавершённое условие в поддерживаемом формате
+  - защита от повторного бесконечного возобновления при stop_hook_active/эквиваленте baseline
+  native_validation: M2; локальная fixture-проверка не live
+- id: E01
+  title: Субагенты
+  batch: T04
+  required_checks:
+  - три роли explorer/read-only reviewer/workspace-write implementer
+  - явная делегация непересекающихся задач
+  - переданные контекст и разрешения описаны
+  - результат собирается и проверяется независимо
+  - ошибка/остановка дочерней задачи не даёт false success
+  native_validation: M2; локальная fixture-проверка не live
+- id: E02
+  title: Skills
+  batch: T04
+  required_checks:
+  - четыре комплекта project-map/diff-review/test-plan/docs-update
+  - SKILL.md плюс все используемые references/scripts
+  - explicit invocation и наблюдаемая процедура
+  - missing input/resource диагностирован
+  - нет автоматической публикации/секретов/дополнительных прав
+  native_validation: M2; локальная fixture-проверка не live
+- id: E03
+  title: Plugin
+  batch: T04
+  required_checks:
+  - один полный plugin bundle с поддержанным baseline manifest
+  - проверенный skill и MCP-компонент в составе
+  - описанные установка/доверие/удаление
+  - missing component/malformed manifest отклонены
+  - пакет не активирован автоматически
+  native_validation: M2; локальная fixture-проверка не live
+- id: E04
+  title: MCP
+  batch: T04
+  required_checks:
+  - stdio initialize/notifications/tools-list/call и работа после отказа
+  - разрешённый файл и путь за root
+  - HTTP/OAuth последовательность без личного аккаунта в offline
+  - auth error/timeout/missing tool различены
+  - полный fixture contract и отдельная инструкция реального Codex
+  native_validation: M2; локальная fixture-проверка не live
+- id: A01
+  title: Exec
+  batch: T05
+  required_checks:
+  - stdin и stdout/stderr различены
+  - JSONL плюс output-schema плюс last-message
+  - exit 0 без требуемого terminal result не успех
+  - empty/truncated/turn-failed обработаны
+  - unknown event не скрывает известную ошибку
+  - timeout/cancel/retry/resume без повторных неконтролируемых side effects
+  native_validation: M2; локальная fixture-проверка не live
+- id: A02
+  title: GitHub Action
+  batch: T05
+  required_checks:
+  - workflow в examples, точная проверенная версия/commit
+  - только доверенный ручной model run с secrets scoped
+  - недоверенный PR не исполняется с привилегированными секретами
+  - contents read и persist-credentials false
+  - exit/artifact/limits заданы; workflow не активирован
+  native_validation: M2; локальная fixture-проверка не live
+- id: A03
+  title: Python SDK
+  batch: T05
+  required_checks:
+  - один executable client и version-pinned isolated requirements
+  - start/continue/resume по поддерживаемому API
+  - известная ошибка/timeout наблюдаемы
+  - fixture adapter tests без модели и install в offline
+  - TS SDK только локальная справочная карта
+  native_validation: M2; локальная fixture-проверка не live
+- id: A04
+  title: App-server
+  batch: T05
+  required_checks:
+  - 'один stdio client: initialize/thread/turn/events согласно baseline'
+  - events не путаются с exec JSONL
+  - ошибка/cancel/EOF и process cleanup
+  - fixture child-process tests без auth/модели
+  - схема D12 и отдельная инструкция реального применения
+  native_validation: M2; локальная fixture-проверка не live
+- id: A05
+  title: Remote и cloud
+  batch: T05
+  required_checks:
+  - remote-loopback/TLS-SSH/auth-token-env и где файлы/код
+  - явное отличие cloud от remote app-server
+  - последовательность получить/просмотреть/применить diff и local tests по baseline CLI
+  - timeout/auth/недоступность без ложной успешной отправки
+  - cloud не запускается без отдельного доступа
+  native_validation: M2; локальная fixture-проверка не live
+- id: C01
+  title: Итоговая практика
+  batch: T06
+  required_checks:
+  - одна fixture-задача с независимыми тестами
+  - локальный самостоятельный маршрут без модели
+  - отдельный live-маршрут skill/plan/изменение/tests/review
+  - diff ограничен разрешёнными файлами
+  - нет изменения независимых тестов ради success
+  native_validation: M2; локальная fixture-проверка не live
+lesson_rubric:
+- цель и проверяемый результат
+- предпосылки и ограничения доступности
+- объяснение механизма, не список названий
+- разобранный пример с точным вводом и наблюдаемым результатом
+- самостоятельное задание без догадки
+- полезная подсказка
+- разбор достижения результата
+- независимый наблюдаемый критерий
+- локальный материал и применимый официальный источник
+evidence_schema:
+  required_fields:
+  - scenario_id
+  - method
+  - status
+  - candidate_tree_sha256
+  - spec_sha256
+  - command_or_rubric
+  - exit_code_or_rubric_results
+  - environment
+  - artifacts
+  artifact_fields:
+  - relative_path
+  - sha256
+  manual_fields:
+  - reviewer
+  - reviewed_file_sha256
+  - rubric_item
+  - result
+  - concrete_evidence
+  statuses:
+  - PASS
+  - FAIL
+  - BLOCKED
+  - NOT_RUN
+  - SKIP
+  scope: только .learning, секреты и личные логи запрещены
+commands:
+  existing_local:
+  - python scripts/check_project.py catalog
+  - python scripts/check_project.py exercises
+  - python scripts/check_coverage.py
+  - python -m pytest -q scripts/tests
+  - python scripts/verify.py --profile offline
+  - python scripts/package_course.py --site .learning/site
+  to_implement_by_T01: python scripts/check_content_contract.py --stage T01 --report .learning/reports/content/T01.json
+  per_batch: python scripts/check_content_contract.py --stage Txx --report .learning/reports/content/Txx.json
+  final:
+  - python scripts/check_content_contract.py --stage T06 --report .learning/reports/content/T06.json
+  - python scripts/check_coverage.py --require-complete
+  final_note: --require-complete относится к зафиксированной области и редакционной полноте; native/release доказательства
+    не отключаются и оцениваются отдельно
+scenarios:
+- id: TRC-01
+  batch: T06
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-7
+  method: automated
+  check: Каждый spec Scenario имеет ровно одну запись matrix; этапы реализованы; отсутствие executable test/manual
+    evidence даёт nonzero.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/TRC-01.json
+  title: Полная матрица
+  spec_path: openspec/changes/update-cli-content-depth/specs/acceptance-validation/spec.md
+  given_when_then:
+  - '- **GIVEN** спецификации, verification.yaml и отчёты текущего кандидата'
+  - '- **WHEN** проверено соответствие сценариев, методов и доказательств'
+  - '- **THEN** отсутствуют пропущенные/лишние ID, запланированный тест без реализации не считается PASS, несовпадающие
+    хеши отклоняются'
+- id: TRC-02
+  batch: T06
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-7
+  method: automated
+  check: 'Три отдельные мутации: отсутствующий журнал, изменённый lesson hash, заменённый rubric result; отказ,
+    прошлый статус не принят.'
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/TRC-02.json
+  title: Поддельное доказательство
+  spec_path: openspec/changes/update-cli-content-depth/specs/acceptance-validation/spec.md
+  given_when_then:
+  - '- **GIVEN** отсутствует журнал, изменён просмотренный урок или результат одного пункта rubric'
+  - '- **WHEN** выполнено сопоставление evidence'
+  - '- **THEN** результат FAIL с конкретной причиной, старый VERIFIED не подтверждает изменённый материал'
+- id: ENV-01
+  batch: T01
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-8
+  method: automated
+  check: Проверить exact UTF-8 чтение и stdout/stderr child process без PYTHONUTF8, включая кириллицу и не-ASCII
+    символ.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/ENV-01.json
+  title: Кириллица и дочерний процесс
+  spec_path: openspec/changes/update-cli-content-depth/specs/acceptance-validation/spec.md
+  given_when_then:
+  - '- **GIVEN** UTF-8 материал и дочерний процесс с кириллицей при среде без принудительного PYTHONUTF8'
+  - '- **WHEN** запущены чтение и захват stdout/stderr'
+  - '- **THEN** текст точен, нет UnicodeDecodeError/потери сообщений, исходные данные сохранены'
+- id: ENV-02
+  batch: T01
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-8
+  method: automated
+  check: Реально выполнить прежние test_symlink_evidence_outside_rejected, test_build_refuses_symlink, test_prepare_rejects_symlink_learning,
+    test_symlink_student_source_rejected; общий suite не SKIP.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/ENV-02.json
+  title: Symlink runner
+  spec_path: openspec/changes/update-cli-content-depth/specs/acceptance-validation/spec.md
+  given_when_then:
+  - '- **GIVEN** runner способен создать file/directory symlink'
+  - '- **WHEN** выполняются четыре прежние проверки symlink-безопасности'
+  - '- **THEN** все реально проходят; при отсутствии привилегии общий обязательный набор не становится успешным'
+- id: GATE-01
+  batch: T06
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-11
+  method: automated+editorial
+  check: Принят только M1 candidate; native/target/tested показаны честно; действующий release gate без live даёт
+    отказ.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/GATE-01.json
+  title: Офлайн-кандидат без live
+  spec_path: openspec/changes/update-cli-content-depth/specs/acceptance-validation/spec.md
+  given_when_then:
+  - '- **GIVEN** все сценарии M1 действительно PASS, а live не выполнен'
+  - '- **WHEN** оформляется результат M1'
+  - '- **THEN** записан ACCEPTED_M1_CANDIDATE, native остаётся непроверенным; заявлению о совместимом релизе отказано'
+- id: GATE-02
+  batch: T06
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-11
+  method: automated
+  check: Каждый из FAIL/BLOCKED/NOT_RUN/SKIP в обязательном M1 блокирует общий success и завершение goal.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/GATE-02.json
+  title: Неполный M1
+  spec_path: openspec/changes/update-cli-content-depth/specs/acceptance-validation/spec.md
+  given_when_then:
+  - '- **GIVEN** есть FAIL, BLOCKED, NOT_RUN или SKIP обязательного сценария M1'
+  - '- **WHEN** оркестратор проверяет завершение'
+  - '- **THEN** M1 не завершён и /goal не отмечается достигнутым независимо от уверенности reviewer'
+- id: INV-01
+  batch: T01
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-1
+  method: automated+editorial
+  check: Полный исходный перечень сравнен с sources; пропуск, цикл/дубли не допускаются.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/INV-01.json
+  title: Полный baseline
+  spec_path: openspec/changes/update-cli-content-depth/specs/course-content/spec.md
+  given_when_then:
+  - '- **GIVEN** закреплённые CLI/help, slash source, schema и тематические источники'
+  - '- **WHEN** построен реестр и выполнено сравнение с независимой инвентаризацией'
+  - '- **THEN** каждый публичный пункт и достижимое поле имеет ровно одну классификацию; рекурсивные ссылки конечны;
+    лишние/пропущенные ID диагностируются'
+- id: INV-02
+  batch: T01
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-1
+  method: automated
+  check: 'Четыре отдельные мутации: пропуск пункта, mismatch source hash, duplicate ID, необоснованное out_of_scope.'
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/INV-02.json
+  title: Потеря или неверная категория
+  spec_path: openspec/changes/update-cli-content-depth/specs/course-content/spec.md
+  given_when_then:
+  - '- **GIVEN** по отдельности удалена запись, нарушен хеш, задублирован ID или исключена действующая возможность
+    без обоснования'
+  - '- **WHEN** запускается проверка baseline'
+  - '- **THEN** каждая мутация даёт FAIL с точным пунктом, а процент не округляется до полноты'
+- id: SYN-01
+  batch: T01
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-2
+  method: automated
+  check: Фикстура общей help exit 0 не признаётся справкой подкоманды; активный mcp-server отклоняется, историческая
+    маркировка допускается.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/SYN-01.json
+  title: Удалённая команда
+  spec_path: openspec/changes/update-cli-content-depth/specs/course-content/spec.md
+  given_when_then:
+  - '- **GIVEN** материалы предлагают `codex mcp-server` как доступный интерфейс'
+  - '- **WHEN** выполняется проверка активных примеров и целевого Usage'
+  - '- **THEN** инструкция отклоняется; историческая явно маркированная заметка допустима; общая справка с exit
+    0 не подтверждает существование подкоманды'
+- id: SYN-02
+  batch: T03
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-2
+  method: automated+editorial
+  check: Все применимые справочные карточки полны; законченные B01-B04 проверены rubric и fixtures; shell/TUI/skill
+    различены.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/SYN-02.json
+  title: Справочник и основные сценарии
+  spec_path: openspec/changes/update-cli-content-depth/specs/course-content/spec.md
+  given_when_then:
+  - '- **GIVEN** подготовлены карточки и задания B01–B04 из verification.yaml'
+  - '- **WHEN** редактор проходит их по указанным файлам и локальным фикстурам'
+  - '- **THEN** понятны точный ввод, наблюдаемый результат, отказ и границы; unknown setting или потерянное ограничение
+    не скрывается'
+- id: EDU-01
+  batch: T06
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-3
+  method: editorial+automated
+  check: Все 62 исходных и новые разрешённые уроки имеют rubric PASS с concrete path/anchor и file hash; материал
+    доступен в ZIP.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/EDU-01.json
+  title: Полная редакционная рубрика
+  spec_path: openspec/changes/update-cli-content-depth/specs/course-content/spec.md
+  given_when_then:
+  - '- **GIVEN** урок и его связанные локальные материалы'
+  - '- **WHEN** проверены цель, предпосылки, механизм, разобранный пример, задание, подсказка, разбор, критерий
+    и источник'
+  - '- **THEN** по каждому пункту записаны результат и конкретное доказательство; все пункты PASS и хеш соответствует
+    просмотренному файлу'
+- id: EDU-02
+  batch: T03
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-3
+  method: editorial+automated
+  check: Мутация материала с общим советом вместо примера/решения отвергнута rubric; одних заголовков недостаточно.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/EDU-02.json
+  title: Формальный текст без обучения
+  spec_path: openspec/changes/update-cli-content-depth/specs/course-content/spec.md
+  given_when_then:
+  - '- **GIVEN** пример заменён общим советом «изучи справку» либо разбор не объясняет достижение результата'
+  - '- **WHEN** выполняется редакционная рубрика'
+  - '- **THEN** соответствующий пункт FAIL, урок не получает VERIFIED несмотря на структурный PASS'
+- id: DIA-01
+  batch: T02
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-4
+  method: editorial
+  check: 'Рубрика каждой диаграммы: корректные роли/данные/границы, объяснение всех значимых стрелок, соответствие
+    SVG/mmd/текста. T02 D01-D08, T04 D09-D11, T05 D12; итог T06 все 12.'
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/DIA-01.json
+  title: Схема и смысл
+  spec_path: openspec/changes/update-cli-content-depth/specs/course-content/spec.md
+  given_when_then:
+  - '- **GIVEN** каждая из D01–D12 открыта из связанного урока'
+  - '- **WHEN** проверены исходник, рисунок и пояснение'
+  - '- **THEN** изображения и текст согласованы, обозначены процессы/данные/ограничения, отсутствующие или противоречивые
+    пояснения выявлены'
+- id: EXT-01
+  batch: T04
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-5
+  method: automated+editorial
+  check: Все H01-H04/E01-E04 fixtures PASS; набор файлов/подготовка/реальные инструкции/очистка рассмотрены.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/EXT-01.json
+  title: Комплект расширений
+  spec_path: openspec/changes/update-cli-content-depth/specs/course-content/spec.md
+  given_when_then:
+  - '- **GIVEN** подготовлены все комплекты H01–H04 и E01–E04'
+  - '- **WHEN** выполнены локальные сценарии и редакционная проверка интеграционных инструкций'
+  - '- **THEN** примеры самостоятельны, ошибки видимы, запрет/отмена не выдаются за успех, поддержка интерфейса
+    обоснована источником'
+- id: EXT-02
+  batch: T04
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-5
+  method: automated
+  check: Протокольный replay не меняет tested_cli/native; отсутствие живого клиента показано отдельно.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/EXT-02.json
+  title: Нет доступа к настоящему клиенту
+  spec_path: openspec/changes/update-cli-content-depth/specs/course-content/spec.md
+  given_when_then:
+  - '- **GIVEN** пройден локальный протокольный стенд, но реальное расширение в Codex не запускалось'
+  - '- **WHEN** отображается результат'
+  - '- **THEN** M1 может учитывать только локальный результат; native остаётся NOT_RUN/BLOCKED, совместимость не
+    объявляется'
+- id: AUT-01
+  batch: T05
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-6
+  method: automated+editorial
+  check: Все A01-A05 fixture сценарии PASS; каждый клиент имеет реальный executable entrypoint и инструкцию отдельно
+    подготовленного запуска.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/AUT-01.json
+  title: Локальная проверка продвинутых комплектов
+  spec_path: openspec/changes/update-cli-content-depth/specs/course-content/spec.md
+  given_when_then:
+  - '- **GIVEN** полный набор A01–A05 с записанными явно маркированными протокольными фикстурами'
+  - '- **WHEN** проверяются успех, ошибка/таймаут/отмена и инструкция реального запуска'
+  - '- **THEN** код/шаблон локально проверяемы, обрыв не становится успехом, replay не объявляется настоящим вызовом
+    SDK/модели/cloud'
+- id: CAP-01
+  batch: T06
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-6
+  method: automated+editorial
+  check: Локальный C01 действительно работает и проверяется независимо; live-маршрут комбинирует штатные возможности
+    и помечен неподтверждённым без запуска.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/CAP-01.json
+  title: Итоговый проект
+  spec_path: openspec/changes/update-cli-content-depth/specs/course-content/spec.md
+  given_when_then:
+  - '- **GIVEN** C01 в изолированной рабочей папке'
+  - '- **WHEN** пройден локальный самостоятельный вариант и рассмотрен live-маршрут объединения skills, планирования,
+    изменения, теста и ревью'
+  - '- **THEN** критерии, diff и независимые тесты определены; один неисполненный live-маршрут не засчитывается
+    как нативное завершение'
+- id: OFF-01
+  batch: T02
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-4
+  method: browser
+  check: file://; сеть заблокирована; JS выключен для чтения; ширины 390/1440. Проверить loaded SVG, readable labels/text
+    alternative; итог на всех 12.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/OFF-01.json
+  title: Автономный рисунок
+  spec_path: openspec/changes/update-cli-content-depth/specs/offline-delivery/spec.md
+  given_when_then:
+  - '- **GIVEN** сайт открыт через file:// с отключённым JS и заблокированной сетью'
+  - '- **WHEN** просмотрены уроки со всеми D01–D12 на ширине 390 и 1440 пикселей'
+  - '- **THEN** схемы/пояснения читаемы, нет загрузок наружу, ключевые подписи не обрезаны и локальные материалы
+    доступны'
+- id: OFF-02
+  batch: T02
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-4
+  method: automated
+  check: 'Четыре мутации: script, foreignObject, внешний href/ресурс, missing SVG; сборка nonzero и старый output
+    сохранён.'
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/OFF-02.json
+  title: Опасный или отсутствующий SVG
+  spec_path: openspec/changes/update-cli-content-depth/specs/offline-delivery/spec.md
+  given_when_then:
+  - '- **GIVEN** по отдельности добавлены SVG со script, foreignObject, внешним ресурсом либо удалён обязательный
+    файл'
+  - '- **WHEN** запускается сборка'
+  - '- **THEN** каждая мутация отклоняется с безопасной диагностикой, предыдущий сайт остаётся целым'
+- id: SAFE-01
+  batch: T04
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-9
+  method: automated
+  check: Первая подготовка новой лаборатории успешна; повтор отклонён без изменения файлов; изолированные fake home
+    canaries неизменны; запрещённые сетевые/model вызовы не совершены.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/SAFE-01.json
+  title: Изолированная подготовка
+  spec_path: openspec/changes/update-cli-content-depth/specs/offline-delivery/spec.md
+  given_when_then:
+  - '- **GIVEN** существующая работа ученика и контрольные маркеры изолированных фиктивных профилей вместо настоящего
+    профиля пользователя'
+  - '- **WHEN** выполняются подготовка новой лаборатории, повторный --prepare и offline-проверки'
+  - '- **THEN** повторное создание отклонено, работа и профиль не изменены, внешних запросов нет'
+- id: ZIP-01
+  batch: T06
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-10
+  method: automated+browser
+  check: manifest hashes валидны; extract в новую папку, file:// без внешней сети; lesson/navigation/search/quiz/materials/diagrams/progress
+    import-export PASS.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/ZIP-01.json
+  title: Готовый кандидат
+  spec_path: openspec/changes/update-cli-content-depth/specs/offline-delivery/spec.md
+  given_when_then:
+  - '- **GIVEN** ZIP из проверенного дерева распакован в новый локальный каталог'
+  - '- **WHEN** отключена сеть и проверены схемы, уроки, поиск, quiz, материалы и импорт/экспорт прогресса'
+  - '- **THEN** манифест/хеши совпадают, все функции доступны в границах автономного маршрута, HTTP-результат не
+    подменяет file://'
+- id: FRZ-01
+  batch: T01
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-1
+  method: editorial+automated
+  check: Сверить frozen snapshot hash и отсутствие новых требований по изменившемуся внешнему источнику; старое
+    несовместимое утверждение остаётся дефектом.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/FRZ-01.json
+  title: Изменение внешней документации
+  spec_path: openspec/changes/update-cli-content-depth/specs/release-maintenance/spec.md
+  given_when_then:
+  - '- **GIVEN** baseline уже зафиксирован, а онлайн-страница изменилась'
+  - '- **WHEN** reviewer предлагает новую функцию вне verification.yaml и установленной области'
+  - '- **THEN** предложение записано отдельно, обязательный чеклист текущего batch не расширен; несовместимое утверждение
+    внутри frozen scope остаётся блокером'
+- id: REV-01
+  batch: T06
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-11
+  method: orchestration
+  check: 'Ledger: blocker has AC/scenario/basis/evidence; closure требует свежего воспроизведения; advisory deferred;
+    обязательные AC не понижены.'
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/REV-01.json
+  title: Находка и закрытие
+  spec_path: openspec/changes/update-cli-content-depth/specs/release-maintenance/spec.md
+  given_when_then:
+  - '- **GIVEN** reviewer возвращает воспроизводимую находку с AC/scenario и доказательством'
+  - '- **WHEN** оркестратор сопоставляет её с контрактом'
+  - '- **THEN** нарушение AC/безопасности/регрессия фиксируется P0/P1 с blocking_basis; закрытие требует нового
+    доказательства, совет вне AC уходит в follow-up'
+- id: REV-02
+  batch: T06
+  milestone: M1
+  required: true
+  acceptance_criteria:
+  - AC-11
+  method: orchestration
+  check: История task_id/SHA без повторного submit unchanged SHA; конечный closure-plan при необходимости и максимум
+    2 post-arb verification; непройденный AC не закрыт предупреждением.
+  expected: PASS; при обязательном FAIL/BLOCKED/NOT_RUN/SKIP M1 не принят
+  evidence: .learning/evidence/content-depth/REV-02.json
+  title: Дедупликация и конечная арбитражная проверка
+  spec_path: openspec/changes/update-cli-content-depth/specs/release-maintenance/spec.md
+  given_when_then:
+  - '- **GIVEN** SHA уже проверен либо fix-loop перестал сходиться'
+  - '- **WHEN** применяется протокол orchestration.md'
+  - '- **THEN** неизменённый SHA не пересылается; closure plan конечен и после арбитража допускает максимум две
+    проверки; непрошедший обязательный AC не маскируется финальным предупреждением'
+excluded_from_M1:
+- авторизованные платные model/cloud вызовы
+- подтверждённая совместимость всех платформ
+- изменение глобального профиля или прав ОС
+- публикация/git push/release
+- полный crawl всего ChatGPT Learn
+- второй SDK-клиент на TypeScript
+M2: Отдельный согласованный goal; действующие live/release/ручные проверки остаются обязательными для совместимого
+  выпуска.
+stage_scope_semantics: scenario ID одинаковый при поэтапной проверке. Batch применяет только свою конечную подгруппу
+  из scope_note/scoped_acceptance_criteria; T06 применяет полный программный scope. Primary batch сценария указывает
+  первую полную реализацию проверяющего метода, а не запрет его использования ранее. Все future methods обязаны
+  быть реализованы соответствующим использующим batch, отсутствие helper/test/evidence блокирует PASS.
+safety_scope: Глобальный настоящий профиль не читается/не модифицируется даже ради canary. Контрольные профили только
+  внутри тестовых временных каталогов; .learning/convergence принадлежит оркестратору, developer его не редактирует.

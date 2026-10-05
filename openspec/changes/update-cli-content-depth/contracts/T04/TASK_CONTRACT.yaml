@@ -1,0 +1,66 @@
+task_id: codex-cli-content-depth-v1-t04
+scope: Законченные расширения. AC-3 только модули 07/09 и связанные skills; AC-4 только D09-D11, E/H комплекты.
+  Переданный scope ограничивает часть программного AC на этом batch; финальная полнота в T06.
+acceptance_criteria:
+- 'AC-3: Рубрика содержания модуля 07, extensions и связанных skills PASS, файлы и примеры доступны локально.'
+- 'AC-4: D09-D11 PASS по DIA-01/OFF-01/OFF-02 в этой подгруппе; предыдущие восемь не сломаны.'
+- 'AC-5: Все H01-H04 и E01-E04 PASS по EXT-01/EXT-02, остальные события baseline имеют контракт/пример.'
+- 'AC-9: SAFE-01 реально PASS на новых prepare-комплектах и isolated fake-home canaries; прежние девять упражнений
+  сохранены.'
+required_scenarios:
+- EXT-01
+- EXT-02
+- SAFE-01
+- DIA-01
+- OFF-01
+- OFF-02
+- EDU-01
+architecture_refs:
+- openspec/changes/update-cli-content-depth/design.md (ADR-CD-01, ADR-CD-02, ADR-CD-03, ADR-CD-04, ADR-CD-05, ADR-CD-06)
+- openspec/changes/update-cli-content-depth/verification.yaml
+- openspec/changes/update-cli-content-depth/specs/
+- openspec/specs/course-content/spec.md
+- openspec/specs/offline-delivery/spec.md
+- openspec/specs/acceptance-validation/spec.md
+- openspec/specs/release-maintenance/spec.md
+- openspec/changes/update-cli-content-depth/orchestration.md
+security_requirements:
+- Никакой записи/чтения секретов в глобальном профиле пользователя; никаких auth/личных логов в исходниках.
+- Изолированные fixture/рабочие папки; --prepare без перезаписи; нет сети/модели/install в offline.
+- Не ослаблять независимые тесты, symlink/путь/пакетные проверки; никакого самовольного повышения прав.
+- Не активировать MCP/hooks/plugins/CI и не публиковать/git push автоматически.
+allowed_files_or_components:
+- 06-skills/**
+- 07-mcp/**
+- 09-extensions/**
+- reference/**
+- examples/content-depth/extensions/**
+- examples/hooks/**
+- examples/subagents/**
+- course.json
+- sources.json
+- scripts/check_content_contract.py
+- scripts/check_project.py
+- scripts/course_core.py
+- scripts/verify.py
+- scripts/tests/**
+- openspec/changes/update-cli-content-depth/tasks.md
+- .learning/reports/content/**
+- .learning/evidence/content-depth/**
+- .learning/workspaces/**
+- .learning/reports/**
+- .learning/evidence/**
+- .learning/site/**
+- .learning/dist/**
+- .learning/tooling/**
+- .learning/convergence/**
+- .pytest_cache/**
+- '**/__pycache__/**'
+explicit_out_of_scope:
+- M2 live/совместимый релиз
+- Внешние авторизованные/платные вызовы и аккаунты
+- Новые функции после frozen baseline T01
+- Новый AI-клиент/cloud backend/платформа прогресса
+- Правки LICENSE, глобальной конфигурации или прав ОС
+- Изменение нормативной спецификации/frozen контрактов во время реализации
+status: FROZEN

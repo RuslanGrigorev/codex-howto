@@ -1,0 +1,140 @@
+task_id: codex-cli-content-depth-v1
+scope: 'M1: полный офлайн-кандидат в frozen scope update-cli-content-depth; только T01-T06; не M2 и не релиз.'
+acceptance_criteria:
+- 'AC-1: Все публичные пункты baseline 0.160.0, достижимые поля схемы и тематические области ADR-CD-01 классифицированы
+  ровно один раз; происхождение и хеши проверены; возможности не исключены из-за доступа.'
+- 'AC-2: Нет действующего mcp-server; общая help с exit 0 не подтверждает подкоманду; применимые команды/поля имеют
+  локальные карточки; B01-B04 пройдены.'
+- 'AC-3: Рубрика всех 62 исходных и новых предусмотренных уроков PASS по конкретным артефактам; прежние ID, десять
+  модулей и девять упражнений сохранены.'
+- 'AC-4: D01-D12 имеют согласованные mmd/SVG/пояснение, доступны file:// без JS/сети на 390 и 1440 px; опасный или
+  отсутствующий SVG отклонён.'
+- 'AC-5: Все H01-H04 и E01-E04 поставлены полными комплектами и проходят определённые локальные положительные/отрицательные
+  сценарии; native статус не подменён.'
+- 'AC-6: A01-A05 и C01 имеют полные инструкции, код/шаблоны, fixture-проверки отказа и независимые критерии; один
+  Python SDK-клиент, stdio app-server, отдельные remote/cloud.'
+- 'AC-7: Матрица покрывает все scenario IDs, stage-check реализован, evidence содержит нужные хеши и методы; пропущенные/поддельные/старые
+  доказательства отклонены.'
+- 'AC-8: UTF-8 корректен без PYTHONUTF8; четыре существующих symlink-проверки реально PASS на пригодном runner;
+  полный pytest и offline PASS без ослабления тестов.'
+- 'AC-9: Повторный --prepare не перезаписывает работу; профиль/секреты не читаются и не изменяются, offline не обращается
+  к сети/модели и не устанавливает зависимости; интеграции не активируются.'
+- 'AC-10: ZIP именно проверенного дерева валиден; полный file:// прогон распакованного пакета PASS, включая материалы/схемы/поиск/quiz/прогресс.'
+- 'AC-11: Все обязательные M1 сценарии PASS и 0 OPEN P0/P1; M1 явно candidate, M2 отдельно непроверен; tested_cli
+  не заполнен локальными стендами; loop и dedup соблюдены.'
+required_scenarios:
+- TRC-01
+- TRC-02
+- ENV-01
+- ENV-02
+- GATE-01
+- GATE-02
+- INV-01
+- INV-02
+- SYN-01
+- SYN-02
+- EDU-01
+- EDU-02
+- DIA-01
+- EXT-01
+- EXT-02
+- AUT-01
+- CAP-01
+- OFF-01
+- OFF-02
+- SAFE-01
+- ZIP-01
+- FRZ-01
+- REV-01
+- REV-02
+architecture_refs:
+- openspec/changes/update-cli-content-depth/design.md (ADR-CD-01 — ADR-CD-06)
+- openspec/changes/update-cli-content-depth/verification.yaml
+- openspec/changes/update-cli-content-depth/specs/
+- openspec/specs/course-content/spec.md
+- openspec/specs/offline-delivery/spec.md
+- openspec/specs/acceptance-validation/spec.md
+- openspec/specs/release-maintenance/spec.md
+- openspec/changes/update-cli-content-depth/orchestration.md
+security_requirements:
+- Никакой записи/чтения секретов в глобальном профиле пользователя; никаких auth/личных логов в исходниках.
+- Изолированные fixture/рабочие папки; --prepare без перезаписи; нет сети/модели/install в offline.
+- Не ослаблять независимые тесты, symlink/путь/пакетные проверки; никакого самовольного повышения прав.
+- Не активировать MCP/hooks/plugins/CI и не публиковать/git push автоматически.
+allowed_files_or_components:
+- '**/__pycache__/**'
+- .learning/convergence/**
+- .learning/dist/**
+- .learning/evidence/**
+- .learning/evidence/content-depth/**
+- .learning/reports/**
+- .learning/reports/content/**
+- .learning/site/**
+- .learning/tooling/**
+- .learning/workspaces/**
+- .pytest_cache/**
+- 01-start/**
+- 01-start/*.md
+- 02-workflow/**
+- 02-workflow/*.md
+- 03-safety/**
+- 03-safety/*.md
+- 04-instructions/**
+- 04-instructions/*.md
+- 05-sessions/**
+- 05-sessions/*.md
+- 06-skills/**
+- 06-skills/*.md
+- 07-mcp/**
+- 08-automation/**
+- 08-automation/app-server.md
+- 09-extensions/**
+- 09-extensions/cloud*
+- 09-extensions/remote.md
+- 09-extensions/remote.quiz.json
+- 10-capstone/**
+- ACCEPTANCE_RU.md
+- CHANGELOG.md
+- README.md
+- course.json
+- examples/content-depth/automation/**
+- examples/content-depth/basics/**
+- examples/content-depth/capstone/**
+- examples/content-depth/extensions/**
+- examples/hooks/**
+- examples/local-mcp/HINTS.md
+- examples/subagents/**
+- openspec/changes/update-cli-content-depth/tasks.md
+- reference/**
+- reference/commands.md
+- reference/coverage.md
+- reference/diagrams/**
+- reference/upstream/**
+- scripts/README.md
+- scripts/browser_check.py
+- scripts/build_website.py
+- scripts/check_content_contract.py
+- scripts/check_coverage.py
+- scripts/check_cross_references.py
+- scripts/check_markdown_rendering.py
+- scripts/check_project.py
+- scripts/check_site.py
+- scripts/check_updates.py
+- scripts/course_core.py
+- scripts/fixtures/**
+- scripts/markdown_adapter.py
+- scripts/package_course.py
+- scripts/tests/**
+- scripts/verify.py
+- scripts/website_templates/page.html.j2
+- scripts/website_templates/site.css
+- sources.json
+- validation.json
+explicit_out_of_scope:
+- M2 live/совместимый релиз
+- Внешние авторизованные/платные вызовы и аккаунты
+- Новые функции после frozen baseline T01
+- Новый AI-клиент/cloud backend/платформа прогресса
+- Правки LICENSE, глобальной конфигурации или прав ОС
+- Изменение нормативной спецификации/frozen контрактов во время реализации
+status: FROZEN
