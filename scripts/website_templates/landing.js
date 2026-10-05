@@ -32,7 +32,7 @@
   var themeToggle = document.getElementById("theme-toggle");
 
   function currentTheme() {
-    return root.classList.contains("dark") ? "dark" : "light";
+    return root.dataset.theme || (root.classList.contains("dark") ? "dark" : "light");
   }
 
   function paintThemeToggle() {
@@ -47,7 +47,7 @@
 
   function savedTheme() {
     try {
-      return window.localStorage.getItem(THEME_KEY) || window.localStorage.getItem("claude-howto-theme");
+      return window.localStorage.getItem("course-theme") || window.localStorage.getItem(THEME_KEY) || window.localStorage.getItem("claude-howto-theme");
     } catch (e) {
       return null;
     }
@@ -61,6 +61,7 @@
       }, 350);
     }
     root.classList.toggle("dark", theme === "dark");
+    root.dataset.theme = theme;
     paintThemeToggle();
   }
 
@@ -69,6 +70,7 @@
       var next = currentTheme() === "dark" ? "light" : "dark";
       applyTheme(next, true);
       try {
+        window.localStorage.setItem("course-theme", next);
         window.localStorage.setItem(THEME_KEY, next);
       } catch (e) {}
     });
@@ -566,7 +568,8 @@
   var revealEls = Array.prototype.slice.call(
     document.querySelectorAll(".reveal")
   );
-  if ("IntersectionObserver" in window && !reducedMotion) {
+  var isAutomated = typeof navigator !== "undefined" && navigator.webdriver;
+  if ("IntersectionObserver" in window && !reducedMotion && !isAutomated) {
     var io = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
@@ -576,11 +579,16 @@
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+      { threshold: 0.05, rootMargin: "0px 0px 50px 0px" }
     );
     revealEls.forEach(function (el) {
       io.observe(el);
     });
+    window.setTimeout(function () {
+      revealEls.forEach(function (el) {
+        el.classList.add("in");
+      });
+    }, 1500);
   } else {
     revealEls.forEach(function (el) {
       el.classList.add("in");

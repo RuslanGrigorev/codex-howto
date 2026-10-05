@@ -481,13 +481,165 @@ html.dark .logo-dark, html[data-theme="dark"] .logo-dark {
   text-decoration: none;
 }
 
+
+.nav-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 260px;
+}
+.nav-search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.35rem 0.65rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+.nav-search-box:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+}
+.nav-search-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--text-faint);
+  flex: none;
+}
+.nav-search-box input[type="search"] {
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  width: 100%;
+  outline: none;
+}
+.search-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  min-width: 280px;
+  max-height: 380px;
+  overflow-y: auto;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.5rem;
+  list-style: none;
+  margin: 0;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(16px);
+  z-index: 100;
+}
+.search-popover li {
+  margin: 0.25rem 0;
+}
+.search-popover a {
+  display: block;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  border-radius: 6px;
+  text-decoration: none;
+}
+.search-popover a:hover {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--green);
+}
+@media (max-width: 64rem) {
+  .nav-search-wrap {
+    display: none;
+  }
+}
+
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-.nav-links + .nav-actions {
+.nav-links + 
+.nav-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 260px;
+}
+.nav-search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.35rem 0.65rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+.nav-search-box:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+}
+.nav-search-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--text-faint);
+  flex: none;
+}
+.nav-search-box input[type="search"] {
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  width: 100%;
+  outline: none;
+}
+.search-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  min-width: 280px;
+  max-height: 380px;
+  overflow-y: auto;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.5rem;
+  list-style: none;
+  margin: 0;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(16px);
+  z-index: 100;
+}
+.search-popover li {
+  margin: 0.25rem 0;
+}
+.search-popover a {
+  display: block;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  border-radius: 6px;
+  text-decoration: none;
+}
+.search-popover a:hover {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--green);
+}
+@media (max-width: 64rem) {
+  .nav-search-wrap {
+    display: none;
+  }
+}
+
+.nav-actions {
   margin-left: 0;
 }
 
@@ -972,6 +1124,8 @@ html.theme-anim body * {
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--panel);
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .no-js .progress-panel {
@@ -1041,6 +1195,8 @@ html.theme-anim body * {
   align-items: center;
   gap: 1rem 2rem;
   min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .counts {
@@ -1066,6 +1222,8 @@ html.theme-anim body * {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 #continue-btn {
@@ -1073,6 +1231,7 @@ html.theme-anim body * {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .all-done {
@@ -1764,7 +1923,83 @@ html.theme-anim body * {
     display: inline-flex;
   }
 
-  .nav-links + .nav-actions {
+  .nav-links + 
+.nav-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 260px;
+}
+.nav-search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.35rem 0.65rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+.nav-search-box:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+}
+.nav-search-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--text-faint);
+  flex: none;
+}
+.nav-search-box input[type="search"] {
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  width: 100%;
+  outline: none;
+}
+.search-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  min-width: 280px;
+  max-height: 380px;
+  overflow-y: auto;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.5rem;
+  list-style: none;
+  margin: 0;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(16px);
+  z-index: 100;
+}
+.search-popover li {
+  margin: 0.25rem 0;
+}
+.search-popover a {
+  display: block;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  border-radius: 6px;
+  text-decoration: none;
+}
+.search-popover a:hover {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--green);
+}
+@media (max-width: 64rem) {
+  .nav-search-wrap {
+    display: none;
+  }
+}
+
+.nav-actions {
     margin-left: auto;
   }
 
@@ -1809,8 +2044,38 @@ html.theme-anim body * {
 
   .progress-panel {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 1.3rem;
+    padding: 1.25rem 1rem;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .progress-mid {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    gap: 1rem;
+  }
+
+  .progress-actions {
+    width: 100%;
+    max-width: 100%;
+    gap: 0.5rem;
+  }
+
+  .progress-actions .btn {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  #continue-btn {
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+    word-break: break-word;
   }
 
   .steps {
@@ -1834,7 +2099,83 @@ html.theme-anim body * {
     height: 26px;
   }
 
-  .nav-actions {
+  
+.nav-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 260px;
+}
+.nav-search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.35rem 0.65rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+.nav-search-box:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+}
+.nav-search-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--text-faint);
+  flex: none;
+}
+.nav-search-box input[type="search"] {
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  width: 100%;
+  outline: none;
+}
+.search-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  min-width: 280px;
+  max-height: 380px;
+  overflow-y: auto;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.5rem;
+  list-style: none;
+  margin: 0;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(16px);
+  z-index: 100;
+}
+.search-popover li {
+  margin: 0.25rem 0;
+}
+.search-popover a {
+  display: block;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  border-radius: 6px;
+  text-decoration: none;
+}
+.search-popover a:hover {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--green);
+}
+@media (max-width: 64rem) {
+  .nav-search-wrap {
+    display: none;
+  }
+}
+
+.nav-actions {
     gap: 0.5rem;
   }
 
