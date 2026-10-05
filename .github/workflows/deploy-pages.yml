@@ -30,7 +30,7 @@ jobs:
       - name: Установка зависимостей сборщика
         run: |
           python -m pip install --upgrade pip
-          pip install jinja2 beautifulsoup4
+          pip install -r scripts/requirements.txt
 
       - name: Сборка сайта
         run: |
