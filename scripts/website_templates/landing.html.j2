@@ -151,48 +151,22 @@
         >
           <div class="term">
             <div class="term-bar">
-              <div class="term-dots" aria-hidden="true">
-                <span class="term-dot"></span>
-                <span class="term-dot"></span>
-                <span class="term-dot"></span>
-              </div>
-              <div class="term-tabs" role="tablist" aria-label="Сценарии терминала">
-                <button class="term-tab active" role="tab" aria-selected="true" data-tab="learn">Наставник</button>
-                <button class="term-tab" role="tab" aria-selected="false" data-tab="goal">/goal</button>
-                <button class="term-tab" role="tab" aria-selected="false" data-tab="exec">exec</button>
-              </div>
-              <span class="term-title">~/project</span>
+              <span class="term-dot"></span>
+              <span class="term-dot"></span>
+              <span class="term-dot"></span>
+              <span class="term-title">~/project — codex</span>
             </div>
             <div class="term-body" id="terminal">
-              <!-- Tab 1: learn -->
-              <div class="terminal-tab-content" data-panel="learn">
-                <div class="t-line" data-t="cmd"><span class="t-pp">$</span><span class="t-tt">codex</span></div>
-                <div class="t-line" data-t="out" data-c="dim">Codex CLI v0.160.0 · working in ~/project</div>
-                <div class="t-line" data-t="cmd"><span class="t-pp t-pp-in">&gt;</span><span class="t-tt">$learn</span></div>
-                <div class="t-line" data-t="out" data-c="ok">✓ Наставник курса активирован: Модуль 01 · Первый запуск</div>
-                <div class="t-line" data-t="out" data-c="info">→ Подготовлена изолированная среда в .learning/workspaces</div>
-                <div class="t-line" data-t="cmd"><span class="t-pp t-pp-in">&gt;</span><span class="t-tt">python scripts/verify.py</span></div>
-                <div class="t-line" data-t="out" data-c="ok">✓ PASS: 14/14 checks verified (offline profile)</div>
-              </div>
-              <!-- Tab 2: goal -->
-              <div class="terminal-tab-content" data-panel="goal" hidden>
-                <div class="t-line" data-t="cmd"><span class="t-pp t-pp-in">&gt;</span><span class="t-tt">/goal исправить ошибку парсинга и обновить тесты</span></div>
-                <div class="t-line" data-t="out" data-c="info">Цель зафиксирована: [1/3] Поиск регрессии</div>
-                <div class="t-line" data-t="out" data-c="dim">AGENTS.md: правило минимального diff соблюдено</div>
-                <div class="t-line" data-t="cmd"><span class="t-pp t-pp-in">&gt;</span><span class="t-tt">/goal pause</span></div>
-                <div class="t-line" data-t="out" data-c="warn">⏸ Выполнение приостановлено пользователем</div>
-                <div class="t-line" data-t="cmd"><span class="t-pp t-pp-in">&gt;</span><span class="t-tt">/goal resume</span></div>
-                <div class="t-line" data-t="out" data-c="ok">✓ Цель выполнена успешно: все 3 шага завершены</div>
-              </div>
-              <!-- Tab 3: exec -->
-              <div class="terminal-tab-content" data-panel="exec" hidden>
-                <div class="t-line" data-t="cmd"><span class="t-pp">$</span><span class="t-tt">codex exec "audit repo security" --json</span></div>
-                <div class="t-line" data-t="out" data-c="dim">{"event": "turn_start", "model": "codex-core"}</div>
-                <div class="t-line" data-t="out" data-c="info">{"event": "tool_call", "name": "read_file", "path": "AGENTS.md"}</div>
-                <div class="t-line" data-t="out" data-c="ok">{"event": "completed", "status": "clean", "code_exit": 0}</div>
-                <div class="t-line" data-t="cmd"><span class="t-pp">$</span><span class="t-tt">echo $?</span></div>
-                <div class="t-line" data-t="out" data-c="ok">0</div>
-              </div>
+              <div class="t-line" data-t="cmd"><span class="t-pp">$</span><span class="t-tt">codex</span></div>
+              <div class="t-line" data-t="out" data-c="dim">Codex CLI v{{ version | default('0.160.0', true) }} · working in ~/project</div>
+              <div class="t-line" data-t="cmd"><span class="t-pp t-pp-in">&gt;</span><span class="t-tt">/init</span></div>
+              <div class="t-line" data-t="out" data-c="ok">✓ wrote AGENTS.md — 6 rules, 3 imports</div>
+              <div class="t-line" data-t="cmd"><span class="t-pp t-pp-in">&gt;</span><span class="t-tt">$learn</span></div>
+              <div class="t-line" data-t="out" data-c="info">→ уровень: продолжающий · рекомендуем модуль 03-skills</div>
+              <div class="t-line" data-t="cmd"><span class="t-pp t-pp-in">&gt;</span><span class="t-tt">add rate limiting to the api</span></div>
+              <div class="t-line" data-t="out" data-c="warn">⚡ проверка правил AGENTS.md — пройдена</div>
+              <div class="t-line" data-t="out" data-c="ok">◆ Подготовлен diff: 1 файл изменён, 0 регрессий</div>
+              <div class="t-line" data-t="cmd"><span class="t-pp">$</span><span class="t-tt"></span></div>
             </div>
           </div>
         </div>
@@ -201,8 +175,8 @@
 
     {# ============ Why / value ============ #}
     <section class="section" id="why">
-      <p class="kicker reveal">Особенности курса</p>
-      <h2 class="section-title reveal">Практика вместо теории</h2>
+      <p class="kicker reveal">Зачем этот практикум</p>
+      <h2 class="section-title reveal">Документация объясняет <em>что</em>.<br />Практикум показывает <em>как</em>.</h2>
       <div class="cards">
         <article class="card reveal">
           <div class="card-glyph" aria-hidden="true">
@@ -212,9 +186,9 @@
               <path d="M10 6.5h4a3 3 0 0 1 3 3V14M14 17.5h-4a3 3 0 0 1-3-3V10" />
             </svg>
           </div>
-          <h3>100% Офлайн</h3>
+          <h3>Схемы по умолчанию</h3>
           <p>
-            Все материалы, упражнения и тесты работают локально без обязательного подключения к внешней сети.
+            Диаграммы Mermaid показывают, как каждая функция устроена под капотом — чтобы вы понимали не только <em>как</em>, но и <em>почему</em>.
           </p>
         </article>
         <article class="card reveal" style="--d: 0.08s">
@@ -224,21 +198,23 @@
               <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
             </svg>
           </div>
-          <h3>Проверенные шаблоны</h3>
+          <h3>Готовые шаблоны</h3>
           <p>
-            Готовые конфигурации AGENTS.md, учебные навыки и stdio MCP примеры, проверенные на совместимость с версией 0.160.0.
+            Готовые к внедрению файлы AGENTS.md, конфигурации MCP, скрипты хуков, навыки и примеры автоматизации — копируйте прямо в свои проекты.
           </p>
         </article>
         <article class="card reveal" style="--d: 0.16s">
           <div class="card-glyph" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <path d="m10 15 5-3-5-3v6Z" fill="currentColor" stroke="none" />
+              <circle cx="6" cy="19" r="2.5" />
+              <circle cx="18" cy="5" r="2.5" />
+              <path d="M8 17.5 10 15a10 10 0 0 1 6-7.5" />
+              <path d="M8.5 19H15" stroke-dasharray="2 2.6" />
             </svg>
           </div>
           <h3>Последовательный маршрут</h3>
           <p>
-            4 уровня, 10 модулей в порядке возрастания сложности — от первого запуска до автоматизации и итоговой практики.
+            Десять модулей в порядке, необходимом разработчику: от новичка до уверенного профи за 10–12 часов. Больше никаких догадок, что учить дальше.
           </p>
         </article>
         <article class="card reveal" style="--d: 0.24s">
@@ -248,11 +224,57 @@
               <circle cx="12" cy="12" r="9" />
             </svg>
           </div>
-          <h3>Наставник $learn</h3>
+          <h3>Встроенная самопроверка</h3>
           <p>
-            Встроенный в Codex CLI обучающий наставник с пошаговыми подсказками и проверкой упражнений.
+            Запустите <code>$learn</code> или интерактивные тесты в уроках, чтобы выявить пробелы в знаниях и получить персональный маршрут обучения.
           </p>
         </article>
+      </div>
+    </section>
+
+    {# ============ Docs vs guide ============ #}
+    <section class="section" id="vs-docs">
+      <p class="kicker reveal">Официальная документация и практикум</p>
+      <h2 class="section-title reveal">Разные задачи, один инструмент</h2>
+      <p class="section-sub reveal">
+        Этот практикум дополняет официальную документацию: документация — это справочник, а курс — практическая программа обучения.
+      </p>
+      <div class="versus reveal">
+        <div class="versus-head" role="presentation">
+          <span></span>
+          <span class="v-docs">Официальная документация</span>
+          <span class="v-guide">Этот практикум</span>
+        </div>
+        <div class="versus-row">
+          <span class="v-label">Формат</span>
+          <span class="v-docs">Справочная документация</span>
+          <span class="v-guide">Интерактивные руководства со схемами Mermaid</span>
+        </div>
+        <div class="versus-row">
+          <span class="v-label">Глубина</span>
+          <span class="v-docs">Описание возможностей и синтаксиса</span>
+          <span class="v-guide">Как всё устроено под капотом</span>
+        </div>
+        <div class="versus-row">
+          <span class="v-label">Примеры</span>
+          <span class="v-docs">Базовые фрагменты команд</span>
+          <span class="v-guide">Проверенные шаблоны, готовые к работе</span>
+        </div>
+        <div class="versus-row">
+          <span class="v-label">Структура</span>
+          <span class="v-docs">Организация по функциям</span>
+          <span class="v-guide">Пошаговый маршрут (от новичка к эксперту)</span>
+        </div>
+        <div class="versus-row">
+          <span class="v-label">Онбординг</span>
+          <span class="v-docs">Самостоятельный поиск</span>
+          <span class="v-guide">Чёткий маршрут с оценкой времени (10–12 ч)</span>
+        </div>
+        <div class="versus-row">
+          <span class="v-label">Самопроверка</span>
+          <span class="v-docs">Отсутствует</span>
+          <span class="v-guide">Интерактивные квизы и сохранение прогресса</span>
+        </div>
       </div>
     </section>
 

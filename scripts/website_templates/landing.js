@@ -731,24 +731,6 @@
     });
   }
 
-  /* ================= Terminal Tabs ================= */
-  var termTabs = document.querySelectorAll(".term-tab");
-  var termPanels = document.querySelectorAll(".terminal-tab-content");
-  termTabs.forEach(function (tab) {
-    tab.addEventListener("click", function () {
-      var targetTab = tab.getAttribute("data-tab");
-      termTabs.forEach(function (t) {
-        var active = t === tab;
-        t.classList.toggle("active", active);
-        t.setAttribute("aria-selected", active ? "true" : "false");
-      });
-      termPanels.forEach(function (p) {
-        var matches = p.getAttribute("data-panel") === targetTab;
-        p.hidden = !matches;
-      });
-    });
-  });
-
   /* ================= Init ================= */
   paintAll();
   stationEls.forEach(function (station) {
