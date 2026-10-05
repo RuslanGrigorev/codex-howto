@@ -92,6 +92,21 @@ interactive_volume_specification:
   interactive_cli_simulators: 10        # по 1 симулятору на каждый из 10 модулей
   interactive_progress_tracking: true   # локальное сохранение статуса, квизов и упражнений
 
+review_round_2_instructions:
+  primary_focus: "Обязательная проверка: интерактивность материала, качество и полнота курса, а также подтверждение закрытия всех 9 замечаний Раунда 1."
+  interactivity_verification:
+    - "Квизы: все 104 файла квизов содержат option-specific rationale для разбора каждого варианта ответа и типичных заблуждений, рендерер site.js показывает разбор."
+    - "CLI-симулятор: строго ограничен стандартом 0.160.0 (/help, /goal, /status, /permissions, /model, /skills, /mcp, /plugins, /hooks, /resume, $learn), неизвестные команды корректно отклоняются."
+    - "Пошаговые подсказки: все 62 урока содержат валидные непустые <details><summary> с практическими рекомендациями."
+    - "Учёт прогресса: CodexProgress обеспечивает автономный трекинг без сети, экспорт/импорт JSON."
+  quality_and_completeness_verification:
+    - "62 урока соответствуют 9 обязательным элементам семантической рубрики (EDU-01)."
+    - "18 how-to комплектов содержат все объявленные файлы (B01, E03 дополнены)."
+    - "12 безопасных схем валидны и объяснены в тексте уроков."
+    - "Baseline 0.160.0 в sources.json полностью заполнен (config_keys, source_hashes, категории тем)."
+    - "SDK и App-Server клиенты имеют модульную архитектуру и покрыты тестами."
+    - "Fail-closed семантика в хуках (Stop, UserPromptSubmit) защищает от ложных завершений."
+
 excluded_verifications:
   - id: EXCL-01
     description: Фактический запуск бинарника codex (включая --help, --version, exec, app-server)
