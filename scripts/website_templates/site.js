@@ -247,15 +247,23 @@ if(qd&&p){
       appendLine('[СИМУЛЯТОР CODEX CLI 0.160.0 ОЧИЩЕН]', 'system-line');
       return;
     }
-    if(lower === 'help'){
-      appendLine('[СИМУЛЯЦИЯ] Доступные команды симулятора 0.160.0:\n' +
-        '  codex [--help | --version | exec | app-server | --sandbox <mode>]\n' +
-        '  /goal [/goal pause | /goal resume | /goal clear]\n' +
-        '  /permissions, /status, /resume, /mcp, /plugins, /hooks\n' +
-        '  $learn, cat AGENTS.md, clear');
+    if(lower === 'help' || lower === '/help'){
+      appendLine('[СИМУЛЯЦИЯ] Доступные команды симулятора Codex CLI 0.160.0:\n' +
+        '  codex [ПАРАМЕТРЫ] [ПРОМПТ]\n' +
+        '    --model <gpt-5 | gpt-4.1 | o3-mini>\n' +
+        '    --sandbox <read-only | workspace-write | danger-full-access>\n' +
+        '    --ask-for-approval <untrusted | always | never>\n' +
+        '    --continue, --help, --version, exec, app-server\n' +
+        '  Slash-команды сессии:\n' +
+        '    /goal [/goal pause | /goal resume | /goal clear]\n' +
+        '    /model [/model <название>]\n' +
+        '    /permissions, /sandbox [read-only | workspace-write]\n' +
+        '    /status, /skills, /mcp, /plugins, /hooks, /resume [<id>], /exit\n' +
+        '  Навыки и проектные команды:\n' +
+        '    $learn, cat AGENTS.md, clear');
       return;
     }
-    if(lower === 'codex --version' || lower === 'codex -v' || lower === 'codex -v'){
+    if(lower === 'codex --version' || lower === 'codex -v' || lower === 'codex -V' || lower === '/version'){
       appendLine('codex 0.160.0 (offline docs baseline rust-v0.160.0)');
       return;
     }
@@ -278,13 +286,6 @@ if(qd&&p){
       );
       return;
     }
-    if(lower === 'codex'){
-      appendLine('[СИМУЛЯЦИЯ] Интерактивная сессия Codex CLI 0.160.0 запущена.\n' +
-        'Рабочий каталог: /workspace\n' +
-        'Песочница: workspace-write | Сеть: disabled\n' +
-        'Введите задачу или команду (/goal, /permissions, /status). Для выхода: /exit');
-      return;
-    }
     if(lower.startsWith('codex exec')){
       appendLine('[СИМУЛЯЦИЯ exec] Неинтерактивное выполнение:\n' +
         '{"type":"session.start","version":"0.160.0","mode":"exec"}\n' +
@@ -295,6 +296,58 @@ if(qd&&p){
     }
     if(lower === 'codex app-server'){
       appendLine('[СИМУЛЯЦИЯ app-server] Сервер JSON-RPC 2.0 ожидает входящие запросы в stdin.');
+      return;
+    }
+    if(lower === 'codex' || lower.startsWith('codex ') || lower.startsWith('codex"')){
+      var isReadOnly = lower.includes('read-only') || lower.includes('-s read-only') || lower.includes('--sandbox read-only');
+      var isDanger = lower.includes('danger-full-access');
+      var sbMode = isReadOnly ? 'read-only (только чтение: запись файлов заблокирована)' : (isDanger ? 'danger-full-access (полный доступ)' : 'workspace-write');
+
+      var mMatch = cmd.match(/(?:--model|-m)\s+([^\s]+)/i);
+      var curModel = mMatch ? mMatch[1] : 'gpt-5';
+
+      var appMatch = cmd.match(/--ask-for-approval\s+([^\s]+)/i);
+      var curApp = appMatch ? appMatch[1] : 'untrusted';
+
+      var agentMatch = cmd.match(/--agent\s+([^\s]+)/i);
+      var skillMatch = cmd.match(/\$([a-zA-Z0-9_-]+)/);
+
+      var infoLines = [
+        '[СИМУЛЯЦИЯ] Интерактивная сессия Codex CLI 0.160.0 запущена.',
+        '  Рабочий каталог: /workspace',
+        '  Модель: ' + curModel,
+        '  Песочница: ' + sbMode,
+        '  Подтверждения: ' + curApp,
+        '  Сеть: disabled (автономный режим)'
+      ];
+      if(agentMatch){
+        infoLines.push('  Субагент: ' + agentMatch[1] + ' (ролевой профиль активен)');
+      }
+      if(skillMatch){
+        infoLines.push('  Навык: $' + skillMatch[1] + ' (инструкции навыка загружены в контекст)');
+      }
+      if(lower.includes('--continue') || lower.includes('--resume')){
+        infoLines.push('  Возобновление: последняя активная сессия восстановлена');
+      }
+      if(lower.includes('--mcp-config')){
+        infoLines.push('  MCP: конфигурация загружена');
+      }
+      infoLines.push('Введите задачу или команду (/goal, /model, /permissions, /status). Для выхода: /exit');
+      appendLine(infoLines.join('\n'));
+      return;
+    }
+    if(lower === '/model'){
+      appendLine('[СИМУЛЯЦИЯ /model] Текущая модель сессии: gpt-5 (OpenAI)\n' +
+        'Доступные профили моделей (0.160.0):\n' +
+        '  1. gpt-5 (по умолчанию: reasoning + coding)\n' +
+        '  2. gpt-4.1 (быстрая кодогенерация и рефакторинг)\n' +
+        '  3. o3-mini (структурированный анализ и валидация)\n' +
+        'Для переключения модели используйте: /model <название>');
+      return;
+    }
+    if(lower.startsWith('/model ')){
+      var targetModel = cmd.slice(7).trim();
+      appendLine('[СИМУЛЯЦИЯ /model] Модель сессии успешно переключена на "' + targetModel + '". Контекст сохранён.');
       return;
     }
     if(lower === '/goal'){
@@ -319,9 +372,23 @@ if(qd&&p){
     }
     if(lower === '/permissions'){
       appendLine('[СИМУЛЯЦИЯ /permissions] Права безопасности сессии:\n' +
-        '  - sandbox: workspace-write\n' +
-        '  - network: blocked (автономный режим)\n' +
-        '  - approvals: untrusted');
+        '  - sandbox: workspace-write (изменение только в рабочей области)\n' +
+        '  - network: blocked (автономный офлайн-режим)\n' +
+        '  - approvals: untrusted (запрос подтверждения на внешние действия)');
+      return;
+    }
+    if(lower === '/sandbox' || lower === '/sandbox read-only' || lower === 'read-only' || lower === 'рид онли' || lower === 'read only'){
+      appendLine('[СИМУЛЯЦИЯ: ПЕСОЧНИЦА] Режим песочницы: read-only (только чтение).\n' +
+        'Все изменения файлов и деструктивные операции заблокированы. Агент работает исключительно в режиме анализа.');
+      return;
+    }
+    if(lower.startsWith('/sandbox ')){
+      var sMode = cmd.slice(9).trim();
+      appendLine('[СИМУЛЯЦИЯ /sandbox] Режим песочницы установлен в "' + sMode + '".');
+      return;
+    }
+    if(lower === 'exit' || lower === '/exit'){
+      appendLine('[СИМУЛЯЦИЯ] Сессия Codex CLI завершена. Состояние сессии сохранено в .codex/sessions.');
       return;
     }
     if(lower === '/status'){
