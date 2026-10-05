@@ -7,7 +7,7 @@ def main():
     content = wf_file.read_text(encoding="utf-8")
     
     assert "approval-policy never" in content, "В CI обязателен approval-policy never"
-    assert "secrets.CODEX_API_KEY" in content, "Ключ должен браться из secrets"
+    assert "secrets.CI_RUNNER_SECRET" in content, "Ключ должен браться из secrets"
     assert "pull-requests: write" in content, "Не настроены permissions"
     print("PASS: A02 CI workflow safety checks passed")
 

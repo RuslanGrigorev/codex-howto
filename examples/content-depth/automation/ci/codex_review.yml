@@ -28,7 +28,7 @@ jobs:
 
       - name: Run Automated PR Review
         env:
-          CODEX_API_KEY: ${{ secrets.CODEX_API_KEY }}
+          CI_RUNNER_SECRET: ${{ secrets.CI_RUNNER_SECRET }}
         run: |
           codex exec --approval-policy never --sandbox-mode workspace-write \
             "Выполни diff-ревью изменений в этом PR по правилам AGENTS.md. Сформируй отчёт."

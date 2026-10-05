@@ -12,4 +12,4 @@
 
 1. **Минимальные права токена**: токен GitHub Actions (`GITHUB_TOKEN`) должен иметь доступ `pull-requests: write` и `contents: read`.
 2. **Неинтерактивный режим**: обязательные флаги `--approval-policy never` и `--sandbox-mode workspace-write`.
-3. **Изоляция секретов**: токен API провайдера передаётся исключительно через GitHub Secrets (`CODEX_API_KEY`).
+3. **Изоляция секретов**: токен API провайдера передаётся исключительно через защищённые GitHub Secrets (`CI_RUNNER_SECRET`).
