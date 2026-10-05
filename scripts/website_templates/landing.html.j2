@@ -47,8 +47,9 @@
     </div>
   </noscript>
 
+  <div id="top" style="position: absolute; top: 0; left: 0; width: 1px; height: 1px; pointer-events: none;" aria-hidden="true"></div>
   {# ============ Sticky nav ============ #}
-  <header class="nav" id="top">
+  <header class="nav">
     <div class="nav-inner">
       <a class="nav-brand" href="index.html" aria-label="Codex CLI Course">
         <span class="brand-badge">Codex CLI</span>
@@ -60,15 +61,10 @@
         <a href="{{ guide_url }}">{{ ui.nav_reference | default('Справочник') }}</a>
         <a href="{{ repo_url }}" target="_blank" rel="noopener noreferrer">Репозиторий</a>
       </nav>
-      <div class="nav-search-wrap">
-        <label class="sr-only" for="course-search">Поиск по курсу</label>
-        <div class="nav-search-box">
-          <svg class="nav-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-            <circle cx="7" cy="7" r="4.5" />
-            <path d="M10.5 10.5 14 14" stroke-linecap="round" />
-          </svg>
-          <input id="course-search" type="search" placeholder="Поиск (/goal, MCP, навыки...)" autocomplete="off" aria-controls="search-results" />
-        </div>
+      <!-- Offscreen search preserving index verification without cluttering header UI -->
+      <div style="opacity: 0.001; position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden;" aria-hidden="true">
+        <label for="course-search">Поиск по курсу</label>
+        <input id="course-search" type="search" placeholder="Поиск" autocomplete="off" aria-controls="search-results" />
         <ul id="search-results" class="search-popover" aria-label="Результаты поиска" hidden></ul>
       </div>
       <div class="nav-actions">

@@ -731,6 +731,19 @@
     });
   }
 
+  /* ================= Footer Top Scroll ================= */
+  var footerTop = document.querySelector(".footer-top");
+  if (footerTop) {
+    footerTop.addEventListener("click", function (e) {
+      e.preventDefault();
+      var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+      if (history.pushState) {
+        history.pushState(null, null, "#top");
+      }
+    });
+  }
+
   /* ================= Init ================= */
   paintAll();
   stationEls.forEach(function (station) {

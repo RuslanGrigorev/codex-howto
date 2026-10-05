@@ -1,0 +1,7 @@
+--- calc.py
++++ calc.py
+@@ -3,3 +3,3 @@
+     if b == 0:
+-        return None  # Дефект: должно быть ZeroDivisionError
++        raise ZeroDivisionError("Деление на ноль запрещено")
+     return round(a / b, precision)

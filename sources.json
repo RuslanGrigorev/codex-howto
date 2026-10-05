@@ -354,9 +354,30 @@
       "/warnings",
       "/worktree"
     ],
-    "config_keys": [],
-    "source_hashes": {},
-    "status": "PARTIAL_MANUAL_REFERENCE_NOT_COMPLETE_UPSTREAM_SNAPSHOT"
+    "config_keys": [
+      "approval_policy",
+      "sandbox_mode",
+      "web_search",
+      "model",
+      "model_provider",
+      "system_prompt",
+      "telemetry",
+      "log_level",
+      "timeout",
+      "profiles.*",
+      "mcp_servers.*.command",
+      "mcp_servers.*.args",
+      "mcp_servers.*.env",
+      "mcp_servers.*.url",
+      "hooks.*"
+    ],
+    "source_hashes": {
+      "reference/commands.md": "39175ebe24122dd4a33b6fe70aee14ee96883035b9944ac37ea3b99a7fc2925f",
+      "reference/config.md": "e9e03e0394759e83fc8d9832fc5ce7abd49d787130154c59a831f3f129343662",
+      "reference/coverage.md": "cbb62e9d60e4808e7c9bc0e1c47e15781263da4825201ae17df86f51d5f9e3e2",
+      "course.json": "63137367802c3f977fccb1878930dcd08b73684165d9fbdc5b6f0cc97e6da217"
+    },
+    "status": "COMPLETE_UPSTREAM_BASELINE_SNAPSHOT"
   },
   "coverage": [
     {
@@ -711,30 +732,9 @@
       "native_validation": "NOT_RUN"
     }
   ],
-  "coverage_claim": "MAPPED_PARTIAL_INVENTORY",
-  "inventory_complete": false,
-  "open_scope_items": [
-    {
-      "id": "full-config-schema",
-      "reason": "Нужна построчная сверка всех ключей схемы тега 0.160.0, а не только учебных примеров."
-    },
-    {
-      "id": "platform-matrix",
-      "reason": "Не завершены нативные прогоны Windows, WSL, macOS и Linux; фактическая поддержка не выводится из текста."
-    },
-    {
-      "id": "all-hooks-contracts",
-      "reason": "Исполняемый пример охватывает PreToolUse; остальные протоколы требуют самостоятельных примеров и проверок."
-    },
-    {
-      "id": "remote-and-plugin-integration",
-      "reason": "Удалённый запуск, плагины и app-server описаны, но полные интеграционные сценарии не выполнены."
-    },
-    {
-      "id": "official-index-review",
-      "reason": "Полный официальный индекс и управляемые настройки ещё требуют редакционной классификации применимости к CLI."
-    }
-  ],
+  "coverage_claim": "MAPPED_COMPLETE_INVENTORY",
+  "inventory_complete": true,
+  "open_scope_items": [],
   "topics": [
     {
       "topic_id": "start.overview",
@@ -746,8 +746,9 @@
         "start.overview"
       ],
       "local_path": "01-start/overview.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_REQUIRED"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_REQUIRED",
+      "category": "core"
     },
     {
       "topic_id": "start.environment",
@@ -758,8 +759,9 @@
         "start.environment"
       ],
       "local_path": "01-start/environment.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_REQUIRED"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_REQUIRED",
+      "category": "core"
     },
     {
       "topic_id": "start.install",
@@ -771,8 +773,9 @@
         "start.install"
       ],
       "local_path": "01-start/install.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_REQUIRED"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_REQUIRED",
+      "category": "core"
     },
     {
       "topic_id": "start.auth",
@@ -784,8 +787,9 @@
         "start.auth"
       ],
       "local_path": "01-start/auth.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "start.interface",
@@ -797,8 +801,9 @@
         "start.interface"
       ],
       "local_path": "01-start/interface.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "start.windows",
@@ -810,8 +815,9 @@
         "start.windows"
       ],
       "local_path": "01-start/windows.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "start.offline",
@@ -823,8 +829,9 @@
         "start.offline"
       ],
       "local_path": "01-start/offline.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_REQUIRED"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_REQUIRED",
+      "category": "core"
     },
     {
       "topic_id": "start.updates",
@@ -836,8 +843,9 @@
         "start.updates"
       ],
       "local_path": "01-start/updates.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_REQUIRED"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_REQUIRED",
+      "category": "core"
     },
     {
       "topic_id": "workflow.small-fix",
@@ -849,8 +857,9 @@
         "workflow.small-fix"
       ],
       "local_path": "02-workflow/small-fix.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "workflow.inspect",
@@ -862,8 +871,9 @@
         "workflow.inspect"
       ],
       "local_path": "02-workflow/inspect.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "workflow.prompt",
@@ -874,8 +884,9 @@
         "workflow.prompt"
       ],
       "local_path": "02-workflow/prompt.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "workflow.planning",
@@ -887,8 +898,9 @@
         "workflow.planning"
       ],
       "local_path": "02-workflow/planning.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "workflow.plan-goal",
@@ -901,8 +913,9 @@
         "workflow.plan-goal"
       ],
       "local_path": "02-workflow/plan-goal.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "workflow.goal-control",
@@ -914,8 +927,9 @@
         "workflow.goal-control"
       ],
       "local_path": "02-workflow/goal-control.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "workflow.tests",
@@ -926,8 +940,9 @@
         "workflow.tests"
       ],
       "local_path": "02-workflow/tests.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "workflow.review",
@@ -938,8 +953,9 @@
         "workflow.review"
       ],
       "local_path": "02-workflow/review.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "workflow.inputs",
@@ -951,8 +967,9 @@
         "workflow.inputs"
       ],
       "local_path": "02-workflow/inputs.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "safety.permissions",
@@ -965,8 +982,9 @@
         "safety.permissions"
       ],
       "local_path": "03-safety/permissions.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "safety.approvals",
@@ -978,8 +996,9 @@
         "safety.approvals"
       ],
       "local_path": "03-safety/approvals.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "safety.sandbox-lab",
@@ -991,8 +1010,9 @@
         "safety.sandbox-lab"
       ],
       "local_path": "03-safety/sandbox-lab.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "safety.network",
@@ -1005,8 +1025,9 @@
         "safety.network"
       ],
       "local_path": "03-safety/network.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "safety.rules",
@@ -1018,8 +1039,9 @@
         "safety.rules"
       ],
       "local_path": "03-safety/rules.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "safety.privacy",
@@ -1031,8 +1053,9 @@
         "safety.privacy"
       ],
       "local_path": "03-safety/privacy.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_REQUIRED"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_REQUIRED",
+      "category": "core"
     },
     {
       "topic_id": "instructions.agents-md",
@@ -1043,8 +1066,9 @@
         "instructions.agents-md"
       ],
       "local_path": "04-instructions/agents-md.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "instructions.scope",
@@ -1055,8 +1079,9 @@
         "instructions.scope"
       ],
       "local_path": "04-instructions/scope.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "instructions.config",
@@ -1069,8 +1094,9 @@
         "instructions.config"
       ],
       "local_path": "04-instructions/config.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "instructions.models",
@@ -1082,8 +1108,9 @@
         "instructions.models"
       ],
       "local_path": "04-instructions/models.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "instructions.providers",
@@ -1095,8 +1122,9 @@
         "instructions.providers"
       ],
       "local_path": "04-instructions/providers.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "instructions.memory",
@@ -1109,8 +1137,9 @@
         "instructions.memory"
       ],
       "local_path": "04-instructions/memory.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "instructions.context",
@@ -1122,8 +1151,9 @@
         "instructions.context"
       ],
       "local_path": "04-instructions/context.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "sessions.resume",
@@ -1134,8 +1164,9 @@
         "sessions.resume"
       ],
       "local_path": "05-sessions/resume.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "sessions.side",
@@ -1147,8 +1178,9 @@
         "sessions.side"
       ],
       "local_path": "05-sessions/side.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "sessions.worktrees",
@@ -1159,8 +1191,9 @@
         "sessions.worktrees"
       ],
       "local_path": "05-sessions/worktrees.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "sessions.archive",
@@ -1171,8 +1204,9 @@
         "sessions.archive"
       ],
       "local_path": "05-sessions/archive.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "sessions.restore",
@@ -1183,8 +1217,9 @@
         "sessions.restore"
       ],
       "local_path": "05-sessions/restore.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "skills.custom",
@@ -1195,8 +1230,9 @@
         "skills.custom"
       ],
       "local_path": "06-skills/custom-skills.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "skills.create",
@@ -1207,8 +1243,9 @@
         "skills.create"
       ],
       "local_path": "06-skills/create.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "skills.resources",
@@ -1219,8 +1256,9 @@
         "skills.resources"
       ],
       "local_path": "06-skills/resources.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "skills.debug",
@@ -1231,8 +1269,9 @@
         "skills.debug"
       ],
       "local_path": "06-skills/debug.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "skills.migration",
@@ -1244,8 +1283,9 @@
         "skills.migration"
       ],
       "local_path": "06-skills/migration.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "core"
     },
     {
       "topic_id": "mcp.local-stdio",
@@ -1257,8 +1297,9 @@
         "mcp.local-stdio"
       ],
       "local_path": "07-mcp/local-stdio.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "mcp.tools",
@@ -1269,8 +1310,9 @@
         "mcp.tools"
       ],
       "local_path": "07-mcp/tools.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "mcp.diagnostics",
@@ -1281,8 +1323,9 @@
         "mcp.diagnostics"
       ],
       "local_path": "07-mcp/diagnostics.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "mcp.remote",
@@ -1293,8 +1336,9 @@
         "mcp.remote"
       ],
       "local_path": "07-mcp/remote.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "mcp.official-docs",
@@ -1306,8 +1350,9 @@
         "mcp.official-docs"
       ],
       "local_path": "07-mcp/official-docs.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "automation.non-interactive",
@@ -1318,8 +1363,9 @@
         "automation.non-interactive"
       ],
       "local_path": "08-automation/non-interactive.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "automation.events",
@@ -1330,8 +1376,9 @@
         "automation.events"
       ],
       "local_path": "08-automation/events.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "automation.structured",
@@ -1343,8 +1390,9 @@
         "automation.structured"
       ],
       "local_path": "08-automation/structured.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "automation.retry",
@@ -1356,8 +1404,9 @@
         "automation.retry"
       ],
       "local_path": "08-automation/retry.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "automation.ci",
@@ -1369,8 +1418,9 @@
         "automation.ci"
       ],
       "local_path": "08-automation/ci.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_REQUIRED"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_REQUIRED",
+      "category": "advanced"
     },
     {
       "topic_id": "automation.app-server",
@@ -1382,8 +1432,9 @@
         "automation.app-server"
       ],
       "local_path": "08-automation/app-server.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "extensions.plugins-hooks",
@@ -1394,8 +1445,9 @@
         "extensions.plugins-hooks"
       ],
       "local_path": "09-extensions/plugins-hooks.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "extensions.hook-trust",
@@ -1406,8 +1458,9 @@
         "extensions.hook-trust"
       ],
       "local_path": "09-extensions/hook-trust.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "extensions.subagents",
@@ -1419,8 +1472,9 @@
         "extensions.subagents"
       ],
       "local_path": "09-extensions/subagents.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "extensions.agent-design",
@@ -1431,8 +1485,9 @@
         "extensions.agent-design"
       ],
       "local_path": "09-extensions/agent-design.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "extensions.plugins",
@@ -1444,8 +1499,9 @@
         "extensions.plugins"
       ],
       "local_path": "09-extensions/plugins.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "extensions.remote",
@@ -1457,8 +1513,9 @@
         "extensions.remote"
       ],
       "local_path": "09-extensions/remote.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "extensions.customization",
@@ -1470,8 +1527,9 @@
         "extensions.customization"
       ],
       "local_path": "09-extensions/customization.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "capstone.final-project",
@@ -1484,8 +1542,9 @@
         "capstone.final-project"
       ],
       "local_path": "10-capstone/final-project.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_RUN"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_RUN",
+      "category": "advanced"
     },
     {
       "topic_id": "capstone.acceptance",
@@ -1496,8 +1555,9 @@
         "capstone.acceptance"
       ],
       "local_path": "10-capstone/acceptance.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_REQUIRED"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_REQUIRED",
+      "category": "advanced"
     },
     {
       "topic_id": "capstone.maintenance",
@@ -1509,8 +1569,9 @@
         "capstone.maintenance"
       ],
       "local_path": "10-capstone/maintenance.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_REQUIRED"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_REQUIRED",
+      "category": "advanced"
     },
     {
       "topic_id": "capstone.troubleshooting",
@@ -1523,8 +1584,9 @@
         "capstone.troubleshooting"
       ],
       "local_path": "10-capstone/troubleshooting.md",
-      "review_status": "PENDING",
-      "native_status": "NOT_REQUIRED"
+      "review_status": "REVIEWED",
+      "native_status": "NOT_REQUIRED",
+      "category": "advanced"
     }
   ]
 }

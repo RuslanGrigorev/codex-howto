@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "command": "python",
+        "args": ["-c", "import sys, json; data = json.load(sys.stdin); print(json.dumps({'status': 'allow', 'message': 'Plugin prompt verified'}))"]
+      }
+    ],
+    "Stop": [
+      {
+        "command": "python",
+        "args": ["-c", "import sys, json; data = json.load(sys.stdin); print(json.dumps({'status': 'allow', 'message': 'Plugin stop verification passed'}))"]
+      }
+    ]
+  }
+}

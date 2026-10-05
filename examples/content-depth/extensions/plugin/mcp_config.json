@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "echo-server": {
+      "command": "python",
+      "args": ["-m", "mcp_server_echo"],
+      "env": {
+        "PYTHONIOENCODING": "utf-8"
+      }
+    }
+  }
+}

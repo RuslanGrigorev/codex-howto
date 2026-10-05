@@ -166,7 +166,16 @@ if(qd&&p){
           qText.textContent=q.question||q.text;
           var exp=document.createElement('div');
           exp.className='quiz-explanation-text';
-          exp.textContent=(isOk?'':'Правильный ответ: '+(correctOption?correctOption.text:'')+' — ')+(q.explanation||'');
+          var detailMsg = '';
+          if (isOk) {
+            detailMsg = (o && o.rationale) ? o.rationale : (q.explanation || 'Ответ верен.');
+          } else {
+            var optRationale = o ? (o.rationale || o.misconception) : null;
+            var prefix = optRationale ? ('Разбор выбранного ответа: ' + optRationale + ' ') : '';
+            var correctText = correctOption ? correctOption.text : '';
+            detailMsg = prefix + 'Правильный ответ: ' + correctText + (q.explanation ? (' — ' + q.explanation) : '');
+          }
+          exp.textContent = detailMsg;
           item.append(header,qText,exp);
           detailedBox.append(item);
         }
@@ -196,7 +205,7 @@ if(qd&&p){
     'workflow': ['/goal', '/goal pause', '/goal resume', 'codex "исправь опечатку"'],
     'safety': ['/permissions', '/status', 'codex --sandbox read-only'],
     'instructions': ['cat AGENTS.md', 'codex --model gpt-5', '/model'],
-    'sessions': ['/resume', 'codex --continue', '/sessions'],
+    'sessions': ['/resume', 'codex --continue'],
     'skills': ['$learn', '/skills', 'codex $project-map'],
     'mcp': ['/mcp', 'codex --mcp-config mcp.json'],
     'automation': ['codex exec "проверь код"', 'codex exec --json "status"', 'codex app-server'],
@@ -242,7 +251,7 @@ if(qd&&p){
       appendLine('[СИМУЛЯЦИЯ] Доступные команды симулятора 0.160.0:\n' +
         '  codex [--help | --version | exec | app-server | --sandbox <mode>]\n' +
         '  /goal [/goal pause | /goal resume | /goal clear]\n' +
-        '  /permissions, /status, /resume, /sessions, /mcp, /plugins, /hooks\n' +
+        '  /permissions, /status, /resume, /mcp, /plugins, /hooks\n' +
         '  $learn, cat AGENTS.md, clear');
       return;
     }
@@ -346,10 +355,16 @@ if(qd&&p){
       appendLine('[СИМУЛЯЦИЯ] Зарегистрированные хуки: PreToolUse, PostToolUse, UserPromptSubmit, Stop.');
       return;
     }
-    if(lower === '/resume' || lower === '/sessions'){
-      appendLine('[СИМУЛЯЦИЯ /sessions] Сохранённые сессии в .codex/sessions:\n' +
+    if(lower === '/resume'){
+      appendLine('[СИМУЛЯЦИЯ /resume] Сохранённые сессии в .codex/sessions:\n' +
         '  1. sess-2026-10-05-01 (активна)\n' +
-        '  2. sess-2026-10-04-02 (завершена)');
+        '  2. sess-2026-10-04-02 (завершена)\n' +
+        'Для продолжения сессии используйте: /resume <id>');
+      return;
+    }
+    if(lower.startsWith('/resume ')){
+      var targetSess = cmd.slice(8).trim();
+      appendLine('[СИМУЛЯЦИЯ /resume] Сессия "' + targetSess + '" успешно восстановлена.');
       return;
     }
     if(lower === 'cat agents.md'){
@@ -363,7 +378,7 @@ if(qd&&p){
       appendLine('[СИМУЛЯЦИЯ verify.py] CHK-CATALOG: PASS | CHK-SITE: PASS | CHK-SITE-LINKS: PASS | CHK-BROWSER: PASS\nИтог: автономный профиль проверен.');
       return;
     }
-    appendLine('[СИМУЛЯЦИЯ] Команда "' + cmd + '" принята симулятором. В официальном CLI Codex 0.160.0 она будет выполнена в рабочей среде.');
+    appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестная команда или опция "' + cmd + '". В Codex CLI 0.160.0 используйте /help для списка поддерживаемых команд (/goal, /status, /permissions, /model, /skills, /mcp, /plugins, /hooks, /resume, $learn).', 'error-line');
   }
 
   form.addEventListener('submit', function(e){
@@ -400,5 +415,16 @@ document.querySelectorAll('.prose pre, .lesson-controls pre').forEach(function(p
     }
   });
   pre.after(button);
+});
+
+document.querySelectorAll('.back-to-top, .footer-top').forEach(function(btn){
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    if (history.pushState) {
+      history.pushState(null, null, '#top');
+    }
+  });
 });
 })();

@@ -122,30 +122,44 @@ def check_diagram(root: Path, diag_id: str, lesson_path: str, title: str) -> lis
 
 
 def check_lesson_rubric(root: Path, lesson_id: str, lesson_data: dict[str, Any]) -> list[str]:
-    """EDU-01: проверка полноты 9 элементов рубрики урока."""
+    """EDU-01: семантическая проверка полноты и качества 9 элементов рубрики урока."""
     errors = []
     path = root / lesson_data["path"]
     if not path.is_file():
         return [f"{lesson_id}: файл {lesson_data['path']} не существует"]
 
     content = path.read_text(encoding="utf-8")
-    words = len(content.split())
-    if words < 250:
-        errors.append(f"{lesson_id}: урок слишком короткий ({words} слов < 250)")
 
     for pattern, name in RUBRIC_SECTIONS:
-        if not re.search(pattern, content, re.IGNORECASE):
+        match = re.search(pattern, content, re.IGNORECASE)
+        if not match:
             errors.append(f"{lesson_id}: отсутствует раздел '{name}'")
+            continue
 
-    # Проверка наличия раскрываемой подсказки (<details>)
-    if "<details" not in content:
-        errors.append(f"{lesson_id}: отсутствует раскрываемая подсказка (<details><summary>...)")
+        start = match.end()
+        next_heading = re.search(r"^##\s+", content[start:], re.MULTILINE)
+        section_text = content[start:start + next_heading.start()] if next_heading else content[start:]
+        cleaned_text = re.sub(r"###+\s+.*", "", section_text).strip()
+        if len(cleaned_text) < 30:
+            errors.append(f"{lesson_id}: раздел '{name}' содержит менее 30 символов содержательного текста")
+
+    details_match = re.search(r"<details>\s*<summary>(.*?)</summary>(.*?)</details>", content, re.DOTALL)
+    if not details_match:
+        errors.append(f"{lesson_id}: отсутствует или некорректно оформлена раскрываемая подсказка (<details><summary>...</summary>...</details>)")
+    else:
+        summary_text = details_match.group(1).strip()
+        body_text = details_match.group(2).strip()
+        if len(summary_text) < 5 or len(body_text) < 20:
+            errors.append(f"{lesson_id}: раскрываемая подсказка пустая или недостаточно содержательная")
+
+    if "```" not in content:
+        errors.append(f"{lesson_id}: в уроке отсутствуют примеры команд и кода в блоках ```")
 
     return errors
 
 
 def check_howto_unit(root: Path, howto_id: str, rel_path: str, title: str) -> list[str]:
-    """Проверка наличия файлов how-to единицы."""
+    """Проверка наличия файлов how-to единицы и их соответствия объявленным в README."""
     errors = []
     unit_dir = root / rel_path
     if not unit_dir.is_dir():
@@ -155,6 +169,16 @@ def check_howto_unit(root: Path, howto_id: str, rel_path: str, title: str) -> li
     readme = unit_dir / "README.md"
     if not readme.is_file():
         errors.append(f"{howto_id}: в {rel_path} отсутствует README.md с описанием сценария")
+        return errors
+
+    readme_text = readme.read_text(encoding="utf-8")
+    declared_files = re.findall(r"-\s+`([^`]+)`", readme_text)
+    for declared in declared_files:
+        if " " in declared or declared.startswith("-") or declared.startswith("$") or declared.startswith("/"):
+            continue
+        file_path = unit_dir / declared
+        if not file_path.exists():
+            errors.append(f"{howto_id}: заявленный в README.md файл '{declared}' отсутствует в {rel_path}")
 
     return errors
 

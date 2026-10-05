@@ -14,4 +14,5 @@
 ## Состав комплекта
 
 - `README.md` — архитектура и последовательность протокола.
-- `app_server_stdio_client.py` — автономный симулятор клиента app-server.
+- `app_server_stdio_client.py` — автономный клиент app-server с конечным автоматом состояний и JSON-RPC 2.0.
+- `test_app_server_client.py` — модульные проверки переходов состояний, тайм-аутов и ошибок JSON-RPC.
