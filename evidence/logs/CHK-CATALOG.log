@@ -1,0 +1,4 @@
+COMMAND ["C:\\Program Files\\Python313\\python.exe", "-X", "utf8", "scripts/check_project.py", "catalog"]
+EXIT 0
+PASS: catalog
+

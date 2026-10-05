@@ -1,0 +1,4 @@
+COMMAND ["C:\\Program Files\\Python313\\python.exe", "-X", "utf8", "scripts/check_site.py", "--site", ".learning/site"]
+EXIT 0
+HTML-файлов: 637; ошибок: 0
+

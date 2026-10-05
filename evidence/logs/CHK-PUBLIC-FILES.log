@@ -1,0 +1,4 @@
+COMMAND ["C:\\Program Files\\Python313\\python.exe", "-X", "utf8", "scripts/check_publication.py"]
+EXIT 0
+PASS: сигнатуры текущих исходников. История Git, настройки сервиса и все типы секретов этим не проверены.
+

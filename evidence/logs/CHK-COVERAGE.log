@@ -1,0 +1,14 @@
+COMMAND ["C:\\Program Files\\Python313\\python.exe", "-X", "utf8", "scripts/check_coverage.py"]
+EXIT 0
+{
+  "status": "PASS",
+  "meaning": "STRUCTURAL_MAPPING_ONLY",
+  "modules": 10,
+  "lessons": 62,
+  "mapped_lessons": 62,
+  "topics": 62,
+  "inventory_complete": true,
+  "open_scope_items": [],
+  "errors": []
+}
+

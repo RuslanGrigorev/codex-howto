@@ -1,63 +1,131 @@
 #!/usr/bin/env python3
-"""Тесты для учебного SDK-клиента Codex CLI."""
+"""Тесты для архитектуры SDK-адаптера A03 (ADR-CD-04)."""
+import pytest
 from pathlib import Path
 from sdk_client import (
     CodexSDKClient,
-    FixtureSDKTransport,
-    CodexResult,
+    CodexSessionConfig,
+    CodexSDKResult,
+    FixtureSDKAdapter,
+    ProductionSDKAdapter,
+    CodexSDKError,
+    CodexRefusalError,
     CodexExecutionError,
-    CodexTimeoutError,
+    CodexUnregisteredFixtureError,
 )
 
-def test_successful_execution():
-    fixture = FixtureSDKTransport()
-    client = CodexSDKClient(Path("."), transport=fixture)
-    res = client.run_prompt("Успешный промпт")
-    assert res.success is True
-    assert res.exit_code == 0
-    assert len(fixture.call_history) == 1
-    assert "codex" in fixture.call_history[0]["command"]
-
-def test_model_refusal_raises_error():
-    fixture = FixtureSDKTransport()
+def test_successful_fixture_interaction():
+    fixture = FixtureSDKAdapter()
     fixture.register_response(
-        "Опасный",
-        CodexResult(
-            exit_code=0,
-            output='{"type": "refusal", "message": "Запрос нарушает политику безопасности"}\n',
-            events=[{"type": "refusal", "message": "Запрос нарушает политику безопасности"}],
-            success=False,
-            refusal="Запрос нарушает политику безопасности"
+        "Успешный промпт",
+        CodexSDKResult(
+            session_id="test-session",
+            output="Результат успешен",
+            events=[{"event": "completed"}],
+            success=True
         )
     )
-    client = CodexSDKClient(Path("."), transport=fixture)
-    try:
-        client.run_prompt("Опасный запрос")
-        assert False, "Ожидалось исключение CodexExecutionError"
-    except CodexExecutionError as exc:
-        assert "отклонила запрос" in str(exc)
+    client = CodexSDKClient(adapter=fixture)
+    session = client.start()
+    assert session.session_id.startswith("mock-session-")
 
-def test_nonzero_exit_code_raises_error():
-    fixture = FixtureSDKTransport()
+    res = client.prompt("Успешный промпт")
+    assert res.success is True
+    assert res.output == "Результат успешен"
+
+def test_unregistered_prompt_strictly_rejected():
+    """Проверка запрета фабрикации успеха: неизвестный запрос обязан вызывать ошибку."""
+    fixture = FixtureSDKAdapter()
+    client = CodexSDKClient(adapter=fixture)
+    client.start()
+
+    try:
+        client.prompt("Случайный неожиданный промпт без фикстуры")
+        assert False, "Ожидалось исключение CodexUnregisteredFixtureError"
+    except CodexUnregisteredFixtureError as exc:
+        assert "Фабрикация фиктивного успеха запрещена" in str(exc)
+
+def test_model_refusal_raises_typed_error():
+    fixture = FixtureSDKAdapter()
+    fixture.register_response(
+        "Опасный",
+        CodexSDKResult(
+            session_id="test-session",
+            output="",
+            events=[{"type": "refusal", "message": "Отказ модели"}],
+            success=False,
+            refusal="Политика безопасности запрещает эту команду"
+        )
+    )
+    client = CodexSDKClient(adapter=fixture)
+    client.start()
+
+    try:
+        client.prompt("Опасный запрос")
+        assert False, "Ожидалось исключение CodexRefusalError"
+    except CodexRefusalError as exc:
+        assert "Политика безопасности запрещает" in str(exc)
+
+def test_execution_failure_raises_typed_error():
+    fixture = FixtureSDKAdapter()
     fixture.register_response(
         "Сбой",
-        CodexResult(
-            exit_code=2,
+        CodexSDKResult(
+            session_id="test-session",
             output="",
             events=[],
             success=False,
-            error_message="SyntaxError in arguments"
+            exit_code=1,
+            error_message="Runtime error in code"
         )
     )
-    client = CodexSDKClient(Path("."), transport=fixture)
+    client = CodexSDKClient(adapter=fixture)
+    client.start()
+
     try:
-        client.run_prompt("Сбой")
+        client.prompt("Сбой")
         assert False, "Ожидалось исключение CodexExecutionError"
     except CodexExecutionError as exc:
-        assert "Сбой выполнения" in str(exc)
+        assert "Runtime error in code" in str(exc)
+
+def test_continue_and_resume_session():
+    fixture = FixtureSDKAdapter()
+    fixture.register_response(
+        "Шаг 1",
+        CodexSDKResult(session_id="s1", output="Шаг 1 готов", success=True)
+    )
+    fixture.register_response(
+        "Шаг 2",
+        CodexSDKResult(session_id="s1", output="Шаг 2 готов", success=True)
+    )
+
+    client = CodexSDKClient(adapter=fixture)
+    session = client.start()
+    sid = session.session_id
+
+    client.prompt("Шаг 1")
+    res2 = client.continue_session("Шаг 2")
+    assert res2.output == "Шаг 2 готов"
+
+    # Возобновление сессии
+    resumed = client.resume(sid)
+    assert resumed.session_id == sid
+
+def test_production_adapter_offline_boundary():
+    """В офлайн среде ProductionSDKAdapter явно требует openai-codex==0.160.0."""
+    prod = ProductionSDKAdapter()
+    if prod._sdk is None:
+        try:
+            prod.start_session(CodexSessionConfig())
+            assert False, "Ожидалась ошибка отсутствия официального SDK пакета"
+        except CodexSDKError as exc:
+            assert "openai-codex==0.160.0" in str(exc)
 
 if __name__ == "__main__":
-    test_successful_execution()
-    test_model_refusal_raises_error()
-    test_nonzero_exit_code_raises_error()
-    print("ALL A03 SDK TESTS PASSED")
+    test_successful_fixture_interaction()
+    test_unregistered_prompt_strictly_rejected()
+    test_model_refusal_raises_typed_error()
+    test_execution_failure_raises_typed_error()
+    test_continue_and_resume_session()
+    test_production_adapter_offline_boundary()
+    print("ALL SDK TESTS PASSED")

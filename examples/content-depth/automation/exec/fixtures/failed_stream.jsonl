@@ -1,0 +1,4 @@
+{"event": "turn_start", "turn": 1}
+{"event": "tool_call", "tool": "run_command", "args": {"command": "python broken.py"}}
+{"event": "tool_output", "exit_code": 1, "stdout": "SyntaxError: invalid syntax"}
+{"event": "turn.failed", "message": "Процесс завершился с ошибкой синтаксиса в broken.py"}

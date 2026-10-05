@@ -11,7 +11,7 @@
 
 ## Слои конфигурации
 
-1. **Флаги CLI** (`--sandbox-mode`, `--approval-policy`, `-c key=value`): переопределяют всё.
+1. **Флаги CLI** (`--sandbox`, `--ask-for-approval`, `-c key=value`): переопределяют всё.
 2. **Именованный профиль** (`$CODEX_HOME/NAME.config.toml`): активируется через `--profile NAME`.
 3. **Проектная конфигурация** (`.codex/config.toml`): настройки репозитория.
 4. **Глобальная конфигурация** (`~/.codex/config.toml`): настройки пользователя.

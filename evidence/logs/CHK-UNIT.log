@@ -1,0 +1,126 @@
+COMMAND ["C:\\Program Files\\Python313\\python.exe", "-X", "utf8", "-m", "pytest", "-q", "scripts/tests"]
+EXIT 1
+........................................................................ [ 48%]
+...................F.......F............................F...F...F....... [ 96%]
+......                                                                   [100%]
+================================== FAILURES ===================================
+___________________ test_symlink_evidence_outside_rejected ____________________
+
+gate = (WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_symlink_evidence_outside_0'), WindowsPath('C.../Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_symlink_evidence_outside_0/.learning/evidence/release'), ...)
+tmp_path = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_symlink_evidence_outside_0')
+
+    def test_symlink_evidence_outside_rejected(gate,tmp_path):
+        root,_,_,log,*_=gate
+        outside=root/'outside.txt';outside.write_text(log.read_text())
+>       log.unlink();log.symlink_to(outside)
+
+scripts\tests\test_gate_injection.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_symlink_evidence_outside_0/.learning/evidence/logs/check.log')
+target = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_symlink_evidence_outside_0/outside.txt')
+target_is_directory = False
+
+    def symlink_to(self, target, target_is_directory=False):
+        """
+        Make this path a symlink pointing to the target path.
+        Note the order of arguments (link, target) is the reverse of os.symlink.
+        """
+>       os.symlink(target, self, target_is_directory)
+E       OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\Mi\\AppData\\Local\\Temp\\pytest-of-Mi\\pytest-295\\test_symlink_evidence_outside_0\\outside.txt' -> 'C:\\Users\\Mi\\AppData\\Local\\Temp\\pytest-of-Mi\\pytest-295\\test_symlink_evidence_outside_0\\.learning\\evidence\\logs\\check.log'
+
+C:\Program Files\Python313\Lib\pathlib\_local.py:789: OSError
+______________ test_mapping_does_not_claim_semantic_completeness ______________
+
+    def test_mapping_does_not_claim_semantic_completeness():
+        mapped=check(ROOT)
+        assert mapped['status']=='PASS'
+        assert mapped['mapped_lessons']==62
+        assert mapped['meaning']=='STRUCTURAL_MAPPING_ONLY'
+>       assert not mapped['inventory_complete']
+E       assert not True
+
+scripts\tests\test_learning_experience.py:48: AssertionError
+_________________________ test_build_refuses_symlink __________________________
+
+tmp_path = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_build_refuses_symlink0')
+
+    def test_build_refuses_symlink(tmp_path):
+>       root=tmp_path/'repo';root.mkdir();other=tmp_path/'elsewhere';other.mkdir();link=root/'site';link.symlink_to(other,target_is_directory=True)
+
+scripts\tests\test_safety.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_build_refuses_symlink0/repo/site')
+target = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_build_refuses_symlink0/elsewhere')
+target_is_directory = True
+
+    def symlink_to(self, target, target_is_directory=False):
+        """
+        Make this path a symlink pointing to the target path.
+        Note the order of arguments (link, target) is the reverse of os.symlink.
+        """
+>       os.symlink(target, self, target_is_directory)
+E       OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\Mi\\AppData\\Local\\Temp\\pytest-of-Mi\\pytest-295\\test_build_refuses_symlink0\\elsewhere' -> 'C:\\Users\\Mi\\AppData\\Local\\Temp\\pytest-of-Mi\\pytest-295\\test_build_refuses_symlink0\\repo\\site'
+
+C:\Program Files\Python313\Lib\pathlib\_local.py:789: OSError
+____________________ test_prepare_rejects_symlink_learning ____________________
+
+repo = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_prepare_rejects_symlink_l0/repo')
+tmp_path = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_prepare_rejects_symlink_l0')
+
+    def test_prepare_rejects_symlink_learning(repo,tmp_path):
+>       outside=tmp_path/'outside';outside.mkdir();(repo/'.learning').symlink_to(outside,target_is_directory=True)
+
+scripts\tests\test_safety.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_prepare_rejects_symlink_l0/repo/.learning')
+target = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_prepare_rejects_symlink_l0/outside')
+target_is_directory = True
+
+    def symlink_to(self, target, target_is_directory=False):
+        """
+        Make this path a symlink pointing to the target path.
+        Note the order of arguments (link, target) is the reverse of os.symlink.
+        """
+>       os.symlink(target, self, target_is_directory)
+E       OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\Mi\\AppData\\Local\\Temp\\pytest-of-Mi\\pytest-295\\test_prepare_rejects_symlink_l0\\outside' -> 'C:\\Users\\Mi\\AppData\\Local\\Temp\\pytest-of-Mi\\pytest-295\\test_prepare_rejects_symlink_l0\\repo\\.learning'
+
+C:\Program Files\Python313\Lib\pathlib\_local.py:789: OSError
+____________________ test_symlink_student_source_rejected _____________________
+
+repo = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_symlink_student_source_re0/repo')
+tmp_path = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_symlink_student_source_re0')
+
+    def test_symlink_student_source_rejected(repo,tmp_path):
+>       ws=verify.prepare_exercise(repo,'known');(ws/'linked').symlink_to(tmp_path,target_is_directory=True)
+
+scripts\tests\test_safety.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_symlink_student_source_re0/repo/.learning/workspaces/known/linked')
+target = WindowsPath('C:/Users/Mi/AppData/Local/Temp/pytest-of-Mi/pytest-295/test_symlink_student_source_re0')
+target_is_directory = True
+
+    def symlink_to(self, target, target_is_directory=False):
+        """
+        Make this path a symlink pointing to the target path.
+        Note the order of arguments (link, target) is the reverse of os.symlink.
+        """
+>       os.symlink(target, self, target_is_directory)
+E       OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\Mi\\AppData\\Local\\Temp\\pytest-of-Mi\\pytest-295\\test_symlink_student_source_re0' -> 'C:\\Users\\Mi\\AppData\\Local\\Temp\\pytest-of-Mi\\pytest-295\\test_symlink_student_source_re0\\repo\\.learning\\workspaces\\known\\linked'
+
+C:\Program Files\Python313\Lib\pathlib\_local.py:789: OSError
+=========================== short test summary info ===========================
+FAILED scripts\tests\test_gate_injection.py::test_symlink_evidence_outside_rejected
+FAILED scripts\tests\test_learning_experience.py::test_mapping_does_not_claim_semantic_completeness
+FAILED scripts\tests\test_safety.py::test_build_refuses_symlink - OSError: [W...
+FAILED scripts\tests\test_safety.py::test_prepare_rejects_symlink_learning - ...
+FAILED scripts\tests\test_safety.py::test_symlink_student_source_rejected - O...
+5 failed, 145 passed in 76.83s (0:01:16)
+
+C:\Users\Mi\AppData\Roaming\Python\Python313\site-packages\pytest_asyncio\plugin.py:247: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))

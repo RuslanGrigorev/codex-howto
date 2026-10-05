@@ -1,176 +1,273 @@
 #!/usr/bin/env python3
-"""Учебный программный SDK-клиент для вызова Codex CLI с разделением транспорта."""
+"""Учебный программный Python SDK клиент для Codex CLI 0.160.0 (ADR-CD-04).
+
+Архитектура:
+- BaseSDKAdapter: абстрактный интерфейс взаимодействия (start, send_prompt, continue, resume).
+- ProductionSDKAdapter: адаптер к официальному закреплённому пакету openai-codex==0.160.0.
+- FixtureSDKAdapter: детерминированный адаптер для офлайн-тестов с обязательной явной регистрацией фикстур.
+- CodexSDKClient: клиент уровня приложения, инкапсулирующий работу с сессиями.
+"""
 from __future__ import annotations
-import json
-import subprocess
+
+import sys
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional
 
+# UTF-8 reconfigure
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
+
 @dataclass
-class CodexResult:
-    exit_code: int
+class CodexSessionConfig:
+    """Конфигурация сессии SDK."""
+    model: Optional[str] = None
+    sandbox: str = "workspace-write"
+    ask_for_approval: str = "never"
+    working_dir: Optional[Path] = None
+    timeout: float = 60.0
+
+
+@dataclass
+class CodexSDKResult:
+    """Результат выполнения шага или запроса через SDK."""
+    session_id: str
     output: str
     events: list[dict[str, Any]] = field(default_factory=list)
     success: bool = True
     refusal: Optional[str] = None
+    exit_code: int = 0
     error_message: Optional[str] = None
 
+
+@dataclass
+class CodexSession:
+    """Состояние сессии SDK."""
+    session_id: str
+    config: CodexSessionConfig
+    status: str = "active"
+    history: list[dict[str, Any]] = field(default_factory=list)
+
+
 class CodexSDKError(Exception):
-    """Базовое исключение SDK клиента."""
+    """Базовое исключение SDK."""
     pass
+
 
 class CodexTimeoutError(CodexSDKError):
-    """Исключение при превышении тайм-аута сессии."""
+    """Исключение при превышении лимита времени выполнения."""
     pass
+
 
 class CodexExecutionError(CodexSDKError):
-    """Исключение при сбое выполнения команды или отказе модели."""
+    """Исключение при сбое выполнения команды или вызова инструмента."""
     pass
 
-class BaseSDKTransport(ABC):
-    """Абстрактный интерфейс транспорта для взаимодействия с Codex CLI."""
+
+class CodexRefusalError(CodexSDKError):
+    """Исключение при отказе модели по соображениям безопасности."""
+    pass
+
+
+class CodexUnregisteredFixtureError(CodexSDKError):
+    """Исключение при отсутствии зарегистрированной фикстуры для запроса (ADR-CD-04)."""
+    pass
+
+
+class BaseSDKAdapter(ABC):
+    """Абстрактный адаптер для SDK взаимодействия с Codex."""
 
     @abstractmethod
-    def execute(
-        self,
-        command: list[str],
-        cwd: Path,
-        env: Optional[dict[str, str]] = None,
-        timeout: Optional[float] = None
-    ) -> CodexResult:
-        """Выполняет вызов Codex CLI и возвращает структурированный результат."""
+    def start_session(self, config: CodexSessionConfig, initial_prompt: Optional[str] = None) -> tuple[CodexSession, Optional[CodexSDKResult]]:
+        """Инициализирует новую сессию Codex."""
         raise NotImplementedError
 
-class SubprocessSDKTransport(BaseSDKTransport):
-    """Производственный транспорт на базе вызова подпроцесса."""
+    @abstractmethod
+    def send_prompt(self, session: CodexSession, prompt: str, timeout: Optional[float] = None) -> CodexSDKResult:
+        """Отправляет промпт в активную сессию."""
+        raise NotImplementedError
 
-    def execute(
-        self,
-        command: list[str],
-        cwd: Path,
-        env: Optional[dict[str, str]] = None,
-        timeout: Optional[float] = None
-    ) -> CodexResult:
+    @abstractmethod
+    def continue_session(self, session: CodexSession, prompt: str, timeout: Optional[float] = None) -> CodexSDKResult:
+        """Продолжает существующую сессию новым промптом."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def resume_session(self, session_id: str, config: Optional[CodexSessionConfig] = None) -> CodexSession:
+        """Возобновляет сохранённую сессию по идентификатору."""
+        raise NotImplementedError
+
+
+class ProductionSDKAdapter(BaseSDKAdapter):
+    """Производственный адаптер на базе официального пакета openai-codex==0.160.0."""
+
+    PINNED_VERSION = "0.160.0"
+
+    def __init__(self):
         try:
-            proc = subprocess.run(
-                command,
-                cwd=str(cwd),
-                env=env,
-                capture_output=True,
-                text=True,
-                timeout=timeout,
-                encoding="utf-8"
+            import openai_codex  # type: ignore
+            self._sdk = openai_codex
+        except ImportError:
+            self._sdk = None
+
+    def _require_sdk(self):
+        if self._sdk is None:
+            raise CodexSDKError(
+                f"Официальный пакет 'openai-codex=={self.PINNED_VERSION}' не установлен в окружении. "
+                "Для офлайн-проверок и тестов используйте FixtureSDKAdapter."
             )
-            events = []
-            refusal = None
-            for line in proc.stdout.splitlines():
-                line = line.strip()
-                if line.startswith("{") and line.endswith("}"):
-                    try:
-                        ev = json.loads(line)
-                        events.append(ev)
-                        if ev.get("type") == "refusal" or ev.get("refusal"):
-                            refusal = ev.get("message") or ev.get("refusal")
-                    except json.JSONDecodeError:
-                        pass
 
-            success = proc.returncode == 0 and refusal is None
-            return CodexResult(
-                exit_code=proc.returncode,
-                output=proc.stdout,
-                events=events,
-                success=success,
-                refusal=refusal,
-                error_message=proc.stderr if proc.returncode != 0 else None
-            )
-        except subprocess.TimeoutExpired as exc:
-            raise CodexTimeoutError(f"Превышен таймаут выполнения Codex CLI ({timeout}s)") from exc
-        except FileNotFoundError as exc:
-            raise CodexExecutionError("Исполняемый файл Codex CLI не найден в системе") from exc
+    def start_session(self, config: CodexSessionConfig, initial_prompt: Optional[str] = None) -> tuple[CodexSession, Optional[CodexSDKResult]]:
+        self._require_sdk()
+        client = self._sdk.Client(
+            model=config.model,
+            sandbox=config.sandbox,
+            ask_for_approval=config.ask_for_approval,
+            cwd=str(config.working_dir) if config.working_dir else None
+        )
+        raw_session = client.create_session()
+        session = CodexSession(session_id=raw_session.id, config=config)
+        res = None
+        if initial_prompt:
+            res = self.send_prompt(session, initial_prompt, timeout=config.timeout)
+        return session, res
 
-class FixtureSDKTransport(BaseSDKTransport):
-    """Детерминированный тестовый транспорт для офлайн-проверок и тестов."""
-
-    def __init__(self, canned_responses: Optional[dict[str, CodexResult]] = None):
-        self.canned_responses = canned_responses or {}
-        self.call_history: list[dict[str, Any]] = []
-
-    def register_response(self, prompt_substring: str, result: CodexResult) -> None:
-        self.canned_responses[prompt_substring] = result
-
-    def execute(
-        self,
-        command: list[str],
-        cwd: Path,
-        env: Optional[dict[str, str]] = None,
-        timeout: Optional[float] = None
-    ) -> CodexResult:
-        self.call_history.append({"command": command, "cwd": cwd, "timeout": timeout})
-        cmd_str = " ".join(command)
-        for sub, res in self.canned_responses.items():
-            if sub in cmd_str:
-                return res
-
-        return CodexResult(
-            exit_code=0,
-            output=f"Executed: {cmd_str}",
-            events=[{"event": "completed", "command": command}],
-            success=True
+    def send_prompt(self, session: CodexSession, prompt: str, timeout: Optional[float] = None) -> CodexSDKResult:
+        self._require_sdk()
+        raw_res = self._sdk.send(session.session_id, prompt, timeout=timeout or session.config.timeout)
+        return CodexSDKResult(
+            session_id=session.session_id,
+            output=raw_res.text,
+            events=raw_res.events,
+            success=raw_res.is_success,
+            refusal=raw_res.refusal,
+            exit_code=0 if raw_res.is_success else 1
         )
 
+    def continue_session(self, session: CodexSession, prompt: str, timeout: Optional[float] = None) -> CodexSDKResult:
+        return self.send_prompt(session, prompt, timeout=timeout)
+
+    def resume_session(self, session_id: str, config: Optional[CodexSessionConfig] = None) -> CodexSession:
+        self._require_sdk()
+        cfg = config or CodexSessionConfig()
+        raw_session = self._sdk.get_session(session_id)
+        return CodexSession(session_id=raw_session.id, config=cfg)
+
+
+class FixtureSDKAdapter(BaseSDKAdapter):
+    """Детерминированный тестовый адаптер для офлайн-проверок (ADR-CD-04).
+
+    Строгое правило: запросы, для которых нет зарегистрированной фикстуры,
+    НЕ генерируют фиктивный успех, а вызывают CodexUnregisteredFixtureError.
+    """
+
+    def __init__(self):
+        self.registered_responses: dict[str, CodexSDKResult] = {}
+        self.registered_sessions: dict[str, CodexSession] = {}
+        self.call_history: list[dict[str, Any]] = []
+        self._next_session_id = 1
+
+    def register_response(self, prompt_substring: str, result: CodexSDKResult) -> None:
+        """Регистрирует ожидаемый результат на основе подстроки промпта."""
+        self.registered_responses[prompt_substring] = result
+
+    def start_session(self, config: CodexSessionConfig, initial_prompt: Optional[str] = None) -> tuple[CodexSession, Optional[CodexSDKResult]]:
+        session_id = f"mock-session-{self._next_session_id}"
+        self._next_session_id += 1
+        session = CodexSession(session_id=session_id, config=config)
+        self.registered_sessions[session_id] = session
+        self.call_history.append({"action": "start_session", "session_id": session_id, "config": config})
+        res = None
+        if initial_prompt:
+            res = self.send_prompt(session, initial_prompt, timeout=config.timeout)
+        return session, res
+
+    def send_prompt(self, session: CodexSession, prompt: str, timeout: Optional[float] = None) -> CodexSDKResult:
+        self.call_history.append({"action": "send_prompt", "session_id": session.session_id, "prompt": prompt})
+
+        # Поиск зарегистрированного ответа
+        for sub, res in self.registered_responses.items():
+            if sub in prompt:
+                # Фиксация истории сессии
+                session.history.append({"prompt": prompt, "result": res})
+                if res.refusal:
+                    raise CodexRefusalError(f"Модель отклонила запрос: {res.refusal}")
+                if res.exit_code != 0:
+                    raise CodexExecutionError(f"Ошибка выполнения (код {res.exit_code}): {res.error_message}")
+                return res
+
+        # Запрет неявного успеха для незарегистрированных фикстур
+        raise CodexUnregisteredFixtureError(
+            f"Для промпта '{prompt}' нет зарегистрированного ответа фикстуры. "
+            "Фабрикация фиктивного успеха запрещена архитектурным решением ADR-CD-04."
+        )
+
+    def continue_session(self, session: CodexSession, prompt: str, timeout: Optional[float] = None) -> CodexSDKResult:
+        self.call_history.append({"action": "continue_session", "session_id": session.session_id, "prompt": prompt})
+        return self.send_prompt(session, prompt, timeout=timeout)
+
+    def resume_session(self, session_id: str, config: Optional[CodexSessionConfig] = None) -> CodexSession:
+        self.call_history.append({"action": "resume_session", "session_id": session_id})
+        if session_id in self.registered_sessions:
+            return self.registered_sessions[session_id]
+        # Если сессия была зарегистрирована заранее
+        cfg = config or CodexSessionConfig()
+        session = CodexSession(session_id=session_id, config=cfg)
+        self.registered_sessions[session_id] = session
+        return session
+
+
 class CodexSDKClient:
-    """Программный клиент для автоматизации Codex CLI 0.160.0."""
+    """Высокоуровневый клиент для интеграции Codex в приложения Python."""
 
-    def __init__(
-        self,
-        workspace: Path,
-        sandbox_mode: str = "workspace-write",
-        approval_policy: str = "never",
-        transport: Optional[BaseSDKTransport] = None,
-        default_timeout: float = 60.0
-    ):
-        self.workspace = Path(workspace).resolve()
-        self.sandbox_mode = sandbox_mode
-        self.approval_policy = approval_policy
-        self.transport = transport or SubprocessSDKTransport()
-        self.default_timeout = default_timeout
+    def __init__(self, adapter: Optional[BaseSDKAdapter] = None, config: Optional[CodexSessionConfig] = None):
+        self.adapter = adapter or FixtureSDKAdapter()
+        self.config = config or CodexSessionConfig()
+        self.current_session: Optional[CodexSession] = None
 
-    def run_prompt(
-        self,
-        prompt: str,
-        approval_policy: Optional[str] = None,
-        timeout: Optional[float] = None
-    ) -> CodexResult:
-        """Выполняет промпт через exec-режим Codex CLI."""
-        policy = approval_policy or self.approval_policy
-        tout = timeout or self.default_timeout
+    def start(self, initial_prompt: Optional[str] = None) -> CodexSession:
+        session, _ = self.adapter.start_session(self.config, initial_prompt=initial_prompt)
+        self.current_session = session
+        return session
 
-        cmd = [
-            "codex", "exec",
-            "--approval-policy", policy,
-            "--sandbox-mode", self.sandbox_mode,
-            "--jsonl",
-            prompt
-        ]
+    def prompt(self, text: str, timeout: Optional[float] = None) -> CodexSDKResult:
+        if not self.current_session:
+            self.start()
+        assert self.current_session is not None
+        return self.adapter.send_prompt(self.current_session, text, timeout=timeout)
 
-        result = self.transport.execute(cmd, cwd=self.workspace, timeout=tout)
+    def continue_session(self, text: str, timeout: Optional[float] = None) -> CodexSDKResult:
+        if not self.current_session:
+            raise CodexSDKError("Нет активной сессии для продолжения. Сначала вызовите start().")
+        return self.adapter.continue_session(self.current_session, text, timeout=timeout)
 
-        if not result.success:
-            if result.refusal:
-                raise CodexExecutionError(f"Модель отклонила запрос: {result.refusal}")
-            if result.exit_code != 0:
-                raise CodexExecutionError(f"Сбой выполнения (код {result.exit_code}): {result.error_message}")
+    def resume(self, session_id: str) -> CodexSession:
+        session = self.adapter.resume_session(session_id, config=self.config)
+        self.current_session = session
+        return session
 
-        return result
 
 def main():
-    fixture = FixtureSDKTransport()
-    client = CodexSDKClient(Path("."), transport=fixture)
-    res = client.run_prompt("Проверь синтаксис")
-    assert res.success, "Ошибка вызова клиента"
-    print("PASS: A03 Python SDK client validated")
+    fixture = FixtureSDKAdapter()
+    fixture.register_response(
+        "Проверь синтаксис",
+        CodexSDKResult(
+            session_id="mock-1",
+            output="Синтаксис корректен",
+            events=[{"event": "completed"}],
+            success=True
+        )
+    )
+    client = CodexSDKClient(adapter=fixture)
+    client.start()
+    res = client.prompt("Проверь синтаксис")
+    assert res.success, "Ошибка вызова SDK"
+    print("PASS: A03 Python SDK adapter architecture validated")
+
 
 if __name__ == "__main__":
     main()

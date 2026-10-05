@@ -236,18 +236,89 @@ if(qd&&p){
     output.scrollTop = output.scrollHeight;
   }
 
+  function tokenize(str) {
+    var tokens = [];
+    var current = '';
+    var inDouble = false;
+    var inSingle = false;
+    for (var i = 0; i < str.length; i++) {
+      var ch = str[i];
+      if (ch === '"' && !inSingle) {
+        inDouble = !inDouble;
+      } else if (ch === "'" && !inDouble) {
+        inSingle = !inSingle;
+      } else if ((ch === ' ' || ch === '\t') && !inDouble && !inSingle) {
+        if (current.length > 0) {
+          tokens.push(current);
+          current = '';
+        }
+      } else {
+        current += ch;
+      }
+    }
+    if (current.length > 0) {
+      tokens.push(current);
+    }
+    return tokens;
+  }
+
+  var KNOWN_SUBCOMMANDS = [
+    'exec', 'app-server', 'login', 'logout', 'resume', 'fork', 'archive', 'unarchive',
+    'delete', 'review', 'apply', 'mcp', 'execpolicy', 'cloud', 'agents', 'queue',
+    'plugin', 'remote-control', 'completion', 'features', 'sandbox', 'doctor', 'update', 'debug'
+  ];
+
+  var VALID_CODEX_FLAGS = {
+    '--model': true, '-m': true,
+    '--sandbox': true, '-s': true,
+    '--ask-for-approval': true, '-a': true,
+    '--cd': true, '-c': true,
+    '--profile': true, '-p': true,
+    '--mcp-config': true,
+    '--agent': true,
+    '--image': true, '-i': true,
+    '--config': true,
+    '--add-dir': true,
+    '--search': false,
+    '--oss': false, '--local-provider': false,
+    '--continue': false, '--resume': false,
+    '--help': false, '-h': false,
+    '--version': false, '-v': false, '-v': false,
+    '--strict-config': false,
+    '--no-alt-screen': false,
+    '--skip-git-repo-check': false
+  };
+
+  var VALID_EXEC_FLAGS = {
+    '--json': false,
+    '--ephemeral': false,
+    '--output-schema': true,
+    '--output-last-message': true, '-o': true,
+    '--sandbox': true, '-s': true,
+    '--ask-for-approval': true, '-a': true,
+    '--cd': true, '-c': true,
+    '--profile': true, '-p': true,
+    '--model': true, '-m': true,
+    '--help': false, '-h': false,
+    '--version': false, '-v': false, '-v': false
+  };
+
   function executeSim(rawCmd){
     var cmd = (rawCmd || '').trim();
     if(!cmd)return;
     appendLine('user@codex-lab:~$ ' + cmd, 'user-cmd-line');
 
-    var lower = cmd.toLowerCase();
-    if(lower === 'clear'){
+    var tokens = tokenize(cmd);
+    if(!tokens.length)return;
+
+    var first = tokens[0].toLowerCase();
+
+    if(first === 'clear'){
       output.replaceChildren();
       appendLine('[СИМУЛЯТОР CODEX CLI 0.160.0 ОЧИЩЕН]', 'system-line');
       return;
     }
-    if(lower === 'help' || lower === '/help'){
+    if(first === 'help' || first === '/help'){
       appendLine('[СИМУЛЯЦИЯ] Доступные команды симулятора Codex CLI 0.160.0:\n' +
         '  codex [ПАРАМЕТРЫ] [ПРОМПТ]\n' +
         '    --model <gpt-5 | gpt-4.1 | o3-mini>\n' +
@@ -263,189 +334,286 @@ if(qd&&p){
         '    $learn, cat AGENTS.md, clear');
       return;
     }
-    if(lower === 'codex --version' || lower === 'codex -v' || lower === 'codex -V' || lower === '/version'){
-      appendLine('codex 0.160.0 (offline docs baseline rust-v0.160.0)');
-      return;
-    }
-    if(lower === 'codex --help' || lower === 'codex -h'){
-      appendLine(
-        'Codex CLI v0.160.0 (rust-v0.160.0)\n\n' +
-        'Использование: codex [ПАРАМЕТРЫ] [КОМАНДА] [ПРОМПТ]\n\n' +
-        'Подкоманды:\n' +
-        '  exec         Неинтерактивное пакетное выполнение промпта\n' +
-        '  app-server   Запуск stdio JSON-RPC 2.0 сервера интеграции\n\n' +
-        'Параметры:\n' +
-        '  -m, --model <МОДЕЛЬ>         Целевая модель (gpt-5, gpt-4.1)\n' +
-        '  -s, --sandbox <РЕЖИМ>        Режим: read-only | workspace-write | danger-full-access\n' +
-        '  --ask-for-approval <РЕЖИМ>   Запрос подтверждения: untrusted | always | never\n' +
-        '  --cd <КАТАЛОГ>               Рабочий каталог\n' +
-        '  --mcp-config <ФАЙЛ>          Путь к конфигурации MCP\n' +
-        '  --continue, --resume         Возобновление сессии\n' +
-        '  -h, --help                   Справка\n' +
-        '  -V, --version                Версия'
-      );
-      return;
-    }
-    if(lower.startsWith('codex exec')){
-      appendLine('[СИМУЛЯЦИЯ exec] Неинтерактивное выполнение:\n' +
-        '{"type":"session.start","version":"0.160.0","mode":"exec"}\n' +
-        '{"type":"item.create","item":{"type":"message","role":"user","content":"' + cmd.replace(/codex\s+exec/i, '').trim() + '"}}\n' +
-        '{"type":"agent.response","status":"completed","exit_code":0}\n' +
-        'Завершено с кодом 0 (успешно).');
-      return;
-    }
-    if(lower === 'codex app-server'){
-      appendLine('[СИМУЛЯЦИЯ app-server] Сервер JSON-RPC 2.0 ожидает входящие запросы в stdin.');
-      return;
-    }
-    if(lower === 'codex' || lower.startsWith('codex ') || lower.startsWith('codex"')){
-      var isReadOnly = lower.includes('read-only') || lower.includes('-s read-only') || lower.includes('--sandbox read-only');
-      var isDanger = lower.includes('danger-full-access');
-      var sbMode = isReadOnly ? 'read-only (только чтение: запись файлов заблокирована)' : (isDanger ? 'danger-full-access (полный доступ)' : 'workspace-write');
-
-      var mMatch = cmd.match(/(?:--model|-m)\s+([^\s]+)/i);
-      var curModel = mMatch ? mMatch[1] : 'gpt-5';
-
-      var appMatch = cmd.match(/--ask-for-approval\s+([^\s]+)/i);
-      var curApp = appMatch ? appMatch[1] : 'untrusted';
-
-      var agentMatch = cmd.match(/--agent\s+([^\s]+)/i);
-      var skillMatch = cmd.match(/\$([a-zA-Z0-9_-]+)/);
-
-      var infoLines = [
-        '[СИМУЛЯЦИЯ] Интерактивная сессия Codex CLI 0.160.0 запущена.',
-        '  Рабочий каталог: /workspace',
-        '  Модель: ' + curModel,
-        '  Песочница: ' + sbMode,
-        '  Подтверждения: ' + curApp,
-        '  Сеть: disabled (автономный режим)'
-      ];
-      if(agentMatch){
-        infoLines.push('  Субагент: ' + agentMatch[1] + ' (ролевой профиль активен)');
+    if(first === 'cat'){
+      if(tokens[1] && tokens[1].toLowerCase() === 'agents.md'){
+        appendLine('# Инструкции проекта (AGENTS.md)\n' +
+          '- Автономный практикум Codex CLI.\n' +
+          '- Кодировка UTF-8.\n' +
+          '- Строгая проверка контракта без сетевых вызовов.');
+        return;
       }
-      if(skillMatch){
-        infoLines.push('  Навык: $' + skillMatch[1] + ' (инструкции навыка загружены в контекст)');
+      appendLine('[СИМУЛЯЦИЯ cat] Файл не найден или чтение ограничено.', 'error-line');
+      return;
+    }
+    if(first === 'python'){
+      if(cmd.includes('verify.py')){
+        appendLine('[СИМУЛЯЦИЯ verify.py] CHK-CATALOG: PASS | CHK-SITE: PASS | CHK-SITE-LINKS: PASS | CHK-BROWSER: PASS\nИтог: автономный профиль проверен.');
+        return;
       }
-      if(lower.includes('--continue') || lower.includes('--resume')){
-        infoLines.push('  Возобновление: последняя активная сессия восстановлена');
-      }
-      if(lower.includes('--mcp-config')){
-        infoLines.push('  MCP: конфигурация загружена');
-      }
-      infoLines.push('Введите задачу или команду (/goal, /model, /permissions, /status). Для выхода: /exit');
-      appendLine(infoLines.join('\n'));
+      appendLine('[СИМУЛЯЦИЯ python] Скрипт выполнен успешно.');
       return;
     }
-    if(lower === '/model'){
-      appendLine('[СИМУЛЯЦИЯ /model] Текущая модель сессии: gpt-5 (OpenAI)\n' +
-        'Доступные профили моделей (0.160.0):\n' +
-        '  1. gpt-5 (по умолчанию: reasoning + coding)\n' +
-        '  2. gpt-4.1 (быстрая кодогенерация и рефакторинг)\n' +
-        '  3. o3-mini (структурированный анализ и валидация)\n' +
-        'Для переключения модели используйте: /model <название>');
-      return;
-    }
-    if(lower.startsWith('/model ')){
-      var targetModel = cmd.slice(7).trim();
-      appendLine('[СИМУЛЯЦИЯ /model] Модель сессии успешно переключена на "' + targetModel + '". Контекст сохранён.');
-      return;
-    }
-    if(lower === '/goal'){
-      appendLine('[СИМУЛЯЦИЯ /goal] Текущая цель:\n' +
-        '  1. [DONE] Исследование архитектуры и требований\n' +
-        '  2. [IN_PROGRESS] Реализация и подготовка материалов\n' +
-        '  3. [PENDING] Автономная верификация и сдача\n' +
-        'Статус: АКТИВНА. Для паузы используйте: /goal pause');
-      return;
-    }
-    if(lower === '/goal pause'){
-      appendLine('[СИМУЛЯЦИЯ /goal] Долгосрочная цель приостановлена. Прогресс сохранён.');
-      return;
-    }
-    if(lower === '/goal resume'){
-      appendLine('[СИМУЛЯЦИЯ /goal] Выполнение цели возобновлено с текущего шага.');
-      return;
-    }
-    if(lower === '/goal clear'){
-      appendLine('[СИМУЛЯЦИЯ /goal] Текущая цель очищена.');
-      return;
-    }
-    if(lower === '/permissions'){
-      appendLine('[СИМУЛЯЦИЯ /permissions] Права безопасности сессии:\n' +
-        '  - sandbox: workspace-write (изменение только в рабочей области)\n' +
-        '  - network: blocked (автономный офлайн-режим)\n' +
-        '  - approvals: untrusted (запрос подтверждения на внешние действия)');
-      return;
-    }
-    if(lower === '/sandbox' || lower === '/sandbox read-only' || lower === 'read-only' || lower === 'рид онли' || lower === 'read only'){
+    if(first === 'рид' || cmd.toLowerCase() === 'рид онли' || cmd.toLowerCase() === 'read-only' || cmd.toLowerCase() === 'read only'){
       appendLine('[СИМУЛЯЦИЯ: ПЕСОЧНИЦА] Режим песочницы: read-only (только чтение).\n' +
         'Все изменения файлов и деструктивные операции заблокированы. Агент работает исключительно в режиме анализа.');
       return;
     }
-    if(lower.startsWith('/sandbox ')){
-      var sMode = cmd.slice(9).trim();
-      appendLine('[СИМУЛЯЦИЯ /sandbox] Режим песочницы установлен в "' + sMode + '".');
+    if(first.startsWith('$')){
+      appendLine('[СИМУЛЯЦИЯ ' + first + '] Навык проекта активен. Инструкции загружены в контекст.');
       return;
     }
-    if(lower === 'exit' || lower === '/exit'){
+
+    if(first.startsWith('/')){
+      if(first === '/model'){
+        if(tokens[1]){
+          appendLine('[СИМУЛЯЦИЯ /model] Модель сессии успешно переключена на "' + tokens[1] + '". Контекст сохранён.');
+        } else {
+          appendLine('[СИМУЛЯЦИЯ /model] Текущая модель сессии: gpt-5 (OpenAI)\n' +
+            'Доступные профили моделей (0.160.0):\n' +
+            '  1. gpt-5 (по умолчанию: reasoning + coding)\n' +
+            '  2. gpt-4.1 (быстрая кодогенерация и рефакторинг)\n' +
+            '  3. o3-mini (структурированный анализ и валидация)\n' +
+            'Для переключения модели используйте: /model <название>');
+        }
+        return;
+      }
+      if(first === '/goal'){
+        var subG = tokens[1] ? tokens[1].toLowerCase() : '';
+        if(subG === 'pause'){
+          appendLine('[СИМУЛЯЦИЯ /goal] Долгосрочная цель приостановлена. Прогресс сохранён.');
+        } else if(subG === 'resume'){
+          appendLine('[СИМУЛЯЦИЯ /goal] Выполнение цели возобновлено с текущего шага.');
+        } else if(subG === 'clear'){
+          appendLine('[СИМУЛЯЦИЯ /goal] Текущая цель очищена.');
+        } else {
+          appendLine('[СИМУЛЯЦИЯ /goal] Текущая цель:\n' +
+            '  1. [DONE] Исследование архитектуры и требований\n' +
+            '  2. [IN_PROGRESS] Реализация и подготовка материалов\n' +
+            '  3. [PENDING] Автономная верификация и сдача\n' +
+            'Статус: АКТИВНА. Для паузы используйте: /goal pause');
+        }
+        return;
+      }
+      if(first === '/permissions'){
+        appendLine('[СИМУЛЯЦИЯ /permissions] Права безопасности сессии:\n' +
+          '  - sandbox: workspace-write (изменение только в рабочей области)\n' +
+          '  - network: blocked (автономный офлайн-режим)\n' +
+          '  - approvals: untrusted (запрос подтверждения на внешние действия)');
+        return;
+      }
+      if(first === '/sandbox'){
+        var sMode = tokens[1] ? tokens[1].toLowerCase() : 'read-only';
+        appendLine('[СИМУЛЯЦИЯ /sandbox] Режим песочницы установлен в "' + sMode + '".');
+        return;
+      }
+      if(first === '/status'){
+        appendLine('[СИМУЛЯЦИЯ /status]\n' +
+          '  Сессия: active (id: sess-0160-mock)\n' +
+          '  Модель: baseline-0.160.0\n' +
+          '  Контекст: 2,450 / 128,000 токенов (1.9%)\n' +
+          '  Режим: автономный офлайн');
+        return;
+      }
+      if(first === '/skills'){
+        appendLine('[СИМУЛЯЦИЯ /skills] Зарегистрированные навыки проекта:\n' +
+          '  - $learn: автономный наставник курса Codex CLI\n' +
+          '  - $project-map: построение карты проекта\n' +
+          '  - $diff-review: аудит изменений');
+        return;
+      }
+      if(first === '/mcp'){
+        appendLine('[СИМУЛЯЦИЯ /mcp] Протокол Model Context Protocol (0.160.0):\n' +
+          '  Подключение: stdio / SSE\n' +
+          '  Конфигурация: mcp_config.json\n' +
+          '  Доступных инструментов: 0');
+        return;
+      }
+      if(first === '/plugins' || first === '/hooks'){
+        appendLine('[СИМУЛЯЦИЯ] Зарегистрированные хуки: PreToolUse, PostToolUse, UserPromptSubmit, Stop.');
+        return;
+      }
+      if(first === '/resume'){
+        if(tokens[1]){
+          appendLine('[СИМУЛЯЦИЯ /resume] Сессия "' + tokens[1] + '" успешно восстановлена.');
+        } else {
+          appendLine('[СИМУЛЯЦИЯ /resume] Сохранённые сессии в .codex/sessions:\n' +
+            '  1. sess-2026-10-05-01 (активна)\n' +
+            '  2. sess-2026-10-04-02 (завершена)\n' +
+            'Для продолжения сессии используйте: /resume <id>');
+        }
+        return;
+      }
+      if(first === '/exit' || first === '/quit'){
+        appendLine('[СИМУЛЯЦИЯ] Сессия Codex CLI завершена. Состояние сессии сохранено в .codex/sessions.');
+        return;
+      }
+      if(first === '/plan'){
+        appendLine('[СИМУЛЯЦИЯ /plan] Режим планирования активен. Сформируйте требования до изменения кода.');
+        return;
+      }
+      if(first === '/diff'){
+        appendLine('[СИМУЛЯЦИЯ /diff] Изменений в рабочей копии нет (чистый рабочий каталог).');
+        return;
+      }
+      if(first === '/review'){
+        appendLine('[СИМУЛЯЦИЯ /review] Запрос автономного ревью diff запущен. Проверка завершена: замечаний нет.');
+        return;
+      }
+      if(first === '/version'){
+        appendLine('codex 0.160.0 (offline docs baseline rust-v0.160.0)');
+        return;
+      }
+      appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестная slash-команда "' + first + '". В Codex CLI 0.160.0 используйте /help для списка поддерживаемых команд.', 'error-line');
+      return;
+    }
+
+    if(first === 'exit'){
       appendLine('[СИМУЛЯЦИЯ] Сессия Codex CLI завершена. Состояние сессии сохранено в .codex/sessions.');
       return;
     }
-    if(lower === '/status'){
-      appendLine('[СИМУЛЯЦИЯ /status]\n' +
-        '  Сессия: active (id: sess-0160-mock)\n' +
-        '  Модель: baseline-0.160.0\n' +
-        '  Контекст: 2,450 / 128,000 токенов (1.9%)\n' +
-        '  Режим: автономный офлайн');
+
+    if(first === 'codex'){
+      var args = tokens.slice(1);
+      if(!args.length){
+        appendLine('[СИМУЛЯЦИЯ] Интерактивная сессия Codex CLI 0.160.0 запущена.\n' +
+          '  Рабочий каталог: /workspace\n' +
+          '  Модель: gpt-5\n' +
+          '  Песочница: workspace-write\n' +
+          '  Подтверждения: untrusted\n' +
+          '  Сеть: disabled (автономный режим)\n' +
+          'Введите задачу или команду (/goal, /model, /permissions, /status). Для выхода: /exit');
+        return;
+      }
+
+      var a0 = args[0].toLowerCase();
+      if(a0 === '--help' || a0 === '-h'){
+        appendLine(
+          'Codex CLI v0.160.0 (rust-v0.160.0)\n\n' +
+          'Использование: codex [ПАРАМЕТРЫ] [КОМАНДА] [ПРОМПТ]\n\n' +
+          'Подкоманды:\n' +
+          '  exec         Неинтерактивное пакетное выполнение промпта\n' +
+          '  app-server   Запуск stdio JSON-RPC 2.0 сервера интеграции\n\n' +
+          'Параметры:\n' +
+          '  -m, --model <МОДЕЛЬ>         Целевая модель (gpt-5, gpt-4.1)\n' +
+          '  -s, --sandbox <РЕЖИМ>        Режим: read-only | workspace-write | danger-full-access\n' +
+          '  --ask-for-approval <РЕЖИМ>   Запрос подтверждения: untrusted | always | never\n' +
+          '  --cd <КАТАЛОГ>               Рабочий каталог\n' +
+          '  --mcp-config <ФАЙЛ>          Путь к конфигурации MCP\n' +
+          '  --continue, --resume         Возобновление сессии\n' +
+          '  -h, --help                   Справка\n' +
+          '  -V, --version                Версия'
+        );
+        return;
+      }
+      if(a0 === '--version' || a0 === '-v' || a0 === '-V'){
+        appendLine('codex 0.160.0 (offline docs baseline rust-v0.160.0)');
+        return;
+      }
+      if(a0 === 'app-server'){
+        appendLine('[СИМУЛЯЦИЯ app-server] Сервер JSON-RPC 2.0 ожидает входящие запросы в stdin.');
+        return;
+      }
+
+      if(a0 === 'exec'){
+        var execArgs = args.slice(1);
+        var execPrompt = [];
+        for(var ei = 0; ei < execArgs.length; ei++){
+          var etok = execArgs[ei];
+          if(etok.startsWith('-')){
+            var etokLow = etok.toLowerCase();
+            if(VALID_EXEC_FLAGS[etokLow] === undefined){
+              appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестный параметр команды codex exec: "' + etok + '". Введите "codex exec --help" для списка параметров.', 'error-line');
+              return;
+            }
+            if(VALID_EXEC_FLAGS[etokLow] === true){
+              ei++;
+              if(ei >= execArgs.length){
+                appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Параметр "' + etok + '" требует аргумент.', 'error-line');
+                return;
+              }
+            }
+          } else {
+            execPrompt.push(etok);
+          }
+        }
+        var pText = execPrompt.join(' ') || 'задача';
+        appendLine('[СИМУЛЯЦИЯ exec] Неинтерактивное выполнение (0.160.0):\n' +
+          '{"type":"session.start","version":"0.160.0","mode":"exec"}\n' +
+          '{"type":"item.create","item":{"type":"message","role":"user","content":"' + pText.replace(/"/g, '\\"') + '"}}\n' +
+          '{"type":"agent.response","status":"completed","exit_code":0}\n' +
+          'Завершено с кодом 0 (успешно).');
+        return;
+      }
+
+      if(KNOWN_SUBCOMMANDS.indexOf(a0) !== -1){
+        appendLine('[СИМУЛЯЦИЯ ' + a0 + '] Подкоманда baseline 0.160.0 принята к исполнению.');
+        return;
+      }
+
+      if(a0.startsWith('exec') && a0 !== 'exec'){
+        appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестная подкоманда "' + args[0] + '". Вы имели в виду "codex exec"? Введите "codex --help" для списка подкоманд.', 'error-line');
+        return;
+      }
+
+      var curModel = 'gpt-5';
+      var curSandbox = 'workspace-write';
+      var curApp = 'untrusted';
+      var curAgent = null;
+      var curSkill = null;
+      var curMcp = null;
+      var isCont = false;
+      var promptParts = [];
+
+      for(var ai = 0; ai < args.length; ai++){
+        var atok = args[ai];
+        if(atok.startsWith('-')){
+          var atokLow = atok.toLowerCase();
+          if(VALID_CODEX_FLAGS[atokLow] === undefined){
+            appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестный параметр команды codex: "' + atok + '". Введите "codex --help" для списка поддерживаемых параметров.', 'error-line');
+            return;
+          }
+          if(VALID_CODEX_FLAGS[atokLow] === true){
+            ai++;
+            if(ai >= args.length){
+              appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Параметр "' + atok + '" требует аргумент.', 'error-line');
+              return;
+            }
+            var aval = args[ai];
+            if(atokLow === '--model' || atokLow === '-m') curModel = aval;
+            if(atokLow === '--sandbox' || atokLow === '-s') curSandbox = aval;
+            if(atokLow === '--ask-for-approval' || atokLow === '-a') curApp = aval;
+            if(atokLow === '--agent') curAgent = aval;
+            if(atokLow === '--mcp-config') curMcp = aval;
+          } else {
+            if(atokLow === '--continue' || atokLow === '--resume') isCont = true;
+          }
+        } else if(atok.startsWith('$')){
+          curSkill = atok;
+        } else {
+          promptParts.push(atok);
+        }
+      }
+
+      var sbDesc = curSandbox.includes('read-only') ? 'read-only (только чтение: запись файлов заблокирована)' : curSandbox;
+      var outLines = [
+        '[СИМУЛЯЦИЯ] Интерактивная сессия Codex CLI 0.160.0 запущена.',
+        '  Рабочий каталог: /workspace',
+        '  Модель: ' + curModel,
+        '  Песочница: ' + sbDesc,
+        '  Подтверждения: ' + curApp,
+        '  Сеть: disabled (автономный режим)'
+      ];
+      if(curAgent) outLines.push('  Субагент: ' + curAgent + ' (ролевой профиль активен)');
+      if(curSkill) outLines.push('  Навык: ' + curSkill + ' (инструкции навыка загружены в контекст)');
+      if(curMcp) outLines.push('  MCP: конфигурация "' + curMcp + '" загружена');
+      if(isCont) outLines.push('  Возобновление: последняя активная сессия восстановлена');
+      if(promptParts.length) outLines.push('  Начальный промпт: "' + promptParts.join(' ') + '"');
+      outLines.push('Введите задачу или команду (/goal, /model, /permissions, /status). Для выхода: /exit');
+      appendLine(outLines.join('\n'));
       return;
     }
-    if(lower.startsWith('$learn')){
-      appendLine('[СИМУЛЯЦИЯ $learn] Навык наставника курса активен. ' +
-        'Учебный контекст загружен. Задайте вопрос или запросите подсказку.');
-      return;
-    }
-    if(lower === '/skills'){
-      appendLine('[СИМУЛЯЦИЯ /skills] Зарегистрированные навыки проекта:\n' +
-        '  - $learn: автономный наставник курса Codex CLI\n' +
-        '  - $project-map: построение карты проекта\n' +
-        '  - $diff-review: аудит изменений');
-      return;
-    }
-    if(lower === '/mcp'){
-      appendLine('[СИМУЛЯЦИЯ /mcp] Протокол Model Context Protocol (0.160.0):\n' +
-        '  Подключение: stdio / SSE\n' +
-        '  Конфигурация: mcp_config.json\n' +
-        '  Доступных инструментов: 0');
-      return;
-    }
-    if(lower === '/plugins' || lower === '/hooks'){
-      appendLine('[СИМУЛЯЦИЯ] Зарегистрированные хуки: PreToolUse, PostToolUse, UserPromptSubmit, Stop.');
-      return;
-    }
-    if(lower === '/resume'){
-      appendLine('[СИМУЛЯЦИЯ /resume] Сохранённые сессии в .codex/sessions:\n' +
-        '  1. sess-2026-10-05-01 (активна)\n' +
-        '  2. sess-2026-10-04-02 (завершена)\n' +
-        'Для продолжения сессии используйте: /resume <id>');
-      return;
-    }
-    if(lower.startsWith('/resume ')){
-      var targetSess = cmd.slice(8).trim();
-      appendLine('[СИМУЛЯЦИЯ /resume] Сессия "' + targetSess + '" успешно восстановлена.');
-      return;
-    }
-    if(lower === 'cat agents.md'){
-      appendLine('# Инструкции проекта (AGENTS.md)\n' +
-        '- Автономный практикум Codex CLI.\n' +
-        '- Кодировка UTF-8.\n' +
-        '- Строгая проверка контракта без сетевых вызовов.');
-      return;
-    }
-    if(lower.includes('verify.py')){
-      appendLine('[СИМУЛЯЦИЯ verify.py] CHK-CATALOG: PASS | CHK-SITE: PASS | CHK-SITE-LINKS: PASS | CHK-BROWSER: PASS\nИтог: автономный профиль проверен.');
-      return;
-    }
-    appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестная команда или опция "' + cmd + '". В Codex CLI 0.160.0 используйте /help для списка поддерживаемых команд (/goal, /status, /permissions, /model, /skills, /mcp, /plugins, /hooks, /resume, $learn).', 'error-line');
+
+    appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестная команда или опция "' + cmd + '". В Codex CLI 0.160.0 используйте /help для списка поддерживаемых команд.', 'error-line');
   }
 
   form.addEventListener('submit', function(e){

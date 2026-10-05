@@ -9,6 +9,9 @@
 - `skills/plugin-demo/SKILL.md` — встроенный навык плагина.
 - `hooks.json` — конфигурация хуков плагина.
 - `mcp_config.json` — конфигурация MCP-серверов плагина.
+- `scripts/plugin_prompt_guard.py` — fail-closed обработчик UserPromptSubmit с фильтрацией секретов.
+- `scripts/plugin_stop_verifier.py` — fail-closed обработчик Stop с проверкой тестов и recursion guard.
+- `test_plugin_hooks.py` — тесты fail-closed семантики, фильтрации и защиты от зацикливания.
 
 ## Жизненный цикл плагина
 

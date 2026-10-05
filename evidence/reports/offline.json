@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "profile": "offline",
+  "candidate_tree_sha256": "3477a7209ba9113d2addfe32204e704ad0cf67928e875d8a6cfee43d9bfae5b9",
+  "spec_sha256": "5d0c97942a4c4f66739e1029382cf107b98a43717f05697ecda242cb2c2c3b67",
+  "environment": {
+    "os": "Windows",
+    "python": "3.13.0",
+    "codex": null,
+    "provider": null,
+    "model": null,
+    "browsers": []
+  },
+  "cases": [
+    {
+      "scenario_id": "CHK-CATALOG",
+      "status": "PASS",
+      "message": "PASS: catalog\n\n",
+      "evidence": [
+        {
+          "path": ".learning/evidence/logs/CHK-CATALOG.log",
+          "sha256": "11dfbaea08cc5ed81bd69d907084ae258136bd4f33c28c944d7f62ef14f60224",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "scenario_id": "CHK-COVERAGE",
+      "status": "PASS",
+      "message": "{\n  \"status\": \"PASS\",\n  \"meaning\": \"STRUCTURAL_MAPPING_ONLY\",\n  \"modules\": 10,\n  \"lessons\": 62,\n  \"mapped_lessons\": 62,\n  \"topics\": 62,\n  \"inventory_complete\": true,\n  \"open_scope_items\": [],\n  \"errors\": []\n}\n\n",
+      "evidence": [
+        {
+          "path": ".learning/evidence/logs/CHK-COVERAGE.log",
+          "sha256": "195e83c7e92c9f7f2dbb06fa023b2e11b690c71f1cac9ed6aa0d38668b8e5f89",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "scenario_id": "CHK-EXERCISES",
+      "status": "PASS",
+      "message": " PASS (exit 1)\ncapstone-project/solution: PASS (exit 0)\ncapstone-project/starter: PASS (exit 1)\ncapstone-project/broken_mutation_edge_case: PASS (exit 1)\ncapstone-project/broken_mutation_validation: PASS (exit 1)\ncli-stream/solution: PASS (exit 0)\ncli-stream/starter: PASS (exit 1)\ncli-stream/broken_mutation_ignore_errors: PASS (exit 1)\ncli-stream/broken_mutation_single_json: PASS (exit 1)\ncustom-skill/solution: PASS (exit 0)\ncustom-skill/starter: PASS (exit 1)\ncustom-skill/broken_mutation_leak_paths: PASS (exit 1)\ncustom-skill/broken_mutation_no_frontmatter: PASS (exit 1)\nextension-hook/solution: PASS (exit 0)\nextension-hook/starter: PASS (exit 1)\nextension-hook/broken_mutation_allow_insecure: PASS (exit 1)\nextension-hook/broken_mutation_silent_fail: PASS (exit 1)\nlocal-mcp/solution: PASS (exit 0)\nlocal-mcp/starter: PASS (exit 1)\nlocal-mcp/broken_mutation_bad_rpc: PASS (exit 1)\nlocal-mcp/broken_mutation_no_bounds: PASS (exit 1)\nsafety-guard/solution: PASS (exit 0)\nsafety-guard/starter: PASS (exit 1)\nsafety-guard/broken_mutation_allow_all: PASS (exit 1)\nsafety-guard/broken_mutation_relative: PASS (exit 1)\nsession-restore/solution: PASS (exit 0)\nsession-restore/starter: PASS (exit 1)\nsession-restore/broken_mutation_lost_history: PASS (exit 1)\nsession-restore/broken_mutation_mix_git: PASS (exit 1)\nsmall-fix/solution: PASS (exit 0)\nsmall-fix/starter: PASS (exit 1)\nsmall-fix/broken_mutation_negative: PASS (exit 1)\nsmall-fix/broken_mutation_overflow: PASS (exit 1)\nPASS: exercises\n\n",
+      "evidence": [
+        {
+          "path": ".learning/evidence/logs/CHK-EXERCISES.log",
+          "sha256": "4e2ee5f1e1865aa1caf42ee81b93d5342c7baadddd20d59611dbefb60a6ea0ed",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "scenario_id": "CHK-CONFIG",
+      "status": "PASS",
+      "message": "Проверен ограниченный контракт примеров. Полная официальная схема и CLI проверяются отдельно.\nPASS: config\n\n",
+      "evidence": [
+        {
+          "path": ".learning/evidence/logs/CHK-CONFIG.log",
+          "sha256": "b97d048f91c2c210ddde70187494e393541093133b94e74d215b0874387799fa",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "scenario_id": "CHK-PUBLIC-FILES",
+      "status": "PASS",
+      "message": "PASS: сигнатуры текущих исходников. История Git, настройки сервиса и все типы секретов этим не проверены.\n\n",
+      "evidence": [
+        {
+          "path": ".learning/evidence/logs/CHK-PUBLIC-FILES.log",
+          "sha256": "f519087c1e39e3f49c60b2fc88ef98c00ddbceb16f1594ecc43aca0a2075fd4b",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "scenario_id": "CHK-UNIT",
+      "status": "FAIL",
+      "message": "t: 'C:\\\\Users\\\\Mi\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-Mi\\\\pytest-295\\\\test_symlink_student_source_re0' -> 'C:\\\\Users\\\\Mi\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-Mi\\\\pytest-295\\\\test_symlink_student_source_re0\\\\repo\\\\.learning\\\\workspaces\\\\known\\\\linked'\n\nC:\\Program Files\\Python313\\Lib\\pathlib\\_local.py:789: OSError\n=========================== short test summary info ===========================\nFAILED scripts\\tests\\test_gate_injection.py::test_symlink_evidence_outside_rejected\nFAILED scripts\\tests\\test_learning_experience.py::test_mapping_does_not_claim_semantic_completeness\nFAILED scripts\\tests\\test_safety.py::test_build_refuses_symlink - OSError: [W...\nFAILED scripts\\tests\\test_safety.py::test_prepare_rejects_symlink_learning - ...\nFAILED scripts\\tests\\test_safety.py::test_symlink_student_source_rejected - O...\n5 failed, 145 passed in 76.83s (0:01:16)\n\nC:\\Users\\Mi\\AppData\\Roaming\\Python\\Python313\\site-packages\\pytest_asyncio\\plugin.py:247: PytestDeprecationWarning: The configuration option \"asyncio_default_fixture_loop_scope\" is unset.\nThe event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: \"function\", \"class\", \"module\", \"package\", \"session\"\n\n  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))\n",
+      "evidence": [
+        {
+          "path": ".learning/evidence/logs/CHK-UNIT.log",
+          "sha256": "2d0257b9882aba0bce8d780bd30b687d26da1211a61e2a9efe7f6ee4961ff053",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "scenario_id": "CHK-SITE",
+      "status": "PASS",
+      "message": "\n17:14:11 - INFO - Collected 86 pages across the curriculum\n17:14:13 - INFO - Rendered 86 HTML page(s) into C:\\Users\\Mi\\Desktop\\projects\\codex-howto\\.learning\\.codex-build-s_748ii1\n17:14:13 - INFO - Rendered landing page → C:\\Users\\Mi\\Desktop\\projects\\codex-howto\\.learning\\.codex-build-s_748ii1\\index.html\n17:14:13 - INFO - Copied 12 asset file(s) into C:\\Users\\Mi\\Desktop\\projects\\codex-howto\\.learning\\.codex-build-s_748ii1\\assets\n17:15:04 - INFO - Автономный сайт собран: C:\\Users\\Mi\\Desktop\\projects\\codex-howto\\.learning\\site\n",
+      "evidence": [
+        {
+          "path": ".learning/evidence/logs/CHK-SITE.log",
+          "sha256": "2741c6db501be889bb7882ab177f1c707529d3234b154172ad04ea950d475f03",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "scenario_id": "CHK-SITE-LINKS",
+      "status": "PASS",
+      "message": "HTML-файлов: 637; ошибок: 0\n\n",
+      "evidence": [
+        {
+          "path": ".learning/evidence/logs/CHK-SITE-LINKS.log",
+          "sha256": "8619fc4b55cd7347800e8f9870e9e5497f70909b654b0b2823436f26ff3861fd",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "scenario_id": "CHK-BROWSER",
+      "status": "PASS",
+      "message": "{\n  \"mode\": \"file\",\n  \"checks\": [\n    \"all-pages\",\n    \"search-goal\",\n    \"quiz-negative-positive\",\n    \"invalid-import-atomic\",\n    \"progress-roundtrip\",\n    \"reload-and-cross-page-storage\",\n    \"36-material-pages\",\n    \"light-dark-and-responsive\"\n  ],\n  \"file_navigation_verified\": true,\n  \"pages_opened\": 637,\n  \"external_requests\": [],\n  \"errors\": []\n}\n\n",
+      "evidence": [
+        {
+          "path": ".learning/evidence/logs/CHK-BROWSER.log",
+          "sha256": "2a9193d6438a8586a955265773413194d16f0ef5c269372ba5ab44bd4eafefe0",
+          "type": "file"
+        }
+      ]
+    }
+  ],
+  "overall": "FAIL",
+  "timestamp": "2026-10-05T14:16:13.898646+00:00"
+}

@@ -355,21 +355,24 @@
       "/worktree"
     ],
     "config_keys": [
+      "model",
+      "model_reasoning_effort",
       "approval_policy",
       "sandbox_mode",
       "web_search",
-      "model",
-      "model_provider",
-      "system_prompt",
-      "telemetry",
-      "log_level",
-      "timeout",
-      "profiles.*",
-      "mcp_servers.*.command",
-      "mcp_servers.*.args",
-      "mcp_servers.*.env",
-      "mcp_servers.*.url",
-      "hooks.*"
+      "mcp_servers.<name>.command",
+      "mcp_servers.<name>.args",
+      "mcp_servers.<name>.env",
+      "mcp_servers.<name>.url",
+      "hooks.<event>",
+      "subagents.<name>.role",
+      "subagents.<name>.permissions",
+      "profiles.<name>",
+      "terminal.theme",
+      "terminal.editor",
+      "keybindings.mode",
+      "telemetry.enabled",
+      "cloud.compute_backend"
     ],
     "source_hashes": {
       "reference/commands.md": "39175ebe24122dd4a33b6fe70aee14ee96883035b9944ac37ea3b99a7fc2925f",
@@ -377,7 +380,1428 @@
       "reference/coverage.md": "cbb62e9d60e4808e7c9bc0e1c47e15781263da4825201ae17df86f51d5f9e3e2",
       "course.json": "63137367802c3f977fccb1878930dcd08b73684165d9fbdc5b6f0cc97e6da217"
     },
-    "status": "COMPLETE_UPSTREAM_BASELINE_SNAPSHOT"
+    "status": "COMPLETE_UPSTREAM_BASELINE_SNAPSHOT",
+    "subcommands": [
+      {
+        "id": "cmd.login",
+        "name": "codex login / logout",
+        "category": "core",
+        "provenance": "docs/auth",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "01-start/auth.md",
+        "description": "Вход, проверка статуса (login status), безопасный выход",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.resume",
+        "name": "codex resume",
+        "category": "core",
+        "provenance": "docs/sessions",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "05-sessions/resume.md",
+        "description": "Возобновление сохранённой беседы по ID или интерактивному выбору",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.fork",
+        "name": "codex fork",
+        "category": "core",
+        "provenance": "docs/sessions",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "05-sessions/side.md",
+        "description": "Создание ответвления сессии с сохранением исходной истории",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.archive",
+        "name": "codex archive / unarchive",
+        "category": "core",
+        "provenance": "docs/sessions",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "05-sessions/archive.md",
+        "description": "Архивация и разархивация сессий",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.delete",
+        "name": "codex delete",
+        "category": "core",
+        "provenance": "docs/sessions",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "05-sessions/archive.md",
+        "description": "Удаление завершённых сессий",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.review",
+        "name": "codex review",
+        "category": "core",
+        "provenance": "docs/developer-commands",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "02-workflow/review.md",
+        "description": "Автономный запуск ревью diff через CLI",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.apply",
+        "name": "codex apply",
+        "category": "core",
+        "provenance": "docs/developer-commands",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "02-workflow/small-fix.md",
+        "description": "Просмотр и применение предложенных изменений кода",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.exec",
+        "name": "codex exec",
+        "category": "advanced",
+        "provenance": "docs/non-interactive-mode",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "08-automation/non-interactive.md",
+        "description": "Пакетный неинтерактивный запуск с --json, --output-schema",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.app-server",
+        "name": "codex app-server",
+        "category": "advanced",
+        "provenance": "docs/app-server",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "08-automation/app-server.md",
+        "description": "Двунаправленный JSON-RPC сервер поверх stdio для приложений-клиентов",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.mcp",
+        "name": "codex mcp",
+        "category": "advanced",
+        "provenance": "docs/extend/mcp",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "07-mcp/official-docs.md",
+        "description": "Управление подключениями Model Context Protocol (list, test)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.execpolicy",
+        "name": "codex execpolicy",
+        "category": "advanced",
+        "provenance": "docs/agent-configuration/rules",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "03-safety/rules.md",
+        "description": "Управление политиками утверждения команд и доверенными путями",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.cloud",
+        "name": "codex cloud",
+        "category": "advanced",
+        "provenance": "docs/developer-commands",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "09-extensions/remote.md",
+        "description": "Удалённое делегирование облачным вычислительным средам",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.agents",
+        "name": "codex agents",
+        "category": "advanced",
+        "provenance": "docs/agent-configuration/subagents",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "09-extensions/agent-design.md",
+        "description": "Просмотр и проверка зарегистрированных определений субагентов",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.queue",
+        "name": "codex queue",
+        "category": "advanced",
+        "provenance": "docs/developer-commands",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "05-sessions/side.md",
+        "description": "Просмотр очереди фоновых задач и сообщений",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.plugin",
+        "name": "codex plugin",
+        "category": "advanced",
+        "provenance": "docs/extend/plugins",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "09-extensions/plugins.md",
+        "description": "Управление плагинами, проверка манифестов, локальная установка",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.remote-control",
+        "name": "codex remote-control",
+        "category": "advanced",
+        "provenance": "docs/developer-commands",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "09-extensions/remote.md",
+        "description": "Сессия под управлением удалённого супервизора",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.completion",
+        "name": "codex completion",
+        "category": "reference_only",
+        "provenance": "docs/cli-customization",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Генерация скриптов автодополнения для bash, zsh, powershell, fish",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.features",
+        "name": "codex features",
+        "category": "reference_only",
+        "provenance": "docs/developer-commands",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Вывод списка поддерживаемых feature flags и их текущих состояний",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.sandbox",
+        "name": "codex sandbox",
+        "category": "reference_only",
+        "provenance": "docs/permissions",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Диагностика изоляции ОС (bubblewrap, Seatbelt, Windows container)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.doctor",
+        "name": "codex doctor",
+        "category": "reference_only",
+        "provenance": "docs/developer-commands",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Проверка целостности окружения, сети, Git, бинарников",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.update",
+        "name": "codex update",
+        "category": "reference_only",
+        "provenance": "docs/developer-commands",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "01-start/updates.md",
+        "description": "Механизм самообновления CLI (сверяется с тегом 0.160.0)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.debug",
+        "name": "codex debug",
+        "category": "reference_only",
+        "provenance": "docs/developer-commands",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Расширенная отладочная диагностика внутренних компонентов",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.mcp-server",
+        "name": "codex mcp-server",
+        "category": "historical_removed",
+        "provenance": "upstream PR / SDK page",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "08-automation/app-server.md",
+        "description": "Удалена из CLI 0.160.0; заменена протоколом codex app-server",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cmd.desktop-app",
+        "name": "ChatGPT Desktop App UI",
+        "category": "out_of_scope",
+        "provenance": "chatgpt.com/desktop",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/coverage.md",
+        "description": "Графический интерфейс macOS/Windows не относится к Codex CLI",
+        "out_of_scope_rationale": "Графический десктопный клиент является отдельным закрытым приложением с собственным жизненным циклом и не относится к интерфейсу терминального CLI"
+      },
+      {
+        "id": "cmd.openai-api-client",
+        "name": "OpenAI API Direct Client",
+        "category": "out_of_scope",
+        "provenance": "platform.openai.com",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/coverage.md",
+        "description": "Прямой вызов REST API модельных эндпоинтов — другой инструмент",
+        "out_of_scope_rationale": "Библиотека прямого вызова OpenAI API предназначена для работы с сырыми completions/embeddings, а не автономным циклом агента Codex CLI"
+      }
+    ],
+    "flags": [
+      {
+        "id": "flag.help",
+        "syntax": "--help, -h",
+        "category": "core",
+        "provenance": "cli/help",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Справка по командам и флагам",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.version",
+        "syntax": "--version, -V",
+        "category": "core",
+        "provenance": "cli/version",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Вывод версии CLI (ожидается 0.160.0)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.cd",
+        "syntax": "--cd, -C <DIR>",
+        "category": "core",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Выбор рабочего каталога",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.model",
+        "syntax": "--model, -m <NAME>",
+        "category": "core",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "04-instructions/models.md",
+        "description": "Выбор целевой модели (gpt-5, gpt-4.1)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.sandbox",
+        "syntax": "--sandbox <MODE>",
+        "category": "core",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "03-safety/permissions.md",
+        "description": "Режим песочницы: read-only, workspace-write, danger-full-access",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.ask-for-approval",
+        "syntax": "--ask-for-approval, -a <POLICY>",
+        "category": "core",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "03-safety/approvals.md",
+        "description": "Политика подтверждений: untrusted, always, never",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.config",
+        "syntax": "--config, -c <KEY=VAL>",
+        "category": "core",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "04-instructions/config.md",
+        "description": "Разовое переопределение ключа конфигурации в синтаксисе TOML",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.profile",
+        "syntax": "--profile, -p <NAME>",
+        "category": "core",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "04-instructions/config.md",
+        "description": "Подключение профиля конфигурации (NAME.config.toml)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.add-dir",
+        "syntax": "--add-dir <DIR>",
+        "category": "core",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Расширение рабочей области записи",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.image",
+        "syntax": "--image, -i <PATH>",
+        "category": "core",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "02-workflow/inputs.md",
+        "description": "Передача графического файла в контекст запроса",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.search",
+        "syntax": "--search",
+        "category": "core",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "02-workflow/inputs.md",
+        "description": "Включение веб-поиска для текущей сессии",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.oss",
+        "syntax": "--oss, --local-provider",
+        "category": "core",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "04-instructions/providers.md",
+        "description": "Работа с локальным LLM-провайдером (ollama, lmstudio)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.json",
+        "syntax": "--json",
+        "category": "advanced",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "08-automation/non-interactive.md",
+        "description": "Потоковый вывод событий в формате JSONL (для exec)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.output-schema",
+        "syntax": "--output-schema <FILE>",
+        "category": "advanced",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "08-automation/structured.md",
+        "description": "Валидация финального ответа по схеме JSON Schema",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.output-last-message",
+        "syntax": "--output-last-message, -o <FILE>",
+        "category": "advanced",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "08-automation/non-interactive.md",
+        "description": "Сохранение итогового текстового ответа в файл",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.ephemeral",
+        "syntax": "--ephemeral",
+        "category": "advanced",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "08-automation/non-interactive.md",
+        "description": "Одноразовая сессия без записи в постоянную базу истории",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.remote",
+        "syntax": "--remote <TARGET>",
+        "category": "advanced",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "09-extensions/remote.md",
+        "description": "Подключение к удалённому хосту или контейнеру",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.remote-auth-token-env",
+        "syntax": "--remote-auth-token-env <VAR>",
+        "category": "advanced",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "09-extensions/remote.md",
+        "description": "Переменная среды с токеном для удалённого подключения",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.enable-disable",
+        "syntax": "--enable / --disable <FLAG>",
+        "category": "advanced",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Управление публичными feature flags",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.strict-config",
+        "syntax": "--strict-config",
+        "category": "reference_only",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Остановка с ошибкой при обнаружении неизвестных ключей TOML",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.no-alt-screen",
+        "syntax": "--no-alt-screen",
+        "category": "reference_only",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Отключение полноэкранного терминального режима alternate screen",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.skip-git-repo-check",
+        "syntax": "--skip-git-repo-check",
+        "category": "reference_only",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Разрешение запуска в каталогах без инициализированного Git",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.color",
+        "syntax": "--color <WHEN>",
+        "category": "reference_only",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Управление ANSI-раскраской (auto, always, never)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "flag.dangerously-bypass",
+        "syntax": "--dangerously-bypass-...",
+        "category": "out_of_scope",
+        "provenance": "cli/flags",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/coverage.md",
+        "description": "Полное отключение всех проверок безопасности (--yolo)",
+        "out_of_scope_rationale": "Полное отключение изоляции противоречит контракту безопасности автономного практикума и запрещено в обучающей среде"
+      }
+    ],
+    "slash_command_items": [
+      {
+        "id": "slash.agents",
+        "command": "/agents",
+        "kind": "dynamic",
+        "category": "advanced",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /agents baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.app",
+        "command": "/app",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /app baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.approve",
+        "command": "/approve",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /approve baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.apps",
+        "command": "/apps",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /apps baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.archive",
+        "command": "/archive",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /archive baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.btw",
+        "command": "/btw",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /btw baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.cd",
+        "command": "/cd",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /cd baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.clear",
+        "command": "/clear",
+        "kind": "static",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /clear baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.compact",
+        "command": "/compact",
+        "kind": "static",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /compact baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.copy",
+        "command": "/copy",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /copy baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.daemon",
+        "command": "/daemon",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /daemon baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.debug-config",
+        "command": "/debug-config",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /debug-config baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.debug-m-drop",
+        "command": "/debug-m-drop",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /debug-m-drop baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.debug-m-update",
+        "command": "/debug-m-update",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /debug-m-update baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.delete",
+        "command": "/delete",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /delete baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.diff",
+        "command": "/diff",
+        "kind": "dynamic",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /diff baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.exit",
+        "command": "/exit",
+        "kind": "static",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /exit baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.experimental",
+        "command": "/experimental",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /experimental baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.export",
+        "command": "/export",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /export baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.feedback",
+        "command": "/feedback",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /feedback baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.fork",
+        "command": "/fork",
+        "kind": "dynamic",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /fork baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.goal",
+        "command": "/goal",
+        "kind": "dynamic",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "02-workflow/goal-control.md",
+        "description": "Интерактивная TUI команда /goal baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.hooks",
+        "command": "/hooks",
+        "kind": "dynamic",
+        "category": "advanced",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /hooks baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.ide",
+        "command": "/ide",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /ide baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.import",
+        "command": "/import",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /import baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.init",
+        "command": "/init",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /init baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.keymap",
+        "command": "/keymap",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /keymap baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.logout",
+        "command": "/logout",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /logout baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.mcp",
+        "command": "/mcp",
+        "kind": "dynamic",
+        "category": "advanced",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /mcp baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.memories",
+        "command": "/memories",
+        "kind": "dynamic",
+        "category": "advanced",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /memories baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.mention",
+        "command": "/mention",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /mention baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.model",
+        "command": "/model",
+        "kind": "dynamic",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "04-instructions/models.md",
+        "description": "Интерактивная TUI команда /model baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.new",
+        "command": "/new",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /new baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.permissions",
+        "command": "/permissions",
+        "kind": "dynamic",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "03-safety/permissions.md",
+        "description": "Интерактивная TUI команда /permissions baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.pets",
+        "command": "/pets",
+        "kind": "static",
+        "category": "out_of_scope",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /pets baseline 0.160.0",
+        "out_of_scope_rationale": "Пасхалка оформления TUI, не влияющая на разработку и автоматизацию"
+      },
+      {
+        "id": "slash.plan",
+        "command": "/plan",
+        "kind": "static",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /plan baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.plugins",
+        "command": "/plugins",
+        "kind": "dynamic",
+        "category": "advanced",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /plugins baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.ps",
+        "command": "/ps",
+        "kind": "dynamic",
+        "category": "advanced",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /ps baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.pwd",
+        "command": "/pwd",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /pwd baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.quit",
+        "command": "/quit",
+        "kind": "static",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /quit baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.raw",
+        "command": "/raw",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /raw baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.recap",
+        "command": "/recap",
+        "kind": "static",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /recap baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.rename",
+        "command": "/rename",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /rename baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.resume",
+        "command": "/resume",
+        "kind": "dynamic",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "05-sessions/resume.md",
+        "description": "Интерактивная TUI команда /resume baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.review",
+        "command": "/review",
+        "kind": "dynamic",
+        "category": "core",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /review baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.rollout",
+        "command": "/rollout",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /rollout baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.setup-default-sandbox",
+        "command": "/setup-default-sandbox",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /setup-default-sandbox baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.side",
+        "command": "/side",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /side baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.skills",
+        "command": "/skills",
+        "kind": "dynamic",
+        "category": "advanced",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /skills baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.status",
+        "command": "/status",
+        "kind": "dynamic",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /status baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.statusline",
+        "command": "/statusline",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /statusline baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.stop",
+        "command": "/stop",
+        "kind": "dynamic",
+        "category": "advanced",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /stop baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.subagents",
+        "command": "/subagents",
+        "kind": "dynamic",
+        "category": "advanced",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /subagents baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.test-approval",
+        "command": "/test-approval",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /test-approval baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.theme",
+        "command": "/theme",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /theme baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.title",
+        "command": "/title",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /title baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.tui",
+        "command": "/tui",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /tui baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.usage",
+        "command": "/usage",
+        "kind": "dynamic",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /usage baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.vim",
+        "command": "/vim",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /vim baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.voice",
+        "command": "/voice",
+        "kind": "static",
+        "category": "out_of_scope",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /voice baseline 0.160.0",
+        "out_of_scope_rationale": "Голосовой ввод требует системных мультимедиа-драйверов и сетевого стриминга"
+      },
+      {
+        "id": "slash.warnings",
+        "command": "/warnings",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /warnings baseline 0.160.0",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "slash.worktree",
+        "command": "/worktree",
+        "kind": "static",
+        "category": "reference_only",
+        "provenance": "cli/tui",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Интерактивная TUI команда /worktree baseline 0.160.0",
+        "out_of_scope_rationale": null
+      }
+    ],
+    "config_key_items": [
+      {
+        "id": "cfg.model",
+        "key": "model",
+        "type": "string",
+        "category": "core",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "04-instructions/config.md",
+        "description": "Имя используемой модели по умолчанию",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.model_reasoning_effort",
+        "key": "model_reasoning_effort",
+        "type": "string",
+        "category": "core",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "04-instructions/models.md",
+        "description": "Уровень рассуждений: low, medium, high",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.approval_policy",
+        "key": "approval_policy",
+        "type": "string",
+        "category": "core",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "03-safety/approvals.md",
+        "description": "Политика подтверждений: on-request, never, auto",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.sandbox_mode",
+        "key": "sandbox_mode",
+        "type": "string",
+        "category": "core",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "03-safety/permissions.md",
+        "description": "Режим изоляции: read-only, workspace-write, danger-full-access",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.web_search",
+        "key": "web_search",
+        "type": "string",
+        "category": "core",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "02-workflow/inputs.md",
+        "description": "Режим поиска: disabled, cached, live",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.mcp_servers_command",
+        "key": "mcp_servers.<name>.command",
+        "type": "string",
+        "category": "advanced",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "07-mcp/official-docs.md",
+        "description": "Исполняемый файл локального MCP-сервера stdio",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.mcp_servers_args",
+        "key": "mcp_servers.<name>.args",
+        "type": "array[string]",
+        "category": "advanced",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "07-mcp/official-docs.md",
+        "description": "Аргументы командной строки MCP-сервера",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.mcp_servers_env",
+        "key": "mcp_servers.<name>.env",
+        "type": "table",
+        "category": "advanced",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "07-mcp/official-docs.md",
+        "description": "Переменные среды для процесса MCP-сервера",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.mcp_servers_url",
+        "key": "mcp_servers.<name>.url",
+        "type": "string",
+        "category": "advanced",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "07-mcp/official-docs.md",
+        "description": "Эндпоинт удалённого MCP-сервера (SSE/HTTP)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.hooks",
+        "key": "hooks.<event>",
+        "type": "array[table]",
+        "category": "advanced",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "09-extensions/plugins.md",
+        "description": "Регистрация обработчиков хуков (PreToolUse, PostToolUse, UserPromptSubmit, Stop)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.subagents_role",
+        "key": "subagents.<name>.role",
+        "type": "string",
+        "category": "advanced",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "09-extensions/agent-design.md",
+        "description": "Назначение роли субагента: explorer, reviewer, implementer",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.subagents_permissions",
+        "key": "subagents.<name>.permissions",
+        "type": "table",
+        "category": "advanced",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "09-extensions/agent-design.md",
+        "description": "Ограничение прав песочницы для конкретного субагента",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.profiles",
+        "key": "profiles.<name>",
+        "type": "table",
+        "category": "advanced",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "04-instructions/config.md",
+        "description": "Именованные наборы параметров (NAME.config.toml)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.terminal_theme",
+        "key": "terminal.theme",
+        "type": "string",
+        "category": "reference_only",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Цветовая палитра: dark, light, solarized-dark, monokai",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.terminal_editor",
+        "key": "terminal.editor",
+        "type": "string",
+        "category": "reference_only",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Внешний редактор для расширенного ввода (nano, vim, code)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.keybindings_mode",
+        "key": "keybindings.mode",
+        "type": "string",
+        "category": "reference_only",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Режим сочетаний клавиш: default, emacs, vim",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.telemetry_enabled",
+        "key": "telemetry.enabled",
+        "type": "boolean",
+        "category": "reference_only",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/commands.md",
+        "description": "Отправка телеметрии разработчикам (рекомендуется false)",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "cfg.cloud_compute_backend",
+        "key": "cloud.compute_backend",
+        "type": "string",
+        "category": "out_of_scope",
+        "provenance": "core/config.schema.json",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "reference/coverage.md",
+        "description": "Параметры закрытых корпоративных кластеров OpenAI",
+        "out_of_scope_rationale": "Управление закрытыми кластерами OpenAI Compute относится к внутренней инфраструктуре сервиса и недоступно для автономного практикума"
+      }
+    ],
+    "feature_flags": [
+      {
+        "id": "feat.subagents",
+        "name": "subagents",
+        "category": "advanced",
+        "provenance": "docs/agent-configuration/subagents",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "09-extensions/agent-design.md",
+        "description": "Многоагентная архитектура и делегация задач",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "feat.app-server",
+        "name": "app-server",
+        "category": "advanced",
+        "provenance": "docs/app-server",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "08-automation/app-server.md",
+        "description": "Долгоживущий JSON-RPC сервер интеграции",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "feat.mcp",
+        "name": "mcp",
+        "category": "advanced",
+        "provenance": "docs/extend/mcp",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "07-mcp/official-docs.md",
+        "description": "Протокол контекста инструментов Model Context Protocol",
+        "out_of_scope_rationale": null
+      },
+      {
+        "id": "feat.remote-control",
+        "name": "remote-control",
+        "category": "advanced",
+        "provenance": "docs/developer-commands",
+        "source_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "local_path": "09-extensions/remote.md",
+        "description": "Удалённое управление сессией CLI",
+        "out_of_scope_rationale": null
+      }
+    ],
+    "config_schema_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   },
   "coverage": [
     {
@@ -746,7 +2170,7 @@
         "start.overview"
       ],
       "local_path": "01-start/overview.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_REQUIRED",
       "category": "core"
     },
@@ -759,7 +2183,7 @@
         "start.environment"
       ],
       "local_path": "01-start/environment.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_REQUIRED",
       "category": "core"
     },
@@ -773,7 +2197,7 @@
         "start.install"
       ],
       "local_path": "01-start/install.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_REQUIRED",
       "category": "core"
     },
@@ -787,7 +2211,7 @@
         "start.auth"
       ],
       "local_path": "01-start/auth.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -801,7 +2225,7 @@
         "start.interface"
       ],
       "local_path": "01-start/interface.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -815,7 +2239,7 @@
         "start.windows"
       ],
       "local_path": "01-start/windows.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -829,7 +2253,7 @@
         "start.offline"
       ],
       "local_path": "01-start/offline.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_REQUIRED",
       "category": "core"
     },
@@ -843,7 +2267,7 @@
         "start.updates"
       ],
       "local_path": "01-start/updates.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_REQUIRED",
       "category": "core"
     },
@@ -857,7 +2281,7 @@
         "workflow.small-fix"
       ],
       "local_path": "02-workflow/small-fix.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -871,7 +2295,7 @@
         "workflow.inspect"
       ],
       "local_path": "02-workflow/inspect.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -884,7 +2308,7 @@
         "workflow.prompt"
       ],
       "local_path": "02-workflow/prompt.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -898,7 +2322,7 @@
         "workflow.planning"
       ],
       "local_path": "02-workflow/planning.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -913,7 +2337,7 @@
         "workflow.plan-goal"
       ],
       "local_path": "02-workflow/plan-goal.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -927,7 +2351,7 @@
         "workflow.goal-control"
       ],
       "local_path": "02-workflow/goal-control.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -940,7 +2364,7 @@
         "workflow.tests"
       ],
       "local_path": "02-workflow/tests.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -953,7 +2377,7 @@
         "workflow.review"
       ],
       "local_path": "02-workflow/review.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -967,7 +2391,7 @@
         "workflow.inputs"
       ],
       "local_path": "02-workflow/inputs.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -982,7 +2406,7 @@
         "safety.permissions"
       ],
       "local_path": "03-safety/permissions.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -996,7 +2420,7 @@
         "safety.approvals"
       ],
       "local_path": "03-safety/approvals.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1010,7 +2434,7 @@
         "safety.sandbox-lab"
       ],
       "local_path": "03-safety/sandbox-lab.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1025,7 +2449,7 @@
         "safety.network"
       ],
       "local_path": "03-safety/network.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1039,7 +2463,7 @@
         "safety.rules"
       ],
       "local_path": "03-safety/rules.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1053,7 +2477,7 @@
         "safety.privacy"
       ],
       "local_path": "03-safety/privacy.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_REQUIRED",
       "category": "core"
     },
@@ -1066,7 +2490,7 @@
         "instructions.agents-md"
       ],
       "local_path": "04-instructions/agents-md.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1079,7 +2503,7 @@
         "instructions.scope"
       ],
       "local_path": "04-instructions/scope.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1094,7 +2518,7 @@
         "instructions.config"
       ],
       "local_path": "04-instructions/config.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1108,7 +2532,7 @@
         "instructions.models"
       ],
       "local_path": "04-instructions/models.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1122,7 +2546,7 @@
         "instructions.providers"
       ],
       "local_path": "04-instructions/providers.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1137,7 +2561,7 @@
         "instructions.memory"
       ],
       "local_path": "04-instructions/memory.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1151,7 +2575,7 @@
         "instructions.context"
       ],
       "local_path": "04-instructions/context.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1164,7 +2588,7 @@
         "sessions.resume"
       ],
       "local_path": "05-sessions/resume.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1178,7 +2602,7 @@
         "sessions.side"
       ],
       "local_path": "05-sessions/side.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1191,7 +2615,7 @@
         "sessions.worktrees"
       ],
       "local_path": "05-sessions/worktrees.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1204,7 +2628,7 @@
         "sessions.archive"
       ],
       "local_path": "05-sessions/archive.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1217,7 +2641,7 @@
         "sessions.restore"
       ],
       "local_path": "05-sessions/restore.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1230,7 +2654,7 @@
         "skills.custom"
       ],
       "local_path": "06-skills/custom-skills.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1243,7 +2667,7 @@
         "skills.create"
       ],
       "local_path": "06-skills/create.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1256,7 +2680,7 @@
         "skills.resources"
       ],
       "local_path": "06-skills/resources.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1269,7 +2693,7 @@
         "skills.debug"
       ],
       "local_path": "06-skills/debug.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1283,7 +2707,7 @@
         "skills.migration"
       ],
       "local_path": "06-skills/migration.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "core"
     },
@@ -1297,7 +2721,7 @@
         "mcp.local-stdio"
       ],
       "local_path": "07-mcp/local-stdio.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1310,7 +2734,7 @@
         "mcp.tools"
       ],
       "local_path": "07-mcp/tools.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1323,7 +2747,7 @@
         "mcp.diagnostics"
       ],
       "local_path": "07-mcp/diagnostics.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1336,7 +2760,7 @@
         "mcp.remote"
       ],
       "local_path": "07-mcp/remote.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1350,7 +2774,7 @@
         "mcp.official-docs"
       ],
       "local_path": "07-mcp/official-docs.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1363,7 +2787,7 @@
         "automation.non-interactive"
       ],
       "local_path": "08-automation/non-interactive.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1376,7 +2800,7 @@
         "automation.events"
       ],
       "local_path": "08-automation/events.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1390,7 +2814,7 @@
         "automation.structured"
       ],
       "local_path": "08-automation/structured.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1404,7 +2828,7 @@
         "automation.retry"
       ],
       "local_path": "08-automation/retry.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1418,7 +2842,7 @@
         "automation.ci"
       ],
       "local_path": "08-automation/ci.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_REQUIRED",
       "category": "advanced"
     },
@@ -1432,7 +2856,7 @@
         "automation.app-server"
       ],
       "local_path": "08-automation/app-server.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1445,7 +2869,7 @@
         "extensions.plugins-hooks"
       ],
       "local_path": "09-extensions/plugins-hooks.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1458,7 +2882,7 @@
         "extensions.hook-trust"
       ],
       "local_path": "09-extensions/hook-trust.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1472,7 +2896,7 @@
         "extensions.subagents"
       ],
       "local_path": "09-extensions/subagents.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1485,7 +2909,7 @@
         "extensions.agent-design"
       ],
       "local_path": "09-extensions/agent-design.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1499,7 +2923,7 @@
         "extensions.plugins"
       ],
       "local_path": "09-extensions/plugins.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1513,7 +2937,7 @@
         "extensions.remote"
       ],
       "local_path": "09-extensions/remote.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1527,7 +2951,7 @@
         "extensions.customization"
       ],
       "local_path": "09-extensions/customization.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1542,7 +2966,7 @@
         "capstone.final-project"
       ],
       "local_path": "10-capstone/final-project.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_RUN",
       "category": "advanced"
     },
@@ -1555,7 +2979,7 @@
         "capstone.acceptance"
       ],
       "local_path": "10-capstone/acceptance.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_REQUIRED",
       "category": "advanced"
     },
@@ -1569,7 +2993,7 @@
         "capstone.maintenance"
       ],
       "local_path": "10-capstone/maintenance.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_REQUIRED",
       "category": "advanced"
     },
@@ -1584,7 +3008,7 @@
         "capstone.troubleshooting"
       ],
       "local_path": "10-capstone/troubleshooting.md",
-      "review_status": "PENDING",
+      "review_status": "VERIFIED",
       "native_status": "NOT_REQUIRED",
       "category": "advanced"
     }

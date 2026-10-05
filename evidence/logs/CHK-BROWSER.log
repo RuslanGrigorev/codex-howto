@@ -1,0 +1,20 @@
+COMMAND ["C:\\Program Files\\Python313\\python.exe", "-X", "utf8", "scripts/browser_check.py", "--site", ".learning/site"]
+EXIT 0
+{
+  "mode": "file",
+  "checks": [
+    "all-pages",
+    "search-goal",
+    "quiz-negative-positive",
+    "invalid-import-atomic",
+    "progress-roundtrip",
+    "reload-and-cross-page-storage",
+    "36-material-pages",
+    "light-dark-and-responsive"
+  ],
+  "file_navigation_verified": true,
+  "pages_opened": 637,
+  "external_requests": [],
+  "errors": []
+}
+

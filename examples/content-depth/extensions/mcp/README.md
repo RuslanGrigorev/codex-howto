@@ -7,7 +7,8 @@
 - `README.md` — детальное сравнение транспортов и сценариев применения.
 - `stdio_config_example.toml` — конфигурация локального stdio сервера.
 - `remote_oauth_flow.md` — пошаговый протокол авторизации OAuth для удалённого MCP.
-- `mcp_client_simulator.py` — симулятор клиента MCP, проверяющий рукопожатие `initialize`, перечисление `tools/list` и вызов `tools/call`.
+- `mcp_client_simulator.py` — симулятор клиента MCP с проверкой `initialize`, `tools/list`, `tools/call`, границ путей и восстановления после отказов.
+- `test_mcp_simulator.py` — тесты жизненного цикла MCP, path boundary, тайм-аутов и восстановления.
 
 ## Сравнение транспортов
 

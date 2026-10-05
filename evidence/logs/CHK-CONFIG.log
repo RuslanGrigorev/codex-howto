@@ -1,0 +1,5 @@
+COMMAND ["C:\\Program Files\\Python313\\python.exe", "-X", "utf8", "scripts/check_project.py", "config"]
+EXIT 0
+Проверен ограниченный контракт примеров. Полная официальная схема и CLI проверяются отдельно.
+PASS: config
+

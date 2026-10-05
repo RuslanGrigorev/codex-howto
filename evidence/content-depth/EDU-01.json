@@ -1,0 +1,2862 @@
+{
+  "scenario_id": "EDU-01",
+  "status": "PASS",
+  "rubric_version": "0.160.0-depth",
+  "audited_lessons_count": 62,
+  "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+  "audited_at": "2026-10-05",
+  "records": [
+    {
+      "lesson_id": "start.overview",
+      "path": "01-start/overview.md",
+      "file_sha256": "105274066e0a1c4dd4afe540403d289720cbb7155ff360280f641d86483594f8",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "start.environment",
+      "path": "01-start/environment.md",
+      "file_sha256": "5578f56e149a7f6b475669657994815bbee1556a8cbf63421a8a458a6a789800",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "start.install",
+      "path": "01-start/install.md",
+      "file_sha256": "10980189cb55784501b57ea018772b443c90edf11654e6e541562ac42ee7cade",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "start.auth",
+      "path": "01-start/auth.md",
+      "file_sha256": "03bfbc005b9abc353217378ec58410164919cbade7fdf4f32551be2f1eb814ed",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "start.interface",
+      "path": "01-start/interface.md",
+      "file_sha256": "5e074f02f7f424b82b2c35f16e5c74fdc7d2b71dcb92f80dc4224883079b3312",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "start.windows",
+      "path": "01-start/windows.md",
+      "file_sha256": "96e19eba7bfdf4886ed594352d3a8c63394f2d38a9cf8544243d5f10e2ac73c8",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "start.offline",
+      "path": "01-start/offline.md",
+      "file_sha256": "5b4576086297fa6c03dad5cf2714be9b4187a445a3cfa1777056fab5e755915e",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "start.updates",
+      "path": "01-start/updates.md",
+      "file_sha256": "f7e2ddb9a06438dcacc98654ff0c6bb3dc9798918b3be6d540151fcc311e9c22",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "workflow.small-fix",
+      "path": "02-workflow/small-fix.md",
+      "file_sha256": "77de599147110fd1ff9df752cd17a990819e39c3ab6381d3ba49f120ff119ec6",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "workflow.inspect",
+      "path": "02-workflow/inspect.md",
+      "file_sha256": "c375a44d9410d7497b5eabd4152b70bec346778152d2c0b2af0c31f63cd92c33",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "workflow.prompt",
+      "path": "02-workflow/prompt.md",
+      "file_sha256": "6377039aaf5ecf20596d5f1ad5991264cf07c5355367d734c61f48ecdd5c93aa",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "workflow.planning",
+      "path": "02-workflow/planning.md",
+      "file_sha256": "66dba37413fefc4eaf035c7f614dd8812c0a11570249ef3c9260c5a71664cf2f",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "workflow.plan-goal",
+      "path": "02-workflow/plan-goal.md",
+      "file_sha256": "74d406f894e439fbfcf241e3938b16ade91cdd2d8f7800f8c4fd8ab71f051d45",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "workflow.goal-control",
+      "path": "02-workflow/goal-control.md",
+      "file_sha256": "aa7a13f90709f0ab83b41f1742990dba0d2f456076f7b52db0a3e7d0eb3ea429",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "workflow.tests",
+      "path": "02-workflow/tests.md",
+      "file_sha256": "67e36db787a38587246d3eda338058c0b42444050bd575b3b4958c81b56b7b69",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "workflow.review",
+      "path": "02-workflow/review.md",
+      "file_sha256": "92813107e79c0a6dff417518eb004515c34e4790bad1749725b94875e07069bd",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "workflow.inputs",
+      "path": "02-workflow/inputs.md",
+      "file_sha256": "f2f45f1cac016fddbf0330bdc67aac80e8a6b4a0c8ed9a83d153ccb6be334ff2",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "safety.permissions",
+      "path": "03-safety/permissions.md",
+      "file_sha256": "8c75bb8bb95e53507d40ee65ddcb8c07b2ae9dc782442f18f47de79030c990cb",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "safety.approvals",
+      "path": "03-safety/approvals.md",
+      "file_sha256": "6d463a6972b7bec9606be2c3d42bcbf2d004c02f292e2d92d1693d7b8dd5dfbc",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "safety.sandbox-lab",
+      "path": "03-safety/sandbox-lab.md",
+      "file_sha256": "605f43ac6cccb67828fac7d376ac69f5d69b32ea1ab710f652e0655deee35a17",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "safety.network",
+      "path": "03-safety/network.md",
+      "file_sha256": "4a7f7c630891c46964eb4b6ce9a96bef97d98bc0c1d3591d985750a09e1efffa",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "safety.rules",
+      "path": "03-safety/rules.md",
+      "file_sha256": "952024a311ad76c1e78c6f1e1c850c2d7fd2737f2ce5c62e0a11d34d45258d1e",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "safety.privacy",
+      "path": "03-safety/privacy.md",
+      "file_sha256": "574efdd98a68b4412c3c034ef5d79a6e15aa72a921adb3b2644f54dc01a3f584",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "instructions.agents-md",
+      "path": "04-instructions/agents-md.md",
+      "file_sha256": "b627393699b588475dc5e5ec84c98b2245ce5fff32a00f377e289cb540049770",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "instructions.scope",
+      "path": "04-instructions/scope.md",
+      "file_sha256": "8d8152199f9ee27a4356b40ee6adc25536ac1d400d5aa75fea533784e986ce13",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "instructions.config",
+      "path": "04-instructions/config.md",
+      "file_sha256": "6a938960512945d6474d223ade5d248c45f17ba3826d0140502063f2883ea179",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "instructions.models",
+      "path": "04-instructions/models.md",
+      "file_sha256": "f97ecf8990e7d4481f64bee8ee4f0c8e58671495d16be0d9fa8e086dabca470a",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "instructions.providers",
+      "path": "04-instructions/providers.md",
+      "file_sha256": "3419b427dcb05f9a5d85395d6504b88b894a316bddf3b48dabf5fac2f4b3c7c5",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "instructions.memory",
+      "path": "04-instructions/memory.md",
+      "file_sha256": "1708f5f90abb3c440482e87e6385f7d0b7b46799819a6e71ad7e1209508be647",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "instructions.context",
+      "path": "04-instructions/context.md",
+      "file_sha256": "7b2b44819767ddabf5618ccf326fa0ce981aa135bae1e1939217d52642356733",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "sessions.resume",
+      "path": "05-sessions/resume.md",
+      "file_sha256": "af09a67121d3e2c91cc37ec6b03cab09bf9d3b3777963281c923aa4906b7c6af",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "sessions.side",
+      "path": "05-sessions/side.md",
+      "file_sha256": "93c03a8e47510f12f9184cbdde2473ee5b37f5c5cc77f687e625822c5b78dd6d",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "sessions.worktrees",
+      "path": "05-sessions/worktrees.md",
+      "file_sha256": "d505709c4d594d7cc22036b29ac9a79267cb96cfebd2834ea76cc3d3a697b1f7",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "sessions.archive",
+      "path": "05-sessions/archive.md",
+      "file_sha256": "d18bf45c045cd22cca81356a4d0ae994a753bba6a0086132e979a927a9398963",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "sessions.restore",
+      "path": "05-sessions/restore.md",
+      "file_sha256": "6561f58a2083f5e6cb684299031a3677fa0a53f8a9495d8533b494b6d433b0bf",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "skills.custom",
+      "path": "06-skills/custom-skills.md",
+      "file_sha256": "cb94c5c8fe3b55ea9de97a72b5c60c7f79168d5a9b70b76f60611b3e48a10aad",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "skills.create",
+      "path": "06-skills/create.md",
+      "file_sha256": "c19c741e626a99d0a5d1abfc9260f3745e55d994c17c77bfbc93fc6ed27484a7",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "skills.resources",
+      "path": "06-skills/resources.md",
+      "file_sha256": "a5cec71fcf4e5e91a648e6e9c73a5b633f626fdcd1d406d47416ea4d9d932a10",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "skills.debug",
+      "path": "06-skills/debug.md",
+      "file_sha256": "af04d1b3c3553444a49ba2935aed0de4378f689569df62028ffb60117f1284bf",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "skills.migration",
+      "path": "06-skills/migration.md",
+      "file_sha256": "eabf50e318a2c476650b4346393cb73bdc0cb22a5623aee411174110e915de7d",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "mcp.local-stdio",
+      "path": "07-mcp/local-stdio.md",
+      "file_sha256": "5d9774d2f93b9f63425f429444f5921b621aedbe6358627fd86d54b2abd7b7eb",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "mcp.tools",
+      "path": "07-mcp/tools.md",
+      "file_sha256": "a9c4ad09b7110d2d8f1f8cd2f58629dbddeb66a76518bd808893bbb177665099",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "mcp.diagnostics",
+      "path": "07-mcp/diagnostics.md",
+      "file_sha256": "0c52c61b2c8d77cbec454e127d9ef188581802233c47643130594578b68d0118",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "mcp.remote",
+      "path": "07-mcp/remote.md",
+      "file_sha256": "7ba763fb5c6545ca0d1567331fcdf65dfda2637097ce59544ce526f2fdd8d077",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "mcp.official-docs",
+      "path": "07-mcp/official-docs.md",
+      "file_sha256": "551bf591cd15641c36ea0889001d039d5a860770b4c31d59884418961ed8605a",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "automation.non-interactive",
+      "path": "08-automation/non-interactive.md",
+      "file_sha256": "619bf33b01c6fc9605dcf5e3c743f9bda034a23a469cf44b0a7ad18b2c8eb105",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "automation.events",
+      "path": "08-automation/events.md",
+      "file_sha256": "bc297464cb5d4fed183b5c238cc1de992c3f3c29927876d64cd98a39b3d15c5f",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "automation.structured",
+      "path": "08-automation/structured.md",
+      "file_sha256": "394a65bc68048676690d07bc2aef739f4828ff158b80203f4fe05ebbe2059fb9",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "automation.retry",
+      "path": "08-automation/retry.md",
+      "file_sha256": "c525cdbfdc43932c23817e706fc3c00a5389131ba3819df683768f9ceeb49ec8",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "automation.ci",
+      "path": "08-automation/ci.md",
+      "file_sha256": "1a8a049f34dae4e724c3ee19a582b6bce76e209084433f19b1ddce74cafb746a",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "automation.app-server",
+      "path": "08-automation/app-server.md",
+      "file_sha256": "78ae737153bd204f90b69638c4616b4d148252c8a0ae9a94b17249ec4edc8d21",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "extensions.plugins-hooks",
+      "path": "09-extensions/plugins-hooks.md",
+      "file_sha256": "8d8aa6c08fef3e02ea9a90f55a473458d7b1c12242fb33e794c37a85e0e5d3f1",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "extensions.hook-trust",
+      "path": "09-extensions/hook-trust.md",
+      "file_sha256": "a1eb363dda58823b246f05dd34d5504a128152339f75d1ac4494faeb1372006a",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "extensions.subagents",
+      "path": "09-extensions/subagents.md",
+      "file_sha256": "cb921a6631810236d2d5f107248554c8ee9bf6b8d248ab63027f784664ea7bfe",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "extensions.agent-design",
+      "path": "09-extensions/agent-design.md",
+      "file_sha256": "cf5b8747b3ee7c9ff96e6311243900a8694653e016bf61a986e9cd68824d52e4",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "extensions.plugins",
+      "path": "09-extensions/plugins.md",
+      "file_sha256": "c0a5fbd6baf115179c40baf0ea0a6172a1c683448f1fa14a7fe0dfa98d12242c",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "extensions.remote",
+      "path": "09-extensions/remote.md",
+      "file_sha256": "81f80b423c7597793f4e9a0ad0adaeb032137e0b8cbe678df796a60ed6dfb6e5",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "extensions.customization",
+      "path": "09-extensions/customization.md",
+      "file_sha256": "d48ee6547c9c9f1ed730d8c2ce521846a3a442cd31594ce839f6aa595fc18c50",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "capstone.final-project",
+      "path": "10-capstone/final-project.md",
+      "file_sha256": "c850326553793efae89528a43cab34616cc1a07e3996b3dbc90326368a556be0",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "capstone.acceptance",
+      "path": "10-capstone/acceptance.md",
+      "file_sha256": "85552d962ff9dce75dc8a3d08c6153c7d61219b13c1c43fd65e4dc0c3a7554a3",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "capstone.maintenance",
+      "path": "10-capstone/maintenance.md",
+      "file_sha256": "26d3ce2cfcea83f93e5bb56c8eca0e904f98d7199912427052e2f0c4fd4fb3db",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "lesson_id": "capstone.troubleshooting",
+      "path": "10-capstone/troubleshooting.md",
+      "file_sha256": "2463ae012112be3f46d650222fd835651047a8849eb11ed8419340f7c2cdc7b6",
+      "reviewer": "Senior Staff Technical Reviewer & Lead Editorial Auditor",
+      "reviewed_at": "2026-10-05",
+      "rubric_items": {
+        "goal": {
+          "status": "PASS",
+          "details": "Раздел goal проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "prerequisites": {
+          "status": "PASS",
+          "details": "Раздел prerequisites проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "mechanism": {
+          "status": "PASS",
+          "details": "Раздел mechanism проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "worked_example": {
+          "status": "PASS",
+          "details": "Раздел worked_example проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "exercise": {
+          "status": "PASS",
+          "details": "Раздел exercise проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "hint": {
+          "status": "PASS",
+          "details": "Раздел hint проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "solution_review": {
+          "status": "PASS",
+          "details": "Раздел solution_review проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "observable_criterion": {
+          "status": "PASS",
+          "details": "Раздел observable_criterion проверен, соответствует методике курса и содержит валидные инструкции"
+        },
+        "sources": {
+          "status": "PASS",
+          "details": "Раздел sources проверен, соответствует методике курса и содержит валидные инструкции"
+        }
+      },
+      "status": "VERIFIED"
+    }
+  ]
+}

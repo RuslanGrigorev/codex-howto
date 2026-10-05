@@ -37,7 +37,7 @@
 
 ```bash
 # Интерактивный запуск с запросом подтверждения правок и команд
-codex --approval-policy on-request --sandbox-mode workspace-write
+codex --ask-for-approval on-request --sandbox workspace-write
 
 # Неинтерактивное исправление с явной передачей промпта
 codex exec "Исследуй discount.py и тесты. Исправь только расчёт скидки. Не меняй тесты."
@@ -50,8 +50,8 @@ python -S examples/small-fix/test.py
 ```
 
 Ключевые параметры сессии:
-- `--sandbox-mode workspace-write`: разрешает запись только в пределах текущего рабочего каталога.
-- `--approval-policy on-request`: запрашивает подтверждение перед выполнением внешних команд оболочки.
+- `--sandbox workspace-write`: разрешает запись только в пределах текущего рабочего каталога.
+- `--ask-for-approval on-request`: запрашивает подтверждение перед выполнением внешних команд оболочки.
 
 ## Разбор примера
 

@@ -1,8 +1,13 @@
-name: Codex Automated PR Review
+name: Codex Trusted PR Review
 
+# Доверенный запуск по запросу мейнтейнера (защита от Prompt Injection из untrusted PR)
 on:
-  pull_request:
-    types: [opened, synchronize]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Номер проверяемого Pull Request"
+        required: true
+        type: string
 
 jobs:
   review:
@@ -11,24 +16,31 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout base branch and PR diff (detached, unprivileged)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+          persist-credentials: false
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setup Python environment
+        uses: actions/setup-python@0b93645e9fb717ef66e32864c30861c4151877f0 # v5.3.0
         with:
           python-version: "3.11"
 
-      - name: Install Codex CLI
+      - name: Install Codex CLI (pinned 0.160.0 release)
         run: |
-          curl -fsSL https://get.codex.openai.com | sh
+          CODEX_VERSION="0.160.0"
+          curl -fsSL -o codex.tar.gz "https://github.com/openai/codex/releases/download/rust-v${CODEX_VERSION}/codex-x86_64-unknown-linux-gnu.tar.gz"
+          tar -xzf codex.tar.gz
+          mkdir -p "$HOME/.codex/bin"
+          mv codex "$HOME/.codex/bin/"
           echo "$HOME/.codex/bin" >> $GITHUB_PATH
 
-      - name: Run Automated PR Review
-        env:
-          CI_RUNNER_SECRET: ${{ secrets.CI_RUNNER_SECRET }}
+      - name: Run Read-Only Automated PR Review
         run: |
-          codex exec --approval-policy never --sandbox-mode workspace-write \
-            "Выполни diff-ревью изменений в этом PR по правилам AGENTS.md. Сформируй отчёт."
+          # Изолированный аудит: песочница только для чтения, канонический синтаксис 0.160.0
+          codex exec \
+            --sandbox read-only \
+            --ask-for-approval always \
+            --json \
+            "Проведи статический анализ diff PR #${{ inputs.pr_number }} по правилам безопасности базовой ветки. Сформируй отчёт без модификации репозитория."

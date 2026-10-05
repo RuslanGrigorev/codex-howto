@@ -53,7 +53,7 @@
 
 ```bash
 # Генерация плана без изменения файлов репозитория
-codex exec --sandbox-mode read-only "/plan Сформируй план рефакторинга auth.py"
+codex exec --sandbox read-only "/plan Сформируй план рефакторинга auth.py"
 ```
 
 ## Разбор примера

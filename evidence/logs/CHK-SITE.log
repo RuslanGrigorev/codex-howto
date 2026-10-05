@@ -1,0 +1,8 @@
+COMMAND ["C:\\Program Files\\Python313\\python.exe", "-X", "utf8", "scripts/build_website.py", "--output", ".learning/site"]
+EXIT 0
+
+17:14:11 - INFO - Collected 86 pages across the curriculum
+17:14:13 - INFO - Rendered 86 HTML page(s) into C:\Users\Mi\Desktop\projects\codex-howto\.learning\.codex-build-s_748ii1
+17:14:13 - INFO - Rendered landing page → C:\Users\Mi\Desktop\projects\codex-howto\.learning\.codex-build-s_748ii1\index.html
+17:14:13 - INFO - Copied 12 asset file(s) into C:\Users\Mi\Desktop\projects\codex-howto\.learning\.codex-build-s_748ii1\assets
+17:15:04 - INFO - Автономный сайт собран: C:\Users\Mi\Desktop\projects\codex-howto\.learning\site

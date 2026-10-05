@@ -1,12 +1,32 @@
 #!/usr/bin/env python3
-"""Клиент протокола JSON-RPC 2.0 для взаимодействия с Codex CLI app-server."""
+"""Клиент протокола JSON-RPC 2.0 для взаимодействия с Codex CLI app-server (ADR-CD-04).
+
+Архитектура:
+- BaseJsonRpcTransport: интерфейс транспорта сообщений JSON-RPC 2.0.
+- SubprocessStdioTransport: полноценный процессный транспорт поверх потоков stdin/stdout дочернего процесса.
+- FixtureStdioTransport: детерминированный in-memory транспорт для модульного тестирования.
+- AppServerStdioClient: клиент с конечным автоматом состояний, атомарными переходами и откатом ошибок (rollback).
+"""
 from __future__ import annotations
+
 import enum
 import json
+import os
 import queue
+import subprocess
+import sys
 import threading
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Callable, Optional
+
+# UTF-8 reconfigure
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
 
 class ClientState(enum.Enum):
     DISCONNECTED = "DISCONNECTED"
@@ -15,6 +35,7 @@ class ClientState(enum.Enum):
     TURN_IN_PROGRESS = "TURN_IN_PROGRESS"
     CLOSED = "CLOSED"
 
+
 class JsonRpcError(Exception):
     def __init__(self, code: int, message: str, data: Any = None):
         super().__init__(f"JSON-RPC Error {code}: {message}")
@@ -22,13 +43,16 @@ class JsonRpcError(Exception):
         self.message = message
         self.data = data
 
+
 class AppServerProtocolError(Exception):
-    """Сбой протокола или недопустимый переход состояния."""
+    """Сбой протокола, непредвиденный EOF или недопустимый переход состояния."""
     pass
+
 
 class AppServerTimeoutError(Exception):
     """Превышение допустимого времени ожидания ответа сервера."""
     pass
+
 
 @dataclass
 class JsonRpcRequest:
@@ -47,11 +71,174 @@ class JsonRpcRequest:
     def serialize(self) -> str:
         return json.dumps(self.to_dict(), ensure_ascii=False)
 
-class AppServerStdioClient:
-    """Клиент с конечным автоматом состояний и поддержкой JSON-RPC 2.0."""
 
-    def __init__(self, write_fn: Callable[[str], None], timeout: float = 5.0):
-        self.write_fn = write_fn
+class BaseJsonRpcTransport(ABC):
+    """Абстрактный интерфейс транспорта JSON-RPC сообщений."""
+
+    @abstractmethod
+    def set_message_handler(self, handler: Callable[[str], None]) -> None:
+        """Устанавливает обработчик входящих текстовых строк от сервера."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def write_message(self, message: str) -> None:
+        """Отправляет сериализованную строку запроса серверу."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def is_alive(self) -> bool:
+        """Проверяет работоспособность и доступность транспорта."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def close(self) -> None:
+        """Корректно закрывает соединение и освобождает ресурсы."""
+        raise NotImplementedError
+
+
+class SubprocessStdioTransport(BaseJsonRpcTransport):
+    """Полноценный транспорт на базе дочернего процесса со stdio-каналами (ADR-CD-04)."""
+
+    def __init__(self, command: list[str], cwd: Optional[Path] = None, env: Optional[dict[str, str]] = None):
+        self.command = command
+        self.cwd = cwd
+        self.env = env or dict(os.environ)
+        self.env.setdefault("PYTHONUTF8", "1")
+        self.env.setdefault("PYTHONIOENCODING", "utf-8")
+
+        self._handler: Optional[Callable[[str], None]] = None
+        self._proc: Optional[subprocess.Popen] = None
+        self._reader_thread: Optional[threading.Thread] = None
+        self._is_closed = False
+        self._lock = threading.Lock()
+
+        self._start_process()
+
+    def _start_process(self) -> None:
+        self._proc = subprocess.Popen(
+            self.command,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+            cwd=str(self.cwd) if self.cwd else None,
+            env=self.env,
+            bufsize=1
+        )
+        self._reader_thread = threading.Thread(target=self._read_stdout_loop, daemon=True)
+        self._reader_thread.start()
+
+    def _read_stdout_loop(self) -> None:
+        assert self._proc is not None and self._proc.stdout is not None
+        try:
+            for line in self._proc.stdout:
+                if self._handler and line:
+                    self._handler(line)
+        except Exception:
+            pass
+        finally:
+            self._is_closed = True
+
+    def set_message_handler(self, handler: Callable[[str], None]) -> None:
+        self._handler = handler
+
+    def write_message(self, message: str) -> None:
+        if not self.is_alive():
+            raise AppServerProtocolError("Невозможно отправить сообщение: процесс app-server завершён (EOF)")
+        assert self._proc is not None and self._proc.stdin is not None
+        try:
+            with self._lock:
+                self._proc.stdin.write(message + "\n")
+                self._proc.stdin.flush()
+        except (BrokenPipeError, OSError) as exc:
+            self._is_closed = True
+            raise AppServerProtocolError(f"Ошибка записи в stdin процесса: {exc}") from exc
+
+    def is_alive(self) -> bool:
+        if self._is_closed or self._proc is None:
+            return False
+        return self._proc.poll() is None
+
+    def close(self) -> None:
+        self._is_closed = True
+        if self._proc is not None:
+            try:
+                if self._proc.stdin:
+                    self._proc.stdin.close()
+                self._proc.terminate()
+                self._proc.wait(timeout=2.0)
+            except Exception:
+                self._proc.kill()
+
+
+class FixtureStdioTransport(BaseJsonRpcTransport):
+    """Детерминированный in-memory транспорт для автономных тестов."""
+
+    def __init__(self):
+        self._handler: Optional[Callable[[str], None]] = None
+        self._is_alive = True
+        self.sent_messages: list[str] = []
+        self._responses: dict[str, dict[str, Any]] = {}
+
+    def register_response(self, method: str, result: Optional[dict[str, Any]] = None, error: Optional[dict[str, Any]] = None):
+        self._responses[method] = {"result": result, "error": error}
+
+    def set_message_handler(self, handler: Callable[[str], None]) -> None:
+        self._handler = handler
+
+    def write_message(self, message: str) -> None:
+        if not self._is_alive:
+            raise AppServerProtocolError("Транспорт закрыт")
+        self.sent_messages.append(message)
+        req = json.loads(message)
+        req_id = req.get("id")
+        method = req.get("method")
+
+        if method in self._responses:
+            data = self._responses[method]
+            resp = {"jsonrpc": "2.0", "id": req_id}
+            if data["error"]:
+                resp["error"] = data["error"]
+            else:
+                resp["result"] = data["result"]
+            if self._handler:
+                self._handler(json.dumps(resp))
+
+    def is_alive(self) -> bool:
+        return self._is_alive
+
+    def close(self) -> None:
+        self._is_alive = False
+
+
+class AppServerStdioClient:
+    """Клиент с конечным автоматом состояний, атомарными переходами и откатом при сбоях."""
+
+    def __init__(
+        self,
+        transport: Optional[BaseJsonRpcTransport] = None,
+        write_fn: Optional[Callable[[str], None]] = None,
+        timeout: float = 5.0
+    ):
+        if transport is not None:
+            self.transport = transport
+        elif write_fn is not None:
+            # Обёртка обратной совместимости для write_fn
+            class CallbackTransport(BaseJsonRpcTransport):
+                def __init__(self, fn):
+                    self.fn = fn
+                    self._alive = True
+                    self._handler = None
+                def set_message_handler(self, h): self._handler = h
+                def write_message(self, m): self.fn(m)
+                def is_alive(self): return self._alive
+                def close(self): self._alive = False
+
+            self.transport = CallbackTransport(write_fn)
+        else:
+            self.transport = FixtureStdioTransport()
+
         self.default_timeout = timeout
         self.state = ClientState.DISCONNECTED
         self._next_id = 1
@@ -59,8 +246,9 @@ class AppServerStdioClient:
         self._active_thread_id: Optional[str] = None
         self._lock = threading.Lock()
 
+        self.transport.set_message_handler(self.handle_incoming_message)
+
     def handle_incoming_message(self, raw_line: str) -> Optional[dict[str, Any]]:
-        """Обрабатывает входящую строку от app-server (ответ или уведомление)."""
         raw_line = raw_line.strip()
         if not raw_line:
             return None
@@ -85,7 +273,7 @@ class AppServerStdioClient:
             self._pending_requests[req_id] = resp_q
 
         req = JsonRpcRequest(id=req_id, method=method, params=params)
-        self.write_fn(req.serialize())
+        self.transport.write_message(req.serialize())
 
         try:
             resp = resp_q.get(timeout=tout)
@@ -101,15 +289,22 @@ class AppServerStdioClient:
         return resp.get("result")
 
     def initialize(self, client_name: str = "CourseClient", version: str = "1.0") -> dict[str, Any]:
+        """Инициализация с гарантированным откатом состояния при сбое (Finding 3)."""
         if self.state != ClientState.DISCONNECTED:
             raise AppServerProtocolError(f"Невозможно инициализировать из состояния {self.state.value}")
+
         self.state = ClientState.INITIALIZING
-        result = self.send_request("initialize", {
-            "clientInfo": {"name": client_name, "version": version},
-            "capabilities": {}
-        })
-        self.state = ClientState.READY
-        return result
+        try:
+            result = self.send_request("initialize", {
+                "clientInfo": {"name": client_name, "version": version},
+                "capabilities": {}
+            })
+            self.state = ClientState.READY
+            return result
+        except Exception:
+            # Атомарный откат в исходное состояние DISCONNECTED при ошибке инициализации
+            self.state = ClientState.DISCONNECTED
+            raise
 
     def create_thread(self, workspace_path: str) -> str:
         if self.state != ClientState.READY:
@@ -119,7 +314,8 @@ class AppServerStdioClient:
         self._active_thread_id = thread_id
         return thread_id
 
-    def start_turn(self, prompt: str) -> dict[str, Any]:
+    def start_turn(self, prompt: str, timeout: Optional[float] = None) -> dict[str, Any]:
+        """Начало turn с возвратом в состояние READY даже при возникновении ошибки."""
         if self.state != ClientState.READY:
             raise AppServerProtocolError(f"Невозможно начать turn: клиент в состоянии {self.state.value}")
         if not self._active_thread_id:
@@ -130,7 +326,7 @@ class AppServerStdioClient:
             result = self.send_request("turn/start", {
                 "threadId": self._active_thread_id,
                 "prompt": prompt
-            })
+            }, timeout=timeout)
             return result
         finally:
             self.state = ClientState.READY
@@ -138,36 +334,31 @@ class AppServerStdioClient:
     def cancel_turn(self) -> None:
         if self.state != ClientState.TURN_IN_PROGRESS:
             raise AppServerProtocolError(f"Нет активного turn для отмены (текущее состояние: {self.state.value})")
-        self.send_request("turn/cancel", {"threadId": self._active_thread_id})
-        self.state = ClientState.READY
+        try:
+            self.send_request("turn/cancel", {"threadId": self._active_thread_id})
+        finally:
+            self.state = ClientState.READY
 
     def close(self) -> None:
         self.state = ClientState.CLOSED
+        self.transport.close()
+
 
 def main():
-    def mock_server_transport(raw: str):
-        req = json.loads(raw)
-        req_id = req.get("id")
-        method = req.get("method")
-        if method == "initialize":
-            res = {"serverInfo": {"name": "codex-app-server", "version": "0.160.0"}}
-        elif method == "thread/create":
-            res = {"threadId": "th_demo_1"}
-        elif method == "turn/start":
-            res = {"status": "completed"}
-        elif method == "turn/cancel":
-            res = {"status": "cancelled"}
-        else:
-            res = {}
-        client.handle_incoming_message(json.dumps({"jsonrpc": "2.0", "id": req_id, "result": res}))
+    transport = FixtureStdioTransport()
+    transport.register_response("initialize", {"serverInfo": {"name": "codex-app-server", "version": "0.160.0"}})
+    transport.register_response("thread/create", {"threadId": "th_main_1"})
+    transport.register_response("turn/start", {"status": "completed"})
 
-    client = AppServerStdioClient(write_fn=mock_server_transport)
+    client = AppServerStdioClient(transport=transport)
     client.initialize()
     th = client.create_thread("/workspace")
-    assert th == "th_demo_1"
+    assert th == "th_main_1"
     client.start_turn("Проверь код")
     assert client.state == ClientState.READY
+    client.close()
     print("PASS: A04 App-server JSON-RPC client validated")
+
 
 if __name__ == "__main__":
     main()

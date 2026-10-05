@@ -11,6 +11,7 @@
 - `README.md` — описание механизма и ограничений.
 - `hooks.json` — регистрация хука.
 - `post_tool_auditor.py` — аудит логов и запись в `audit.log`.
+- `test_post_tool_auditor.py` — тесты аудита успеха, ошибок и fail-closed валидации.
 
 ## Контракт события PostToolUse
 

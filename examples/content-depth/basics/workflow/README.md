@@ -33,7 +33,7 @@ python test_calc.py
 
 Команда запуска сессии:
 ```bash
-codex --approval-policy on-request --sandbox-mode workspace-write
+codex --ask-for-approval on-request --sandbox workspace-write
 ```
 
 Промпт для модели:
