@@ -6,22 +6,22 @@ if(p&&p.isStorageAvailable&&!p.isStorageAvailable()){message('Браузер н�
 
 var themeBtn=document.getElementById('theme-toggle');
 function getTheme(){
+  if(document.documentElement.dataset.theme) return document.documentElement.dataset.theme;
   try{
     var saved=localStorage.getItem('course-theme')||localStorage.getItem('theme');
     if(saved==='dark'||saved==='light')return saved;
   }catch(e){}
-  if(typeof navigator!=='undefined'&&navigator.webdriver){
-    return (window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
-  }
-  return 'dark';
+  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var isAutomated = typeof navigator !== 'undefined' && navigator.webdriver;
+  return isAutomated ? (prefersDark ? 'dark' : 'light') : (prefersDark ? 'dark' : 'light');
 }
 var currentTheme=getTheme();
 document.documentElement.dataset.theme=currentTheme;
 
 function updateThemeButton(t){
   if(!themeBtn)return;
-  themeBtn.textContent=t==='dark'?'☀️ Светлая тема':'🌙 Тёмная тема';
   themeBtn.setAttribute('aria-label',t==='dark'?'Включить светлую тему':'Включить тёмную тему');
+  themeBtn.setAttribute('title',t==='dark'?'Включить светлую тему':'Включить тёмную тему');
 }
 updateThemeButton(currentTheme);
 
@@ -662,4 +662,40 @@ document.querySelectorAll('.back-to-top, .footer-top').forEach(function(btn){
     }
   });
 });
+
+if ('IntersectionObserver' in window) {
+  var tocLinks = document.querySelectorAll('.toc-sidebar .toc-link');
+  if (tocLinks.length > 0) {
+    var linkMap = {};
+    tocLinks.forEach(function(l){
+      var id = l.getAttribute('href');
+      if (id && id.startsWith('#')) {
+        linkMap[id.substring(1)] = l;
+        l.addEventListener('click', function(e){
+          var target = document.getElementById(id.substring(1));
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (history.pushState) {
+              history.pushState(null, null, '#' + id.substring(1));
+            }
+          }
+        });
+      }
+    });
+    var headings = document.querySelectorAll('.prose h2[id], .prose h3[id]');
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          var id = entry.target.id;
+          if (linkMap[id]) {
+            tocLinks.forEach(function(lnk){ lnk.classList.remove('active'); });
+            linkMap[id].classList.add('active');
+          }
+        }
+      });
+    }, { rootMargin: '0px 0px -70% 0px' });
+    headings.forEach(function(h){ observer.observe(h); });
+  }
+}
 })();

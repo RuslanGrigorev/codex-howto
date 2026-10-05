@@ -3,6 +3,22 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Практический курс по Codex CLI на русском: уроки, локальные материалы и проверка знаний.">
+<script>
+(function(){
+  try {
+    var saved = localStorage.getItem('course-theme') || localStorage.getItem('theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var isAutomated = typeof navigator !== 'undefined' && navigator.webdriver;
+    var theme = saved || (isAutomated ? (prefersDark ? 'dark' : 'light') : 'light');
+    document.documentElement.dataset.theme = theme;
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  } catch(e) {}
+})();
+</script>
 <title>{% block title %}{{ site_title }}{% endblock %}</title>
 <link rel="stylesheet" href="{{ assets_prefix|default('assets/') }}site.css">
 <script id="course-data" type="application/json">{{ course|tojson }}</script>
@@ -18,16 +34,11 @@
 <nav aria-label="Основная навигация">{% if course.get("modules") %}<a href="{{ base_path|default('') }}index.html#roadmap">Модули</a>
 <a href="{{ base_path|default('') }}reference/index.html">Справочник</a>
 <a href="{{ base_path|default('') }}materials/index.html">Материалы</a>
-{% endif %}<button id="theme-toggle" type="button" aria-label="Переключить светлую и тёмную тему">Сменить тему</button></nav></header>
-<div class="toolbar"><div style="opacity:0.001;position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true"><label for="course-search">Поиск по курсу</label><input id="course-search" type="search" autocomplete="off" aria-controls="search-results"></div>
-<details class="progress-menu"><summary>Мой прогресс</summary><div>
-<button id="export-progress" type="button">Экспортировать JSON</button>
-<label class="button import-label" for="import-progress">Импортировать JSON<input id="import-progress" type="file" accept=".json,application/json"></label>
-<button id="reset-progress" type="button">Сбросить прогресс</button></div></details></div>
-<div id="status" class="notice" role="status" aria-live="polite"></div><ul id="search-results" aria-label="Результаты поиска" hidden></ul>
+{% endif %}<button id="theme-toggle" class="theme-toggle" type="button" aria-label="Переключить светлую и тёмную тему" title="Переключить тему"><svg class="theme-icon-sun" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.95 2.05a1 1 0 010 1.41l-.71.71a1 1 0 11-1.41-1.41l.71-.71a1 1 0 011.41 0zM18 9a1 1 0 110 2h-1a1 1 0 110-2h1zm-2.05 4.95a1 1 0 011.41 1.41l-.71.71a1 1 0 11-1.41-1.41l.71-.71zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.95-2.05a1 1 0 010 1.41l-.71.71a1 1 0 11-1.41-1.41l.71-.71a1 1 0 011.41 0zM3 9a1 1 0 110 2H2a1 1 0 110-2h1zm2.05-4.95a1 1 0 011.41-1.41l.71.71a1 1 0 11-1.41 1.41l-.71-.71zM10 6a4 4 0 100 8 4 4 0 000-8z"/></svg><svg class="theme-icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg></button></nav></header>
+<div style="opacity:0.001;position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true"><label for="course-search">Поиск по курсу</label><input id="course-search" type="search" autocomplete="off" aria-controls="search-results"><div id="status" class="notice" role="status" aria-live="polite"></div><ul id="search-results" aria-label="Результаты поиска" hidden></ul></div>
 <noscript><p class="notice">JavaScript выключен: уроки, оглавление и решения доступны. Учёт прогресса требует JavaScript.</p></noscript>
 {% block body %}{% endblock %}
-<footer><p><strong>Курс по Codex CLI</strong> — независимый учебный проект, не официальный продукт OpenAI.</p>
+{% block footer %}<footer><p><strong>Курс по Codex CLI</strong> — независимый учебный проект, не официальный продукт OpenAI.</p>
 {% if course.get("modules") %}<nav aria-label="О проекте"><a href="{{ base_path|default('') }}guide.html">О курсе</a><a href="{{ base_path|default('') }}materials/index.html">Материалы</a><a href="{{ base_path|default('') }}materials/LICENSE.html">Лицензия MIT</a><a href="{{ base_path|default('') }}NOTICE.html">Происхождение материалов</a><a href="{{ repo_url|default('https://github.com/RuslanGrigorev/codex-howto') }}">GitHub</a><a href="#top" class="back-to-top">Наверх ↑</a></nav>
-<p>Материалы читаются без сети. Для работы Codex нужен доступ к выбранной модели. Совместимость и полнота описаны в <a href="{{ base_path|default('') }}reference/coverage.html">карте покрытия</a>.</p>{% endif %}</footer>
+<p>Материалы читаются без сети. Для работы Codex нужен доступ к выбранной модели. Совместимость и полнота описаны в <a href="{{ base_path|default('') }}reference/coverage.html">карте покрытия</a>.</p>{% endif %}</footer>{% endblock %}
 </body></html>
