@@ -1,0 +1,29 @@
+flowchart LR
+    subgraph Client ["Codex CLI (Клиент MCP)"]
+        Engine["Движок сессии"]
+        Router["Маршрутизатор MCP"]
+        Engine <--> Router
+    end
+
+    subgraph LocalTransport ["Локальный транспорт: Stdio"]
+        Subprocess["Дочерний процесс\n(python / node mcp_server)"]
+        Pipe["Каналы stdin / stdout\n(JSON-RPC 2.0)"]
+        Subprocess <--> Pipe
+        Pipe <--> Router
+        
+        LocalFS["Файлы локального корня (--root)"]
+        Subprocess <--> LocalFS
+    end
+
+    subgraph RemoteTransport ["Удалённый транспорт: HTTP / SSE"]
+        RemoteEndpoint["Внешний MCP сервис\n(https://api.example.com/mcp)"]
+        Auth["Авторизация\n(OAuth / Bearer env-токен)"]
+        Network["HTTPS / SSE Stream"]
+        RemoteEndpoint <--> Auth
+        Auth <--> Network
+        Network <--> Router
+    end
+
+    Protocol["Протокол взаимодействия:\n1. initialize (рукопожатие и версии)\n2. tools/list (получение схемы инструментов)\n3. tools/call (вызов инструмента с валидацией)"]
+    
+    Client --- Protocol

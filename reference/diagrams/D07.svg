@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; rx: 12px; }
+      .title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 18px; font-weight: bold; }
+      .subtitle { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 13px; }
+      .box-gate { fill: #1e293b; stroke: #38bdf8; stroke-width: 2px; rx: 8px; }
+      .box-block { fill: #2a1b18; stroke: #ef4444; stroke-width: 1.5px; rx: 6px; }
+      .box-ok { fill: #064e3b; stroke: #10b981; stroke-width: 2px; rx: 8px; }
+      .text-title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; text-anchor: middle; }
+      .text-body { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 11px; text-anchor: middle; }
+      .text-block { fill: #fca5a5; font-family: system-ui, sans-serif; font-size: 11px; text-anchor: middle; }
+      .arrow { stroke: #64748b; stroke-width: 2px; fill: none; marker-end: url(#arrowhead); }
+      .arrow-red { stroke: #ef4444; stroke-width: 1.5px; fill: none; marker-end: url(#arrowhead-red); }
+      .arrow-green { stroke: #10b981; stroke-width: 2px; fill: none; marker-end: url(#arrowhead-green); }
+      .label { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 10px; text-anchor: middle; }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b" />
+    </marker>
+    <marker id="arrowhead-red" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#ef4444" />
+    </marker>
+    <marker id="arrowhead-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10b981" />
+    </marker>
+  </defs>
+
+  <rect width="880" height="560" class="bg" />
+
+  <text x="40" y="45" class="title">D07: Многоуровневая защита: Rules, Hooks, Approval и Sandbox</text>
+  <text x="40" y="68" class="subtitle">Эшелонированная безопасность: проверка действий до попадания в ядро операционной системы</text>
+
+  <!-- Incoming Action -->
+  <rect x="50" y="110" width="180" height="70" style="fill:#1e293b; stroke:#a855f7; stroke-width:2px; rx:8px;" />
+  <text x="140" y="140" class="text-title" style="fill:#d8b4fe;">Запрос действия</text>
+  <text x="140" y="160" class="text-body">Команда / Запись файла</text>
+
+  <!-- Step 1: Rules -->
+  <rect x="270" y="110" width="180" height="70" class="box-gate" />
+  <text x="360" y="138" class="text-title">1. Правила .rules</text>
+  <text x="360" y="158" class="text-body">execpolicy: allow / ask / deny</text>
+
+  <!-- Step 2: PreToolUse -->
+  <rect x="490" y="110" width="180" height="70" class="box-gate" />
+  <text x="580" y="138" class="text-title">2. PreToolUse Hook</text>
+  <text x="580" y="158" class="text-body">Программный аудит входа</text>
+
+  <!-- Step 3: Approval Policy -->
+  <rect x="270" y="270" width="180" height="75" class="box-gate" />
+  <text x="360" y="298" class="text-title">3. Approval Policy</text>
+  <text x="360" y="318" class="text-body">on-request (TUI) / never</text>
+
+  <!-- Step 4: Sandbox -->
+  <rect x="490" y="270" width="180" height="75" class="box-gate" />
+  <text x="580" y="298" class="text-title">4. Песочница ОС</text>
+  <text x="580" y="318" class="text-body">read-only / workspace-write</text>
+
+  <!-- Step 5: Final Execution -->
+  <rect x="490" y="430" width="180" height="75" class="box-ok" />
+  <text x="580" y="460" class="text-title" style="fill:#a7f3d0;">5. Исполнение</text>
+  <text x="580" y="480" class="text-body" style="fill:#6ee7b7;">Запуск в безопасной среде</text>
+
+  <!-- Block Outputs -->
+  <rect x="710" y="110" width="130" height="45" class="box-block" />
+  <text x="775" y="137" class="text-block">Отказ правила</text>
+
+  <rect x="710" y="170" width="130" height="45" class="box-block" />
+  <text x="775" y="197" class="text-block">Отказ хука</text>
+
+  <rect x="70" y="270" width="150" height="75" class="box-block" />
+  <text x="145" y="303" class="text-block">Отклонено</text>
+  <text x="145" y="323" class="text-block">пользователем / never</text>
+
+  <rect x="710" y="270" width="130" height="75" class="box-block" />
+  <text x="775" y="303" class="text-block">EPERM / Нарушение</text>
+  <text x="775" y="323" class="text-block">песочницы ОС</text>
+
+  <!-- Arrows -->
+  <path d="M 230 145 L 265 145" class="arrow" />
+  <path d="M 450 145 L 485 145" class="arrow" />
+  <path d="M 580 180 L 580 220 L 360 220 L 360 265" class="arrow" />
+  <path d="M 450 307 L 485 307" class="arrow" />
+  <path d="M 580 345 L 580 425" class="arrow-green" />
+
+  <!-- Rejection arrows -->
+  <path d="M 400 110 L 400 90 L 775 90 L 775 105" class="arrow-red" />
+  <path d="M 670 145 L 705 145" class="arrow-red" />
+  <path d="M 270 307 L 225 307" class="arrow-red" />
+  <path d="M 670 307 L 705 307" class="arrow-red" />
+</svg>

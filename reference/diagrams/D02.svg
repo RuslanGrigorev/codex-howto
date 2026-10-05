@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; rx: 12px; }
+      .title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 18px; font-weight: bold; }
+      .subtitle { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 13px; }
+      .layer-1 { fill: #1e293b; stroke: #ef4444; stroke-width: 2px; rx: 8px; }
+      .layer-2 { fill: #1e293b; stroke: #f97316; stroke-width: 2px; rx: 8px; }
+      .layer-3 { fill: #1e293b; stroke: #38bdf8; stroke-width: 2px; rx: 8px; }
+      .layer-4 { fill: #1e293b; stroke: #a855f7; stroke-width: 2px; rx: 8px; }
+      .layer-5 { fill: #1e293b; stroke: #64748b; stroke-width: 2px; rx: 8px; }
+      .layer-res { fill: #064e3b; stroke: #10b981; stroke-width: 2px; rx: 8px; }
+      .text-title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .text-body { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 12px; text-anchor: middle; }
+      .arrow { stroke: #64748b; stroke-width: 2px; fill: none; marker-end: url(#arrowhead); }
+      .arrow-dash { stroke: #10b981; stroke-width: 1.5px; stroke-dasharray: 4; fill: none; marker-end: url(#arrowhead-emerald); }
+      .label { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 11px; text-anchor: middle; }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b" />
+    </marker>
+    <marker id="arrowhead-emerald" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10b981" />
+    </marker>
+  </defs>
+
+  <rect width="880" height="560" class="bg" />
+
+  <text x="40" y="45" class="title">D02: Слои конфигурации Codex CLI</text>
+  <text x="40" y="68" class="subtitle">Иерархия приоритетов: переопределение параметров от CLI флагов к системным умолчаниям</text>
+
+  <!-- Layer 1: CLI Flags -->
+  <rect x="50" y="105" width="440" height="65" class="layer-1" />
+  <text x="270" y="132" class="text-title">1. Аргументы CLI: --config, --model, --sandbox, -p</text>
+  <text x="270" y="152" class="text-body">Наивысший приоритет; разовые переопределения сессии</text>
+
+  <!-- Layer 2: Profile -->
+  <rect x="50" y="190" width="440" height="65" class="layer-2" />
+  <text x="270" y="217" class="text-title">2. Профиль конфигурации: $CODEX_HOME/NAME.config.toml</text>
+  <text x="270" y="237" class="text-body">Активируется флагом --profile NAME</text>
+
+  <!-- Layer 3: Project -->
+  <rect x="50" y="275" width="440" height="65" class="layer-3" />
+  <text x="270" y="302" class="text-title">3. Проектные настройки: .codex/config.toml</text>
+  <text x="270" y="322" class="text-body">Действуют для текущего репозитория проекта</text>
+
+  <!-- Layer 4: Global -->
+  <rect x="50" y="360" width="440" height="65" class="layer-4" />
+  <text x="270" y="387" class="text-title">4. Глобальный профиль пользователя: ~/.codex/config.toml</text>
+  <text x="270" y="407" class="text-body">Персональные предпочтения по умолчанию для всех сессий</text>
+
+  <!-- Layer 5: System -->
+  <rect x="50" y="445" width="440" height="65" class="layer-5" />
+  <text x="270" y="472" class="text-title">5. Системные и административные ограничения</text>
+  <text x="270" y="492" class="text-body">Встроенные значения по умолчанию и обязательные политики</text>
+
+  <!-- Result Box -->
+  <rect x="540" y="230" width="290" height="150" class="layer-res" />
+  <text x="685" y="275" class="text-title" style="fill:#a7f3d0">Эффективная конфигурация</text>
+  <text x="685" y="305" class="text-body">Формируется при старте сессии</text>
+  <text x="685" y="325" class="text-body">Инспекция: /debug-config</text>
+  <text x="685" y="345" class="text-body">Проверка ошибок: --strict-config</text>
+
+  <!-- Downward Override Arrows -->
+  <path d="M 270 170 L 270 185" class="arrow" />
+  <path d="M 270 255 L 270 270" class="arrow" />
+  <path d="M 270 340 L 270 355" class="arrow" />
+  <path d="M 270 425 L 270 440" class="arrow" />
+
+  <!-- Merge Arrows into Result -->
+  <path d="M 490 137 L 580 137 L 685 225" class="arrow-dash" />
+  <path d="M 490 222 L 535 250" class="arrow-dash" />
+  <path d="M 490 307 L 535 307" class="arrow-dash" />
+  <path d="M 490 392 L 535 360" class="arrow-dash" />
+  <path d="M 490 477 L 580 477 L 685 385" class="arrow-dash" />
+</svg>

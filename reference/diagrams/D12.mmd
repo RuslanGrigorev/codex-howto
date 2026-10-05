@@ -1,0 +1,33 @@
+sequenceDiagram
+    autonumber
+    actor Client as Клиентское приложение
+    participant Server as Codex App-Server (stdio)
+    participant Core as Движок & Модель
+
+    Note over Client,Server: 1. Рукопожатие (Handshake)
+    Client->>Server: initialize {clientInfo, capabilities}
+    Server-->>Client: initialized {protocolVersion: "0.160.0", serverCapabilities}
+
+    Note over Client,Server: 2. Управление веткой (Thread)
+    Client->>Server: thread/create {workspacePath, profile}
+    Server-->>Client: thread/created {threadId: "th_12345"}
+
+    Note over Client,Server: 3. Исполнение очереди (Turn Execution)
+    Client->>Server: turn/start {threadId: "th_12345", message: "Исправь баг в auth.py"}
+    Server->>Core: Запуск рассуждений модели
+
+    loop Потоковые события (Turn Events)
+        Core-->>Server: Инкремент текста / вызов tool
+        Server-->>Client: event: turn/event {delta: "Анализирую auth.py..."}
+        Server-->>Client: event: turn/event {tool_call: "read_file", path: "auth.py"}
+        Server-->>Client: event: turn/event {tool_result: "OK", lines: 120}
+    end
+
+    Core-->>Server: Модель завершила генерацию
+    Server-->>Client: event: turn/completed {status: "COMPLETED", usage: {tokens: 450}}
+
+    Note over Client,Server: 4. Отмена или завершение (Cancellation / Shutdown)
+    opt Пользователь нажал Отмена
+        Client->>Server: turn/cancel {threadId: "th_12345"}
+        Server-->>Client: event: turn/cancelled
+    end

@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; rx: 12px; }
+      .title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 18px; font-weight: bold; }
+      .subtitle { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 13px; }
+      .box-hook { fill: #1e293b; stroke: #f59e0b; stroke-width: 2px; rx: 8px; }
+      .box-core { fill: #1e293b; stroke: #38bdf8; stroke-width: 2px; rx: 8px; }
+      .box-tool { fill: #1e293b; stroke: #10b981; stroke-width: 2px; rx: 8px; }
+      .box-done { fill: #064e3b; stroke: #10b981; stroke-width: 2px; rx: 8px; }
+      .text-title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .text-hook { fill: #fde68a; font-family: system-ui, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .text-body { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 12px; text-anchor: middle; }
+      .arrow { stroke: #64748b; stroke-width: 2px; fill: none; marker-end: url(#arrowhead); }
+      .arrow-gold { stroke: #f59e0b; stroke-width: 2px; fill: none; marker-end: url(#arrowhead-gold); }
+      .arrow-green { stroke: #10b981; stroke-width: 2px; fill: none; marker-end: url(#arrowhead-green); }
+      .label { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 11px; text-anchor: middle; }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b" />
+    </marker>
+    <marker id="arrowhead-gold" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#f59e0b" />
+    </marker>
+    <marker id="arrowhead-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10b981" />
+    </marker>
+  </defs>
+
+  <rect width="880" height="560" class="bg" />
+
+  <text x="40" y="45" class="title">D09: Жизненный цикл событий Hooks в Codex CLI</text>
+  <text x="40" y="68" class="subtitle">Точки перехвата: валидация промпта, аудит инструмента до запуска, пост-анализ и остановка</text>
+
+  <!-- Step 1: User Prompt -->
+  <rect x="50" y="110" width="180" height="70" class="box-core" />
+  <text x="140" y="138" class="text-title">1. Промпт</text>
+  <text x="140" y="158" class="text-body">Ввод пользователя</text>
+
+  <!-- Hook 1: UserPromptSubmit -->
+  <rect x="270" y="110" width="200" height="70" class="box-hook" />
+  <text x="370" y="138" class="text-hook">UserPromptSubmit</text>
+  <text x="370" y="158" class="text-body">Дополнение контекста / отказ</text>
+
+  <!-- Step 2: Model Decision -->
+  <rect x="510" y="110" width="180" height="70" class="box-core" />
+  <text x="600" y="138" class="text-title">2. Модель (LLM)</text>
+  <text x="600" y="158" class="text-body">Вызов инструмента / ответ</text>
+
+  <!-- Hook 2: PreToolUse -->
+  <rect x="510" y="235" width="200" height="75" class="box-hook" />
+  <text x="610" y="265" class="text-hook">PreToolUse</text>
+  <text x="610" y="285" class="text-body">Решение: allow / modify / deny</text>
+
+  <!-- Step 3: Tool Exec -->
+  <rect x="270" y="235" width="200" height="75" class="box-tool" />
+  <text x="370" y="265" class="text-title">3. Песочница ОС</text>
+  <text x="370" y="285" class="text-body">Исполнение инструмента</text>
+
+  <!-- Hook 3: PostToolUse -->
+  <rect x="50" y="235" width="180" height="75" class="box-hook" />
+  <text x="140" y="265" class="text-hook">PostToolUse</text>
+  <text x="140" y="285" class="text-body">Аудит вывода (без отката!)</text>
+
+  <!-- Hook 4: Stop -->
+  <rect x="510" y="380" width="200" height="75" class="box-hook" />
+  <text x="610" y="410" class="text-hook">Stop</text>
+  <text x="610" y="430" class="text-body">Контроль завершения цели</text>
+
+  <!-- Done Box -->
+  <rect x="270" y="380" width="200" height="75" class="box-done" />
+  <text x="370" y="410" class="text-title" style="fill:#a7f3d0;">Завершение сессии</text>
+  <text x="370" y="430" class="text-body" style="fill:#6ee7b7;">Финальный ответ ученику</text>
+
+  <!-- Arrows -->
+  <path d="M 230 145 L 265 145" class="arrow" />
+  <path d="M 470 145 L 505 145" class="arrow-gold" />
+  
+  <!-- Model to PreToolUse -->
+  <path d="M 600 180 L 600 230" class="arrow" />
+  <text x="670" y="205" class="label">Вызов tool</text>
+
+  <!-- PreToolUse to Tool Exec -->
+  <path d="M 510 272 L 475 272" class="arrow-gold" />
+  <text x="492" y="262" class="label">allow</text>
+
+  <!-- Tool Exec to PostToolUse -->
+  <path d="M 270 272 L 235 272" class="arrow-green" />
+
+  <!-- PostToolUse back to Model -->
+  <path d="M 140 235 L 140 210 L 550 210 L 550 185" class="arrow-gold" />
+  <text x="340" y="202" class="label">Результат инструмента в контекст</text>
+
+  <!-- Model to Stop -->
+  <path d="M 650 180 L 650 375" class="arrow" />
+  <text x="710" y="340" class="label">Модель готова завершить</text>
+
+  <!-- Stop to Done -->
+  <path d="M 510 417 L 475 417" class="arrow-gold" />
+  <text x="492" y="408" class="label">allow</text>
+
+  <!-- Explanatory note -->
+  <rect x="50" y="480" width="780" height="50" style="fill:#1e293b; stroke:#334155; stroke-width:1px; rx:6px;" />
+  <text x="440" y="510" class="label" style="font-size:12px; fill:#94a3b8;">
+    Инвариант безопасности: PostToolUse вызывается ПОСЛЕ выполнения инструмента и не может отменить совершённые изменения на диске.
+  </text>
+</svg>

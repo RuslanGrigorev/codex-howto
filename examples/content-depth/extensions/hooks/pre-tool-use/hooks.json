@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "command": "python",
+        "args": ["examples/content-depth/extensions/hooks/pre-tool-use/pre_tool_validator.py"]
+      }
+    ]
+  }
+}

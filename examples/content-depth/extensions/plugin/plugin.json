@@ -1,0 +1,11 @@
+{
+  "name": "course-extension-pack",
+  "version": "1.0.0",
+  "description": "Учебный плагин с набором проверочных навыков и хуков для Codex CLI",
+  "author": "Codex Course Team",
+  "permissions": [
+    "read_workspace"
+  ],
+  "skills_dir": "skills",
+  "hooks_file": "hooks.json"
+}

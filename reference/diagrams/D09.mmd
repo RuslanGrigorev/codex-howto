@@ -1,0 +1,19 @@
+flowchart TD
+    Prompt["1. Ввод пользователя (Промпт)"] --> H_Prompt["Хук UserPromptSubmit\n(Модификация промпта / Отклонение)"]
+    
+    H_Prompt --> Model["2. Модель (LLM)\nВыбор инструмента или финальный ответ"]
+    
+    Model -- "Решение вызвать инструмент" --> H_Pre["Хук PreToolUse\n(allow / deny / modify_args)"]
+    
+    H_Pre -- "allow / modify" --> Tool["3. Исполнение инструмента в песочнице\n(Файловая система / терминал)"]
+    H_Pre -- "deny" --> DenyFeedback["Сообщение об отказе возвращается модели"]
+    DenyFeedback --> Model
+    
+    Tool --> H_Post["Хук PostToolUse\n(Наблюдение результата / Аудит)\n[НЕ может откатить совершённое действие!]"]
+    
+    H_Post --> Model
+    
+    Model -- "Генерация ответа завершена" --> H_Stop["Хук Stop\n(Проверка готовности к завершению)"]
+    
+    H_Stop -- "allow" --> Done["Финальный вывод ученику"]
+    H_Stop -- "deny / feedback" --> Model

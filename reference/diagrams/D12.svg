@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; rx: 12px; }
+      .title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 18px; font-weight: bold; }
+      .subtitle { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 13px; }
+      .role-box { fill: #1e293b; stroke: #38bdf8; stroke-width: 2px; rx: 8px; }
+      .role-server { fill: #1e293b; stroke: #a855f7; stroke-width: 2px; rx: 8px; }
+      .role-core { fill: #1e293b; stroke: #10b981; stroke-width: 2px; rx: 8px; }
+      .lifeline { stroke: #334155; stroke-width: 1.5px; stroke-dasharray: 4; }
+      .text-role { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .text-msg { fill: #e2e8f0; font-family: monospace; font-size: 12px; text-anchor: middle; }
+      .text-phase { fill: #f59e0b; font-family: system-ui, sans-serif; font-size: 12px; font-weight: bold; text-anchor: middle; }
+      .msg-line { stroke: #38bdf8; stroke-width: 1.5px; fill: none; marker-end: url(#arrowhead-blue); }
+      .reply-line { stroke: #a855f7; stroke-width: 1.5px; stroke-dasharray: 4; fill: none; marker-end: url(#arrowhead-purple); }
+      .event-line { stroke: #10b981; stroke-width: 1.5px; fill: none; marker-end: url(#arrowhead-green); }
+      .phase-bg { fill: #1e293b; stroke: #334155; stroke-width: 1px; rx: 4px; }
+    </style>
+    <marker id="arrowhead-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#38bdf8" />
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#a855f7" />
+    </marker>
+    <marker id="arrowhead-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10b981" />
+    </marker>
+  </defs>
+
+  <rect width="880" height="560" class="bg" />
+
+  <text x="40" y="45" class="title">D12: Протокол Codex App-Server: Рукопожатие, Thread, Turn и События</text>
+  <text x="40" y="68" class="subtitle">JSON-RPC взаимодействие приложения-клиента и процесса app-server поверх stdio</text>
+
+  <!-- Lifeline Columns -->
+  <!-- Col 1: Client (x=160) -->
+  <line x1="160" y1="130" x2="160" y2="530" class="lifeline" />
+  <rect x="70" y="95" width="180" height="40" class="role-box" />
+  <text x="160" y="120" class="text-role">Клиентское приложение</text>
+
+  <!-- Col 2: App Server (x=460) -->
+  <line x1="460" y1="130" x2="460" y2="530" class="lifeline" />
+  <rect x="370" y="95" width="180" height="40" class="role-server" />
+  <text x="460" y="120" class="text-role" style="fill:#d8b4fe;">Codex App-Server</text>
+
+  <!-- Col 3: LLM Engine (x=730) -->
+  <line x1="730" y1="130" x2="730" y2="530" class="lifeline" />
+  <rect x="640" y="95" width="180" height="40" class="role-core" />
+  <text x="730" y="120" class="text-role" style="fill:#a7f3d0;">Модель и Движок</text>
+
+  <!-- Phase 1: Initialize -->
+  <rect x="230" y="150" width="160" height="24" class="phase-bg" />
+  <text x="310" y="166" class="text-phase">1. Рукопожатие</text>
+
+  <line x1="160" y1="185" x2="455" y2="185" class="msg-line" />
+  <text x="310" y="180" class="text-msg">initialize {capabilities}</text>
+
+  <line x1="460" y1="210" x2="165" y2="210" class="reply-line" />
+  <text x="310" y="205" class="text-msg">initialized {version: "0.160.0"}</text>
+
+  <!-- Phase 2: Thread Create -->
+  <rect x="230" y="230" width="160" height="24" class="phase-bg" />
+  <text x="310" y="246" class="text-phase">2. Создание ветки</text>
+
+  <line x1="160" y1="265" x2="455" y2="265" class="msg-line" />
+  <text x="310" y="260" class="text-msg">thread/create {workspacePath}</text>
+
+  <line x1="460" y1="290" x2="165" y2="290" class="reply-line" />
+  <text x="310" y="285" class="text-msg">thread/created {threadId}</text>
+
+  <!-- Phase 3: Turn Start & Events -->
+  <rect x="210" y="310" width="200" height="24" class="phase-bg" />
+  <text x="310" y="326" class="text-phase">3. Исполнение запроса (Turn)</text>
+
+  <line x1="160" y1="345" x2="455" y2="345" class="msg-line" />
+  <text x="310" y="340" class="text-msg">turn/start {message: "Запрос"}</text>
+
+  <line x1="460" y1="360" x2="725" y2="360" class="msg-line" />
+  <text x="595" y="355" class="text-msg">Запуск модели</text>
+
+  <line x1="730" y1="385" x2="465" y2="385" class="reply-line" />
+  <line x1="460" y1="390" x2="165" y2="390" class="event-line" />
+  <text x="310" y="385" class="text-msg">event: turn/event {delta: "..."}</text>
+
+  <line x1="460" y1="420" x2="165" y2="420" class="event-line" />
+  <text x="310" y="415" class="text-msg">event: turn/event {tool_call}</text>
+
+  <line x1="460" y1="450" x2="165" y2="450" class="event-line" />
+  <text x="310" y="445" class="text-msg">event: turn/event {tool_result}</text>
+
+  <!-- Phase 4: Completed -->
+  <line x1="460" y1="485" x2="165" y2="485" class="event-line" style="stroke:#f59e0b;" />
+  <text x="310" y="480" class="text-msg" style="fill:#fde68a;">turn/completed {status: "COMPLETED"}</text>
+
+  <!-- Note on Cancellation -->
+  <text x="440" y="520" class="subtitle" style="text-anchor:middle;">
+    Поддерживается асинхронная отмена turn/cancel без аварийного падения сервера.
+  </text>
+</svg>

@@ -1,0 +1,17 @@
+flowchart LR
+    subgraph RAM ["Оперативный контекст сессии (Окно токенов)"]
+        Active["Активный промпт\n(Промпт + последние сообщения + открытые сниппеты)"]
+    end
+
+    subgraph Disk ["Постоянные хранилища на диске"]
+        History["История диалога\n(~/.codex/sessions/*.jsonl)\nХранит все сообщения и события"]
+        Memory["Долговременная память\n(~/.codex/memories/)\nЗаметки о проекте между сессиями"]
+        Files["Файлы рабочей копии (Git)\n(Фактический код репозитория)"]
+    end
+
+    Active <-->|"/compact /recap"| History
+    Active <-->|"/memories"| Memory
+    Active <-->|"Чтение / Запись инструментами"| Files
+    
+    Git["Git История коммитов"]
+    Files <-->|"git commit / checkout"| Git

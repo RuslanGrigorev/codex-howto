@@ -1,0 +1,18 @@
+flowchart TD
+    CLI["1. Аргументы командной строки\n(--config, --model, --sandbox, -p)\n[Наивысший приоритет]"]
+    Profile["2. Именованный профиль\n($CODEX_HOME/NAME.config.toml)\n[Переопределяет проектные значения]"]
+    Project["3. Проектная конфигурация\n(.codex/config.toml в корне проекта)\n[Специфично для текущего репозитория]"]
+    Global["4. Глобальный профиль пользователя\n(~/.codex/config.toml)\n[Пользовательские предпочтения по умолчанию]"]
+    System["5. Системные и административные ограничения\n(Встроенные умолчания + Admin policies)\n[Базовый фундаментальный уровень]"]
+
+    CLI -->|Переопределяет| Profile
+    Profile -->|Переопределяет| Project
+    Project -->|Переопределяет| Global
+    Global -->|Переопределяет| System
+    
+    Result["Эффективная конфигурация сессии\n(Вычисляется при старте и видна через /debug-config)"]
+    CLI -.-> Result
+    Profile -.-> Result
+    Project -.-> Result
+    Global -.-> Result
+    System -.-> Result

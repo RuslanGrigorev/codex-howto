@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "command": "python",
+        "args": ["examples/content-depth/extensions/hooks/post-tool-use/post_tool_auditor.py"]
+      }
+    ]
+  }
+}

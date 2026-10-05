@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "command": "python",
+        "args": ["examples/content-depth/extensions/hooks/user-prompt-submit/prompt_guard.py"]
+      }
+    ]
+  }
+}

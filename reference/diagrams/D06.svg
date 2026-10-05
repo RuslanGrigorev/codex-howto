@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; rx: 12px; }
+      .title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 18px; font-weight: bold; }
+      .subtitle { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 13px; }
+      .panel-session { fill: #1e293b; stroke: #a855f7; stroke-width: 2px; rx: 10px; }
+      .panel-git { fill: #1e293b; stroke: #38bdf8; stroke-width: 2px; rx: 10px; }
+      .panel-warn { fill: #2a1b18; stroke: #ef4444; stroke-width: 2px; rx: 8px; }
+      .item-box { fill: #0f172a; stroke: #475569; stroke-width: 1.5px; rx: 6px; }
+      .text-head { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 15px; font-weight: 600; text-anchor: middle; }
+      .text-title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; text-anchor: middle; }
+      .text-body { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 12px; text-anchor: middle; }
+      .arrow { stroke: #64748b; stroke-width: 2px; fill: none; marker-end: url(#arrowhead); }
+      .arrow-purple { stroke: #a855f7; stroke-width: 2px; fill: none; marker-end: url(#arrowhead-purple); }
+      .arrow-blue { stroke: #38bdf8; stroke-width: 2px; fill: none; marker-end: url(#arrowhead-blue); }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b" />
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#a855f7" />
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#38bdf8" />
+    </marker>
+  </defs>
+
+  <rect width="880" height="560" class="bg" />
+
+  <text x="40" y="45" class="title">D06: История сессии vs Состояние Git (Ортогональность)</text>
+  <text x="40" y="68" class="subtitle">Два независимых измерения: протокол диалога агента и файловое дерево репозитория</text>
+
+  <!-- Left: Session Timeline -->
+  <rect x="40" y="105" width="380" height="305" class="panel-session" />
+  <text x="230" y="135" class="text-head" style="fill:#d8b4fe;">Измерение сессии (Диалог)</text>
+
+  <rect x="70" y="160" width="320" height="45" class="item-box" />
+  <text x="230" y="187" class="text-title">Turn 1: Запрос и исследование</text>
+
+  <rect x="70" y="225" width="320" height="45" class="item-box" />
+  <text x="230" y="252" class="text-title">Turn 2: План и согласование (/plan)</text>
+
+  <rect x="70" y="290" width="320" height="45" class="item-box" />
+  <text x="230" y="317" class="text-title">Turn 3: Исполнение правок и тесты</text>
+
+  <rect x="70" y="355" width="320" height="40" style="fill:#1e293b; stroke:none;" />
+  <text x="230" y="378" class="text-body" style="fill:#a855f7;">Команды: codex resume, codex fork, /compact</text>
+
+  <path d="M 230 205 L 230 220" class="arrow-purple" />
+  <path d="M 230 270 L 230 285" class="arrow-purple" />
+
+  <!-- Right: Git Repository Timeline -->
+  <rect x="460" y="105" width="380" height="305" class="panel-git" />
+  <text x="650" y="135" class="text-head" style="fill:#7dd3fc;">Измерение Git (Файлы на диске)</text>
+
+  <rect x="490" y="160" width="320" height="45" class="item-box" />
+  <text x="650" y="187" class="text-title">Commit A: Чистая база main</text>
+
+  <rect x="490" y="225" width="320" height="45" class="item-box" />
+  <text x="650" y="252" class="text-title">Commit B: Исходное состояние ветки</text>
+
+  <rect x="490" y="290" width="320" height="45" class="item-box" style="stroke:#10b981;" />
+  <text x="650" y="317" class="text-title" style="fill:#a7f3d0;">Working Tree: Нескоммиченные правки</text>
+
+  <rect x="490" y="355" width="320" height="40" style="fill:#1e293b; stroke:none;" />
+  <text x="650" y="378" class="text-body" style="fill:#38bdf8;">Команды: git commit, git checkout, git restore</text>
+
+  <path d="M 650 205 L 650 220" class="arrow-blue" />
+  <path d="M 650 270 L 650 285" class="arrow-blue" />
+
+  <!-- Bottom Warning Box -->
+  <rect x="40" y="430" width="800" height="100" class="panel-warn" />
+  <text x="440" y="460" class="text-title" style="fill:#f87171; font-size:14px;">
+    КРИТИЧЕСКИЙ ПРИНЦИП: ОРТОГОНАЛЬНОСТЬ СОСТОЯНИЙ
+  </text>
+  <text x="440" y="485" class="text-body" style="fill:#fecaca;">
+    1. Возобновление сессии (codex resume) восстанавливает историю рассуждений, но НЕ переключает файлы в Git.
+  </text>
+  <text x="440" y="505" class="text-body" style="fill:#fecaca;">
+    2. Переключение веток Git (git checkout) меняет код на диске, но НЕ сбрасывает контекст и память агента.
+  </text>
+</svg>

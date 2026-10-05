@@ -1,0 +1,4 @@
+{"event": "turn_start", "turn": 1, "timestamp": 1728130000}
+{"event": "tool_call", "turn": 1, "tool": "run_command", "args": {"command": "python -m pytest"}}
+{"event": "tool_output", "turn": 1, "tool": "run_command", "exit_code": 0, "stdout": "=== 5 passed in 0.12s ==="}
+{"event": "turn_complete", "turn": 1, "status": "completed", "usage": {"tokens": 280}}

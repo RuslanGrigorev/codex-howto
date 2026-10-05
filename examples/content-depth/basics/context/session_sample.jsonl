@@ -1,0 +1,6 @@
+{"turn": 1, "type": "user", "content": "Исследуй проект и назови точку входа"}
+{"turn": 1, "type": "assistant", "tool_calls": [{"name": "read_file", "path": "main.py"}]}
+{"turn": 1, "type": "tool_result", "output": "import app\nif __name__ == '__main__': app.run()"}
+{"turn": 1, "type": "assistant", "content": "Точка входа находится в файле main.py, запускающая функцию app.run()."}
+{"turn": 2, "type": "user", "content": "/compact"}
+{"turn": 2, "type": "compaction", "summary": "Исследован проект: точка входа main.py вызывает app.run()."}

@@ -10,13 +10,38 @@
 <section class="lesson-controls" data-lesson="{{ lesson.id }}"><h2>Ваш результат</h2>
 <button id="mark-read" type="button">Отметить прочитанным</button><p id="lesson-status"></p>
 <script id="lesson-data" type="application/json">{{ lesson|tojson }}</script>
-{% if quiz %}<h2>Проверка знаний</h2><p>Ответьте на все вопросы. Это проверка понимания, а не замена практики.</p><script id="quiz-data" type="application/json">{{ quiz|tojson }}</script><form id="quiz-form"></form><p id="quiz-result" role="status" aria-live="polite"></p>{% endif %}
+{% if quiz %}<h2>Проверка знаний</h2><p>Ответьте на все вопросы. Это проверка понимания, а не замена практики.</p><script id="quiz-data" type="application/json">{{ quiz|tojson }}</script><form id="quiz-form"></form><p id="quiz-result" role="status" aria-live="polite"></p><div id="quiz-detailed-feedback" class="quiz-feedback-box" hidden></div>{% endif %}
 {% if lesson.exercise_id %}<h2>Проверка упражнения</h2><p>Выполните из корня репозитория, а в автономной поставке — из каталога <code>source</code>:</p>
 <pre><code>python scripts/verify.py --prepare {{ lesson.exercise_id }}
 python scripts/verify.py --exercise {{ lesson.exercise_id }} --workspace .learning/workspaces/{{ lesson.exercise_id }}</code></pre>
 <p>Между командами выполните задание в подготовленной папке. Затем импортируйте <code>.learning/progress.json</code> через «Мой прогресс». Автоматической синхронизации с браузером нет.</p>{% endif %}
 {% if lesson.live_required %}<p class="notice">Практика этого урока требует настоящего запуска Codex. Чтение и правильные ответы не подтверждают выполнение команд. Как сохранить результат: <a href="{{ base_path }}reference/validation.html">правила проверки</a>.</p>{% endif %}
 <details><summary>Пройти этот урок с наставником</summary><p>Откройте исходники курса в Codex CLI. <code>$learn</code> — навык проекта, не встроенная slash-команда.</p><pre><code>$learn {{ lesson.id }}</code></pre><p>Наставник объясняет, даёт подсказки и помогает проверить результат. Доступная модель требуется отдельно.</p></details>
+
+<section class="cli-simulator-widget" aria-label="Офлайн-симулятор Codex CLI" data-module="{{ module.id if module else 'start' }}">
+<h3>Офлайн-симулятор Codex CLI</h3>
+<div class="simulator-disclaimer">⚠️ Интерактивная симуляция: не выполняет реальный Codex и не доказывает native-совместимость. Работает офлайн без API-ключей и сети.</div>
+<p class="simulator-intro">Отработайте синтаксис команд, параметров и slash-команд для этого модуля (baseline 0.160.0):</p>
+<div class="simulator-presets-bar">
+<span class="presets-label">Быстрые команды:</span>
+<div class="simulator-preset-buttons" id="sim-presets"></div>
+</div>
+<div class="simulator-terminal">
+<div class="terminal-header">
+<span class="terminal-dot dot-red"></span><span class="terminal-dot dot-yellow"></span><span class="terminal-dot dot-green"></span>
+<span class="terminal-title">codex-cli-simulator v0.160.0 (offline)</span>
+</div>
+<div class="terminal-body" id="sim-terminal-output" role="log" aria-live="polite">
+<div class="terminal-line system-line">[СИМУЛЯТОР CODEX CLI 0.160.0 ГОТОВ. Выберите быструю команду выше или введите свою. Для справки наберите help]</div>
+</div>
+<form class="terminal-input-bar" id="sim-terminal-form">
+<span class="terminal-prompt">user@codex-lab:~$</span>
+<input type="text" class="terminal-input" id="sim-input" placeholder="codex --help" autocomplete="off" spellcheck="false" aria-label="Команда для симулятора" />
+<button type="submit" class="button simulator-submit">Выполнить</button>
+<button type="button" class="button simulator-clear" id="sim-clear">Очистить</button>
+</form>
+</div>
+</section>
 </section>{% endif %}
 <nav class="page-nav" aria-label="По урокам">{% if prev_page %}<a href="{{ prev_page.url }}"><small>Предыдущий урок</small>← {{ prev_page.title }}</a>{% endif %}{% if next_page %}<a href="{{ next_page.url }}"><small>Следующий урок</small>{{ next_page.title }} →</a>{% endif %}</nav></main></div>
 {% endblock %}

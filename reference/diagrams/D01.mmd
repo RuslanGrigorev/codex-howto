@@ -1,0 +1,21 @@
+flowchart TD
+    User["Пользователь (Запрос в TUI / Shell)"] --> Engine["Codex Engine (TUI & сессия)"]
+    Engine --> Context["Сборка контекста\n(AGENTS.md + История + Файлы)"]
+    Context --> Model["Модель (LLM)\nРассуждение и генерация вызовов"]
+    
+    Model --> Decision{"Тип действия?"}
+    
+    Decision -- "Текстовый ответ" --> FinalAnswer["Финальный ответ ученику"]
+    FinalAnswer --> User
+    
+    Decision -- "Вызов инструмента\n(Read / Edit / Bash)" --> SafetyGate["Проверка песочницы и прав\n(Sandbox mode + Approval policy)"]
+    
+    SafetyGate -- "Разрешено" --> ToolExec["Исполнение в песочнице\n(Локальная ОС / bubblewrap)"]
+    SafetyGate -- "Требуется утверждение" --> UserPrompt["Запрос подтверждения у пользователя"]
+    UserPrompt -- "Одобрено" --> ToolExec
+    UserPrompt -- "Отклонено" --> ToolReject["Отказ в вызове инструмента"]
+    
+    ToolExec --> Observation["Наблюдение (Stdout / Stderr / Diff)"]
+    ToolReject --> Observation
+    
+    Observation --> Context

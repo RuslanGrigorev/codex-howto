@@ -1,0 +1,134 @@
+schema_version: 1
+task_id: codex-cli-offline-docs-v1
+derived_from: codex-cli-content-depth-v1
+milestone: DOCS_OFFLINE_CANDIDATE
+status: ACTIVE_DERIVED_CONTRACT
+baseline_version: "0.160.0"
+baseline_source_tag: "rust-v0.160.0"
+baseline_source_url: "https://github.com/openai/codex/tree/rust-v0.160.0"
+docs_upstream_url: "https://learn.chatgpt.com/docs/codex/cli"
+pedagogical_reference: "https://github.com/luongnv89/claude-howto"
+
+scope: >
+  Полноценный автономный русскоязычный курс Codex CLI на основе официальной
+  документации и исходного кода тега rust-v0.160.0. Исключены фактические
+  запуски Codex CLI, запуск моделей, облачные сценарии и M2 live-приёмка.
+  Проверка команд CLI заменена документальной верификацией по закреплённым источникам.
+  Сохранены 10 модулей, 62 урока, 9 независимых упражнений, добавлены 12 схем,
+  18 how-to единиц, справочник публичного inventory и офлайн-интерактив.
+
+acceptance_criteria:
+  - id: AC-DOC-01
+    title: Документальный baseline 0.160.0 и классификация inventory
+    description: >
+      Все публичные подкоманды, флаги, статические/динамические slash-команды,
+      feature flags и достижимые поля схемы конфигурации тега rust-v0.160.0
+      классифицированы ровно один раз в sources.json и reference/coverage.md
+      (категории: core, advanced, reference_only, historical_removed, out_of_scope).
+      Для out_of_scope дано явное обоснование. Действующий mcp-server удалён из активных
+      инструкций и помечен как historical_removed со ссылкой на app-server.
+
+  - id: AC-DOC-02
+    title: Полнота и глубина 62 уроков
+    description: >
+      Все 62 урока в 10 модулях содержат обязательные 9 элементов рубрики:
+      1) цель и условия доступности; 2) объяснённая схема/механизм процесса;
+      3) точный синтаксис команд/настроек; 4) разобранный реалистичный пример;
+      5) ожидаемый наблюдаемый результат; 6) ограничения и границы применимости;
+      7) типовые ошибки и диагностика; 8) самостоятельная пошаговая практика
+      с раскрываемыми подсказками; 9) самопроверка и критерий завершения.
+      Все 9 существующих независимых упражнений сохранены.
+
+  - id: AC-DOC-03
+    title: Двенадцать безопасных офлайн-схем (D01-D12)
+    description: >
+      В reference/diagrams/ размещены 12 пар файлов: исходник .mmd и локальный автономный .svg.
+      Все SVG валидны, не содержат <script>, foreignObject, внешних шрифтов или сетевых ресурсов,
+      адаптивны (390px и 1440px), читаемы без JS по протоколу file://.
+      В связанных уроках присутствует текстовое объяснение всех ключевых узлов и стрелок.
+
+  - id: AC-DOC-04
+    title: Восемнадцать how-to единиц (B01-B04, H01-H04, E01-E04, A01-A05, C01)
+    description: >
+      Созданы полные практические комплекты в examples/content-depth/:
+      - B01-B04: базовый цикл, конфигурация/провайдер, контекст/сессия, входы/терминал;
+      - H01-H04: hooks (PreToolUse, PostToolUse, UserPromptSubmit, Stop);
+      - E01-E04: 3 роли субагентов, 4 полных навыка (project-map, diff-review, test-plan, docs-update),
+        учебный плагин, stdio + HTTP/OAuth MCP;
+      - A01-A05: exec/JSONL, GitHub Action workflow, Python SDK клиент, stdio app-server, remote/cloud;
+      - C01: итоговая комплексная практика.
+      Каждый комплект содержит исходники, сценарии успеха и ошибки, критерии проверки.
+
+  - id: AC-DOC-05
+    title: Автономный офлайн-интерактив
+    description: >
+      Сайт содержит согласованный офлайн-интерактив, работающий через file:// без сети и API-ключей:
+      1) Вопросы квизов с развёрнутыми объяснениями правильных и неправильных ответов;
+      2) Пошаговые интерактивные задания с раскрываемыми подсказками (<details>/<summary>);
+      3) Локальный симулятор командной строки Codex CLI для тренировки синтаксиса и параметров,
+         явно маркированный: «Интерактивная симуляция: не выполняет реальный Codex и не доказывает native-совместимость»;
+      4) Самопроверка и сохранение прогресса в localStorage с возможностью экспорта/импорта.
+
+  - id: AC-DOC-06
+    title: Автономная поставка и валидация ZIP
+    description: >
+      Сборка статического сайта (scripts/build_website.py) завершается успешно без ошибок.
+      Проверка ссылок (scripts/check_site.py) даёт 0 ошибок.
+      Браузерная проверка Chromium (scripts/browser_check.py) через file:// подтверждает
+      доступность всех страниц, схем, поиска, квизов и отсутствие внешних запросов.
+      Пакет scripts/package_course.py создаёт детерминированный ZIP-архив, проходящий валидацию.
+
+  - id: AC-DOC-07
+    title: Переносимость и честность evidence
+    description: >
+      Текстовые операции и захват вывода используют явный UTF-8.
+      Регрессионные тесты Python выполняются без изменения проверок безопасности.
+      В отчётах и evidence честно зафиксировано: «Codex не запускался. Native-совместимость и M2 не проверены».
+      tested_cli остаётся null, статусы реального запуска не подменяются симуляциями.
+
+interactive_volume_specification:
+  quiz_questions_with_explanations: 62  # минимум 1 квиз с подробными объяснениями на каждый урок
+  expandable_hint_sections: 62          # минимум 1 раскрываемая подсказка на каждый урок
+  interactive_cli_simulators: 10        # по 1 симулятору на каждый из 10 модулей
+  interactive_progress_tracking: true   # локальное сохранение статуса, квизов и упражнений
+
+excluded_verifications:
+  - id: EXCL-01
+    description: Фактический запуск бинарника codex (включая --help, --version, exec, app-server)
+    status: EXCLUDED_NOT_RUN
+    reason: Запрещено правилами задачи; заменено верификацией по зафиксированным источникам 0.160.0.
+  - id: EXCL-02
+    description: Реальные сетевые/модельные запросы и интеграции
+    status: EXCLUDED_NOT_RUN
+    reason: Запрещено правилами задачи; курс автономен и не требует ключей/аккаунтов.
+  - id: EXCL-03
+    description: M2 live-приёмка и допуск к публичному релизу
+    status: EXCLUDED_NOT_RUN
+    reason: Выходит за рамки этапа документационной подготовки автономного офлайн-кандидата.
+  - id: EXCL-04
+    description: Создание символических ссылок в Windows-среде без прав SeCreateSymbolicLinkPrivilege
+    status: RUNNER_ENVIRONMENT_PREREQUISITE
+    reason: Четыре существующих теста требуют окружение с правами symlink (Developer Mode/Linux runner).
+
+allowed_components:
+  - 01-start/**
+  - 02-workflow/**
+  - 03-safety/**
+  - 04-instructions/**
+  - 05-sessions/**
+  - 06-skills/**
+  - 07-mcp/**
+  - 08-automation/**
+  - 09-extensions/**
+  - 10-capstone/**
+  - reference/**
+  - examples/**
+  - scripts/**
+  - course.json
+  - sources.json
+  - validation.json
+  - README.md
+  - ACCEPTANCE_RU.md
+  - CHANGELOG.md
+  - openspec/changes/update-cli-content-depth/**
+  - .learning/**

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; rx: 12px; }
+      .title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 18px; font-weight: bold; }
+      .subtitle { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 13px; }
+      .box-context { fill: #1e293b; stroke: #38bdf8; stroke-width: 2.5px; rx: 10px; }
+      .box-history { fill: #1e293b; stroke: #a855f7; stroke-width: 2px; rx: 8px; }
+      .box-memory { fill: #1e293b; stroke: #f59e0b; stroke-width: 2px; rx: 8px; }
+      .box-files { fill: #1e293b; stroke: #10b981; stroke-width: 2px; rx: 8px; }
+      .box-git { fill: #1e293b; stroke: #64748b; stroke-width: 2px; rx: 8px; }
+      .text-title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 15px; font-weight: 600; text-anchor: middle; }
+      .text-body { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 12px; text-anchor: middle; }
+      .arrow-both { stroke: #94a3b8; stroke-width: 2px; fill: none; marker-end: url(#arrowhead); marker-start: url(#arrowstart); }
+      .label { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 11px; text-anchor: middle; }
+      .zone { fill: #0f172a; stroke: #334155; stroke-dasharray: 4; rx: 8px; }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#94a3b8" />
+    </marker>
+    <marker id="arrowstart" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto">
+      <polygon points="8 0, 0 3, 8 6" fill="#94a3b8" />
+    </marker>
+  </defs>
+
+  <rect width="880" height="560" class="bg" />
+
+  <text x="40" y="45" class="title">D04: Контекст, память, история сессий и файлы на диске</text>
+  <text x="40" y="68" class="subtitle">Разделение оперативного контекста окна токенов и постоянных локальных хранилищ</text>
+
+  <!-- Central Active Context Window -->
+  <rect x="50" y="160" width="320" height="240" class="box-context" />
+  <text x="210" y="200" class="text-title" style="fill:#38bdf8;">Оперативный контекст</text>
+  <text x="210" y="222" class="text-body" style="font-weight:bold;">(Окно токенов модели)</text>
+  <text x="210" y="260" class="text-body">• Системный промпт (AGENTS.md)</text>
+  <text x="210" y="285" class="text-body">• Текущий диалог и вызовы инструментов</text>
+  <text x="210" y="310" class="text-body">• Прочитанные фрагменты кода</text>
+  <text x="210" y="340" class="text-body" style="fill:#ef4444;">Лимит размера: 128k–200k токенов</text>
+  <text x="210" y="365" class="text-body" style="fill:#38bdf8;">Оптимизация: /compact, /recap</text>
+
+  <!-- Right Side: Persistent Storage -->
+
+  <!-- History Storage -->
+  <rect x="500" y="110" width="330" height="95" class="box-history" />
+  <text x="665" y="140" class="text-title">История сессий (~/.codex/sessions/)</text>
+  <text x="665" y="162" class="text-body">Полные JSONL логи turn/сообщений</text>
+  <text x="665" y="182" class="text-body">Команды: codex resume, codex fork</text>
+
+  <!-- Long-term Memory Storage -->
+  <rect x="500" y="235" width="330" height="95" class="box-memory" />
+  <text x="665" y="265" class="text-title">Долговременная память (~/.codex/memories/)</text>
+  <text x="665" y="287" class="text-body">Факты и правила проекта между запусками</text>
+  <text x="665" y="307" class="text-body">Команды: /memories, /remember</text>
+
+  <!-- Working Tree Files -->
+  <rect x="500" y="360" width="330" height="95" class="box-files" />
+  <text x="665" y="390" class="text-title">Файлы на диске (Рабочая копия)</text>
+  <text x="665" y="412" class="text-body">Реальный исходный код и тесты</text>
+  <text x="665" y="432" class="text-body">Изменяются инструментами read / write_to_file</text>
+
+  <!-- Git Repo -->
+  <rect x="500" y="475" width="330" height="55" class="box-git" />
+  <text x="665" y="508" class="text-title" style="font-size:13px;">Git Репозиторий (.git: коммиты, ветки, HEAD)</text>
+
+  <!-- Connecting arrows -->
+  <!-- Context <-> History -->
+  <path d="M 370 220 L 495 160" class="arrow-both" />
+  <text x="435" y="175" class="label">/compact</text>
+
+  <!-- Context <-> Memory -->
+  <path d="M 370 280 L 495 280" class="arrow-both" />
+  <text x="435" y="272" class="label">поиск</text>
+
+  <!-- Context <-> Files -->
+  <path d="M 370 340 L 495 400" class="arrow-both" />
+  <text x="435" y="380" class="label">read/edit</text>
+
+  <!-- Files <-> Git -->
+  <path d="M 665 455 L 665 470" class="arrow-both" />
+  <text x="735" y="468" class="label">git commit / checkout</text>
+</svg>

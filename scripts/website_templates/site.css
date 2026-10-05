@@ -92,6 +92,11 @@ html {
   box-sizing: border-box;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -839,3 +844,222 @@ footer p {
     white-space: pre-wrap;
   }
 }
+
+/* Quiz detailed feedback */
+.quiz-feedback-box {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.quiz-feedback-item {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+  background: var(--panel);
+}
+.quiz-feedback-item.correct {
+  border-left: 4px solid #10b981;
+}
+.quiz-feedback-item.incorrect {
+  border-left: 4px solid #ef4444;
+}
+.quiz-feedback-header {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.quiz-badge {
+  font-size: 0.8rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+.quiz-badge.correct {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+.quiz-badge.incorrect {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+.quiz-explanation-text {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 0.4rem;
+  line-height: 1.4;
+}
+
+/* CLI simulator widget */
+.cli-simulator-widget {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.cli-simulator-widget h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+.simulator-disclaimer {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #d97706;
+  border-radius: 6px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.86rem;
+  margin-bottom: 0.8rem;
+  line-height: 1.4;
+}
+[data-theme="dark"] .simulator-disclaimer {
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.35);
+  background: rgba(251, 191, 36, 0.08);
+}
+.simulator-intro {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+}
+.simulator-presets-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+.presets-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.simulator-preset-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.preset-btn {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.82rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: var(--fg);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.preset-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.simulator-terminal {
+  background: #111827;
+  color: #f3f4f6;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  overflow: hidden;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+.terminal-header {
+  background: #1f2937;
+  padding: 0.45rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-bottom: 1px solid #374151;
+}
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-red { background: #ef4444; }
+.dot-yellow { background: #f59e0b; }
+.dot-green { background: #10b981; }
+.terminal-title {
+  margin-left: 0.5rem;
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+.terminal-body {
+  padding: 0.8rem 1rem;
+  max-height: 260px;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.terminal-line {
+  margin-bottom: 0.4rem;
+}
+.system-line {
+  color: #9ca3af;
+  font-style: italic;
+}
+.user-cmd-line {
+  color: #60a5fa;
+  font-weight: 600;
+}
+.terminal-out-line {
+  color: #e5e7eb;
+}
+.terminal-error-line {
+  color: #f87171;
+}
+.terminal-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.8rem;
+  background: #1f2937;
+  border-top: 1px solid #374151;
+}
+.terminal-prompt {
+  font-size: 0.82rem;
+  color: #34d399;
+  white-space: nowrap;
+}
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: 1px solid #4b5563;
+  border-radius: 4px;
+  color: #f3f4f6;
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.6rem;
+}
+.terminal-input:focus {
+  outline: none;
+  border-color: #60a5fa;
+}
+.simulator-submit {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.simulator-submit:hover {
+  background: #1d4ed8;
+}
+.simulator-clear {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.82rem;
+  background: #374151;
+  color: #d1d5db;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.simulator-clear:hover {
+  background: #4b5563;
+}
+

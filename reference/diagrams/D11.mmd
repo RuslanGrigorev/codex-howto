@@ -1,0 +1,23 @@
+flowchart TD
+    subgraph Bundle ["Анатомия пакета плагина (Plugin Bundle)"]
+        Manifest["plugin.json (Манифест плагина)\nname, version, description, permissions"]
+        SkillsDir["skills/* (Набор навыков)\nКаталоги с SKILL.md и скриптами"]
+        MCPDir["mcp_config.json (Конфигурация MCP)\nОпределения серверов инструментов"]
+        HooksDir["hooks.json (Нативные хуки)\nОбработчики событий PreToolUse и др."]
+        
+        Manifest --- SkillsDir
+        Manifest --- MCPDir
+        Manifest --- HooksDir
+    end
+
+    subgraph Lifecycle ["Жизненный цикл установки и работы"]
+        Step1["1. Обнаружение и распаковка\n(Чтение пакета в локальный каталог)"]
+        Step2["2. Валидация манифеста\n(Проверка схемы и запрошенных прав)"]
+        Step3["3. Явное подтверждение доверия\n(Ученик одобряет активацию плагина)"]
+        Step4["4. Регистрация в сессии\n(Изоляция пространств имён: plugin:skill)"]
+        Step5["5. Чистое удаление / Отключение\n(Удаление каталога без мусора в профиле)"]
+
+        Step1 --> Step2 --> Step3 --> Step4 --> Step5
+    end
+
+    Bundle -->|Загружается через| Lifecycle

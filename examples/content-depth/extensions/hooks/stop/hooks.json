@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "command": "python",
+        "args": ["examples/content-depth/extensions/hooks/stop/stop_verifier.py"]
+      }
+    ]
+  }
+}

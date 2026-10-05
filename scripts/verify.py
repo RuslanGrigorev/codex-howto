@@ -26,8 +26,11 @@ def evidence(root,path):
     return {'path':p.relative_to(root).as_posix(),'sha256':sha256(p),'type':'file'}
 
 def run_command(command,*,cwd,env=None,timeout=60):
+    cmd_env = dict(os.environ) if env is None else dict(env)
+    cmd_env.setdefault('PYTHONUTF8', '1')
+    cmd_env.setdefault('PYTHONIOENCODING', 'utf-8')
     try:
-        p=subprocess.run(command,cwd=cwd,env=env,text=True,encoding='utf-8',errors='replace',capture_output=True,timeout=timeout)
+        p=subprocess.run(command,cwd=cwd,env=cmd_env,text=True,encoding='utf-8',errors='replace',capture_output=True,timeout=timeout)
         return p.returncode,p.stdout+'\n'+p.stderr
     except subprocess.TimeoutExpired:return 124,'Превышен таймаут'
     except OSError as exc:return 127,str(exc)
@@ -75,18 +78,18 @@ def run_exercise_check(exercise_id,workspace_path):
 
 def run_offline_checks(root):
     commands=[
-        ('CHK-CATALOG',[sys.executable,'scripts/check_project.py','catalog']),
-        ('CHK-COVERAGE',[sys.executable,'scripts/check_coverage.py']),
-        ('CHK-EXERCISES',[sys.executable,'scripts/check_project.py','exercises']),
-        ('CHK-CONFIG',[sys.executable,'scripts/check_project.py','config']),
-        ('CHK-PUBLIC-FILES',[sys.executable,'scripts/check_publication.py']),
-        ('CHK-UNIT',[sys.executable,'-m','pytest','-q','scripts/tests']),
-        ('CHK-SITE',[sys.executable,'scripts/build_website.py','--output','.learning/site']),
+        ('CHK-CATALOG',[sys.executable,'-X','utf8','scripts/check_project.py','catalog']),
+        ('CHK-COVERAGE',[sys.executable,'-X','utf8','scripts/check_coverage.py']),
+        ('CHK-EXERCISES',[sys.executable,'-X','utf8','scripts/check_project.py','exercises']),
+        ('CHK-CONFIG',[sys.executable,'-X','utf8','scripts/check_project.py','config']),
+        ('CHK-PUBLIC-FILES',[sys.executable,'-X','utf8','scripts/check_publication.py']),
+        ('CHK-UNIT',[sys.executable,'-X','utf8','-m','pytest','-q','scripts/tests']),
+        ('CHK-SITE',[sys.executable,'-X','utf8','scripts/build_website.py','--output','.learning/site']),
     ]
     cases=[execute_case(root,sid,cmd,timeout=180) for sid,cmd in commands]
     if cases[-1]['status']=='PASS':
-        cases.append(execute_case(root,'CHK-SITE-LINKS',[sys.executable,'scripts/check_site.py','--site','.learning/site'],timeout=60))
-        cases.append(execute_case(root,'CHK-BROWSER',[sys.executable,'scripts/browser_check.py','--site','.learning/site'],timeout=180))
+        cases.append(execute_case(root,'CHK-SITE-LINKS',[sys.executable,'-X','utf8','scripts/check_site.py','--site','.learning/site'],timeout=60))
+        cases.append(execute_case(root,'CHK-BROWSER',[sys.executable,'-X','utf8','scripts/browser_check.py','--site','.learning/site'],timeout=180))
     else:
         cases.append({'scenario_id':'CHK-SITE-LINKS','status':'BLOCKED','message':'Сайт не собран','evidence':[]})
         cases.append({'scenario_id':'CHK-BROWSER','status':'BLOCKED','message':'Сайт не собран','evidence':[]})

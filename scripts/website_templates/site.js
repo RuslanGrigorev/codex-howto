@@ -141,18 +141,245 @@ if(qd&&p){
     form.addEventListener('submit',function(e){
       e.preventDefault();
       var fd=new FormData(form),correct=0,feedback=[];
-      quiz.questions.forEach(function(q){
-        var o=q.options.find(function(x){return x.id===fd.get(q.id);});
-        if(o&&o.is_correct)correct++;
+      var detailedBox=document.getElementById('quiz-detailed-feedback');
+      if(detailedBox){detailedBox.replaceChildren();detailedBox.hidden=false;}
+      quiz.questions.forEach(function(q,idx){
+        var selectedId=fd.get(q.id);
+        var o=q.options.find(function(x){return x.id===selectedId;});
+        var correctOption=q.options.find(function(x){return x.is_correct;});
+        var isOk=o&&o.is_correct;
+        if(isOk)correct++;
         else feedback.push(q.explanation||(q.question||q.text));
+        if(detailedBox){
+          var item=document.createElement('div');
+          item.className='quiz-feedback-item '+(isOk?'correct':'incorrect');
+          var header=document.createElement('div');
+          header.className='quiz-feedback-header';
+          var titleSpan=document.createElement('span');
+          titleSpan.textContent='Вопрос '+(idx+1)+': '+(isOk?'Верно':'Неверно');
+          var badge=document.createElement('span');
+          badge.className='quiz-badge '+(isOk?'correct':'incorrect');
+          badge.textContent=isOk?'✓ Верно':'✗ Ошибка';
+          header.append(titleSpan,badge);
+          var qText=document.createElement('div');
+          qText.style.fontWeight='500';
+          qText.textContent=q.question||q.text;
+          var exp=document.createElement('div');
+          exp.className='quiz-explanation-text';
+          exp.textContent=(isOk?'':'Правильный ответ: '+(correctOption?correctOption.text:'')+' — ')+(q.explanation||'');
+          item.append(header,qText,exp);
+          detailedBox.append(item);
+        }
       });
       var score=correct/quiz.questions.length,passed=score>=quiz.passing_score;
       p.recordQuiz(lesson.id,lesson.revision,score,passed);
       var qres=document.getElementById('quiz-result');
-      if(qres)qres.textContent='Верно: '+correct+' из '+quiz.questions.length+'. '+(passed?'Проверка знаний пройдена.':'Повторите материал. ')+feedback.join(' ');
+      if(qres)qres.textContent='Верно: '+correct+' из '+quiz.questions.length+'. '+(passed?'Проверка знаний пройдена.':'Повторите материал. ');
     });
   }
 }
+
+// Interactive offline CLI simulator
+(function initCliSimulator(){
+  var widget = document.querySelector('.cli-simulator-widget');
+  if(!widget)return;
+  var moduleKey = widget.getAttribute('data-module') || 'start';
+  var presetContainer = document.getElementById('sim-presets');
+  var form = document.getElementById('sim-terminal-form');
+  var input = document.getElementById('sim-input');
+  var output = document.getElementById('sim-terminal-output');
+  var clearBtn = document.getElementById('sim-clear');
+  if(!form || !input || !output)return;
+
+  var PRESETS = {
+    'start': ['codex --help', 'codex --version', 'codex'],
+    'workflow': ['/goal', '/goal pause', '/goal resume', 'codex "исправь опечатку"'],
+    'safety': ['/permissions', '/status', 'codex --sandbox read-only'],
+    'instructions': ['cat AGENTS.md', 'codex --model gpt-5', '/model'],
+    'sessions': ['/resume', 'codex --continue', '/sessions'],
+    'skills': ['$learn', '/skills', 'codex $project-map'],
+    'mcp': ['/mcp', 'codex --mcp-config mcp.json'],
+    'automation': ['codex exec "проверь код"', 'codex exec --json "status"', 'codex app-server'],
+    'extensions': ['/plugins', '/hooks', 'codex --agent explorer'],
+    'capstone': ['codex exec --sandbox workspace-write "комплексный аудит"', 'python scripts/verify.py --profile offline']
+  };
+
+  var commands = PRESETS[moduleKey] || PRESETS['start'];
+  if(presetContainer){
+    commands.forEach(function(cmd){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'preset-btn';
+      btn.textContent = cmd;
+      btn.addEventListener('click', function(){
+        input.value = cmd;
+        executeSim(cmd);
+      });
+      presetContainer.append(btn);
+    });
+  }
+
+  function appendLine(text, className){
+    var line = document.createElement('div');
+    line.className = 'terminal-line ' + (className || 'terminal-out-line');
+    line.textContent = text;
+    output.append(line);
+    output.scrollTop = output.scrollHeight;
+  }
+
+  function executeSim(rawCmd){
+    var cmd = (rawCmd || '').trim();
+    if(!cmd)return;
+    appendLine('user@codex-lab:~$ ' + cmd, 'user-cmd-line');
+
+    var lower = cmd.toLowerCase();
+    if(lower === 'clear'){
+      output.replaceChildren();
+      appendLine('[СИМУЛЯТОР CODEX CLI 0.160.0 ОЧИЩЕН]', 'system-line');
+      return;
+    }
+    if(lower === 'help'){
+      appendLine('[СИМУЛЯЦИЯ] Доступные команды симулятора 0.160.0:\n' +
+        '  codex [--help | --version | exec | app-server | --sandbox <mode>]\n' +
+        '  /goal [/goal pause | /goal resume | /goal clear]\n' +
+        '  /permissions, /status, /resume, /sessions, /mcp, /plugins, /hooks\n' +
+        '  $learn, cat AGENTS.md, clear');
+      return;
+    }
+    if(lower === 'codex --version' || lower === 'codex -v' || lower === 'codex -v'){
+      appendLine('codex 0.160.0 (offline docs baseline rust-v0.160.0)');
+      return;
+    }
+    if(lower === 'codex --help' || lower === 'codex -h'){
+      appendLine(
+        'Codex CLI v0.160.0 (rust-v0.160.0)\n\n' +
+        'Использование: codex [ПАРАМЕТРЫ] [КОМАНДА] [ПРОМПТ]\n\n' +
+        'Подкоманды:\n' +
+        '  exec         Неинтерактивное пакетное выполнение промпта\n' +
+        '  app-server   Запуск stdio JSON-RPC 2.0 сервера интеграции\n\n' +
+        'Параметры:\n' +
+        '  -m, --model <МОДЕЛЬ>         Целевая модель (gpt-5, gpt-4.1)\n' +
+        '  -s, --sandbox <РЕЖИМ>        Режим: read-only | workspace-write | danger-full-access\n' +
+        '  --ask-for-approval <РЕЖИМ>   Запрос подтверждения: untrusted | always | never\n' +
+        '  --cd <КАТАЛОГ>               Рабочий каталог\n' +
+        '  --mcp-config <ФАЙЛ>          Путь к конфигурации MCP\n' +
+        '  --continue, --resume         Возобновление сессии\n' +
+        '  -h, --help                   Справка\n' +
+        '  -V, --version                Версия'
+      );
+      return;
+    }
+    if(lower === 'codex'){
+      appendLine('[СИМУЛЯЦИЯ] Интерактивная сессия Codex CLI 0.160.0 запущена.\n' +
+        'Рабочий каталог: /workspace\n' +
+        'Песочница: workspace-write | Сеть: disabled\n' +
+        'Введите задачу или команду (/goal, /permissions, /status). Для выхода: /exit');
+      return;
+    }
+    if(lower.startsWith('codex exec')){
+      appendLine('[СИМУЛЯЦИЯ exec] Неинтерактивное выполнение:\n' +
+        '{"type":"session.start","version":"0.160.0","mode":"exec"}\n' +
+        '{"type":"item.create","item":{"type":"message","role":"user","content":"' + cmd.replace(/codex\s+exec/i, '').trim() + '"}}\n' +
+        '{"type":"agent.response","status":"completed","exit_code":0}\n' +
+        'Завершено с кодом 0 (успешно).');
+      return;
+    }
+    if(lower === 'codex app-server'){
+      appendLine('[СИМУЛЯЦИЯ app-server] Сервер JSON-RPC 2.0 ожидает входящие запросы в stdin.');
+      return;
+    }
+    if(lower === '/goal'){
+      appendLine('[СИМУЛЯЦИЯ /goal] Текущая цель:\n' +
+        '  1. [DONE] Исследование архитектуры и требований\n' +
+        '  2. [IN_PROGRESS] Реализация и подготовка материалов\n' +
+        '  3. [PENDING] Автономная верификация и сдача\n' +
+        'Статус: АКТИВНА. Для паузы используйте: /goal pause');
+      return;
+    }
+    if(lower === '/goal pause'){
+      appendLine('[СИМУЛЯЦИЯ /goal] Долгосрочная цель приостановлена. Прогресс сохранён.');
+      return;
+    }
+    if(lower === '/goal resume'){
+      appendLine('[СИМУЛЯЦИЯ /goal] Выполнение цели возобновлено с текущего шага.');
+      return;
+    }
+    if(lower === '/goal clear'){
+      appendLine('[СИМУЛЯЦИЯ /goal] Текущая цель очищена.');
+      return;
+    }
+    if(lower === '/permissions'){
+      appendLine('[СИМУЛЯЦИЯ /permissions] Права безопасности сессии:\n' +
+        '  - sandbox: workspace-write\n' +
+        '  - network: blocked (автономный режим)\n' +
+        '  - approvals: untrusted');
+      return;
+    }
+    if(lower === '/status'){
+      appendLine('[СИМУЛЯЦИЯ /status]\n' +
+        '  Сессия: active (id: sess-0160-mock)\n' +
+        '  Модель: baseline-0.160.0\n' +
+        '  Контекст: 2,450 / 128,000 токенов (1.9%)\n' +
+        '  Режим: автономный офлайн');
+      return;
+    }
+    if(lower.startsWith('$learn')){
+      appendLine('[СИМУЛЯЦИЯ $learn] Навык наставника курса активен. ' +
+        'Учебный контекст загружен. Задайте вопрос или запросите подсказку.');
+      return;
+    }
+    if(lower === '/skills'){
+      appendLine('[СИМУЛЯЦИЯ /skills] Зарегистрированные навыки проекта:\n' +
+        '  - $learn: автономный наставник курса Codex CLI\n' +
+        '  - $project-map: построение карты проекта\n' +
+        '  - $diff-review: аудит изменений');
+      return;
+    }
+    if(lower === '/mcp'){
+      appendLine('[СИМУЛЯЦИЯ /mcp] Протокол Model Context Protocol (0.160.0):\n' +
+        '  Подключение: stdio / SSE\n' +
+        '  Конфигурация: mcp_config.json\n' +
+        '  Доступных инструментов: 0');
+      return;
+    }
+    if(lower === '/plugins' || lower === '/hooks'){
+      appendLine('[СИМУЛЯЦИЯ] Зарегистрированные хуки: PreToolUse, PostToolUse, UserPromptSubmit, Stop.');
+      return;
+    }
+    if(lower === '/resume' || lower === '/sessions'){
+      appendLine('[СИМУЛЯЦИЯ /sessions] Сохранённые сессии в .codex/sessions:\n' +
+        '  1. sess-2026-10-05-01 (активна)\n' +
+        '  2. sess-2026-10-04-02 (завершена)');
+      return;
+    }
+    if(lower === 'cat agents.md'){
+      appendLine('# Инструкции проекта (AGENTS.md)\n' +
+        '- Автономный практикум Codex CLI.\n' +
+        '- Кодировка UTF-8.\n' +
+        '- Строгая проверка контракта без сетевых вызовов.');
+      return;
+    }
+    if(lower.includes('verify.py')){
+      appendLine('[СИМУЛЯЦИЯ verify.py] CHK-CATALOG: PASS | CHK-SITE: PASS | CHK-SITE-LINKS: PASS | CHK-BROWSER: PASS\nИтог: автономный профиль проверен.');
+      return;
+    }
+    appendLine('[СИМУЛЯЦИЯ] Команда "' + cmd + '" принята симулятором. В официальном CLI Codex 0.160.0 она будет выполнена в рабочей среде.');
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var val = input.value;
+    input.value = '';
+    executeSim(val);
+  });
+
+  if(clearBtn){
+    clearBtn.addEventListener('click', function(){
+      output.replaceChildren();
+      appendLine('[СИМУЛЯТОР CODEX CLI 0.160.0 ОЧИЩЕН]', 'system-line');
+    });
+  }
+})();
 
 document.querySelectorAll('.prose pre, .lesson-controls pre').forEach(function(pre){
   var button=document.createElement('button');

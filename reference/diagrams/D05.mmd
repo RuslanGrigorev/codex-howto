@@ -1,0 +1,13 @@
+flowchart TD
+    Scan["1. Сканирование каталогов\n(.agents/skills/* и ~/.codex/skills/*)"] --> Parse["2. Индексация метаданных\n(Чтение YAML frontmatter: name, description)"]
+    Parse --> Registry["3. Реестр доступных навыков\n(Отображается через /skills)"]
+    
+    Registry --> Trigger{"4. Способ активации"}
+    Trigger -- "Явный вызов пользователем" --> PromptCall["Ввод команды: $skill-name [аргументы]"]
+    Trigger -- "Автоматический выбор моделью" --> ModelCall["Модель видит описание и запрашивает навык"]
+    
+    PromptCall --> Load["5. Загрузка инструкций\n(Чтение полного текста SKILL.md)"]
+    ModelCall --> Load
+    
+    Load --> Assets["6. Подключение ресурсов\n(scripts/*, examples/*, references/*)"]
+    Assets --> Exec["7. Исполнение чек-листа\n(Строгое соблюдение процедуры навыка)"]

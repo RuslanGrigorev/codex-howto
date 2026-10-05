@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; rx: 12px; }
+      .title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 18px; font-weight: bold; }
+      .subtitle { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 13px; }
+      .panel-local { fill: #1e293b; stroke: #10b981; stroke-width: 2px; rx: 10px; }
+      .panel-remote { fill: #1e293b; stroke: #38bdf8; stroke-width: 2px; rx: 10px; }
+      .box-client { fill: #1e293b; stroke: #a855f7; stroke-width: 2.5px; rx: 8px; }
+      .box-inner { fill: #0f172a; stroke: #475569; stroke-width: 1.5px; rx: 6px; }
+      .text-title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .text-body { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 12px; text-anchor: middle; }
+      .arrow { stroke: #94a3b8; stroke-width: 2px; fill: none; marker-end: url(#arrowhead); marker-start: url(#arrowstart); }
+      .proto-box { fill: #1e293b; stroke: #f59e0b; stroke-width: 1.5px; rx: 6px; }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#94a3b8" />
+    </marker>
+    <marker id="arrowstart" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto">
+      <polygon points="8 0, 0 3, 8 6" fill="#94a3b8" />
+    </marker>
+  </defs>
+
+  <rect width="880" height="560" class="bg" />
+
+  <text x="40" y="45" class="title">D08: Архитектура MCP: Локальный Stdio vs Удалённый HTTP</text>
+  <text x="40" y="68" class="subtitle">Границы доверия: дочерний процесс операционной системы и внешний сетевой сервис</text>
+
+  <!-- Left: Codex Client -->
+  <rect x="40" y="110" width="220" height="280" class="box-client" />
+  <text x="150" y="145" class="text-title" style="fill:#d8b4fe;">Codex CLI (Клиент)</text>
+  <text x="150" y="170" class="text-body">• Маршрутизатор MCP</text>
+  <text x="150" y="195" class="text-body">• Диспетчер инструментов</text>
+  <text x="150" y="220" class="text-body">• Валидация JSON-RPC</text>
+  <text x="150" y="245" class="text-body">• Проверка прав песочницы</text>
+  <text x="150" y="280" class="text-body" style="fill:#38bdf8;">Конфигурация:</text>
+  <text x="150" y="300" class="text-body" style="font-family:monospace; font-size:11px;">[mcp_servers.&lt;name&gt;]</text>
+
+  <!-- Right Upper: Local Stdio -->
+  <rect x="330" y="110" width="510" height="135" class="panel-local" />
+  <text x="585" y="138" class="text-title" style="fill:#a7f3d0;">1. Локальный транспорт: Stdio (Дочерний процесс)</text>
+
+  <rect x="350" y="155" width="220" height="70" class="box-inner" />
+  <text x="460" y="182" class="text-title" style="font-size:12px;">Процесс: command + args</text>
+  <text x="460" y="202" class="text-body">python mcp_server.py --root DIR</text>
+
+  <rect x="600" y="155" width="220" height="70" class="box-inner" />
+  <text x="710" y="182" class="text-title" style="font-size:12px;">Канал stdin / stdout</text>
+  <text x="710" y="202" class="text-body">JSON-RPC 2.0 (без сокетов)</text>
+
+  <!-- Right Lower: Remote HTTP/SSE -->
+  <rect x="330" y="260" width="510" height="130" class="panel-remote" />
+  <text x="585" y="288" class="text-title" style="fill:#7dd3fc;">2. Удалённый транспорт: HTTPS / SSE</text>
+
+  <rect x="350" y="305" width="220" height="65" class="box-inner" />
+  <text x="460" y="332" class="text-title" style="font-size:12px;">Удалённый сервис (url)</text>
+  <text x="460" y="352" class="text-body">api.example.internal/mcp</text>
+
+  <rect x="600" y="305" width="220" height="65" class="box-inner" />
+  <text x="710" y="332" class="text-title" style="font-size:12px;">Безопасность и Auth</text>
+  <text x="710" y="352" class="text-body">OAuth 2.0 / Bearer env-токен</text>
+
+  <!-- Connecting arrows from client to transports -->
+  <path d="M 260 180 L 325 180" class="arrow" />
+  <path d="M 260 325 L 325 325" class="arrow" />
+
+  <!-- Bottom: Protocol Lifecycle -->
+  <rect x="40" y="415" width="800" height="115" class="proto-box" />
+  <text x="440" y="445" class="text-title" style="fill:#fde68a;">Фазы протокола Model Context Protocol</text>
+  <text x="440" y="475" class="text-body">
+    1. <tspan style="fill:#38bdf8; font-weight:bold;">initialize</tspan>: Согласование версий протокола, возможностей клиента и сервера.
+  </text>
+  <text x="440" y="495" class="text-body">
+    2. <tspan style="fill:#10b981; font-weight:bold;">tools/list</tspan>: Передача JSON Schema доступных инструментов и их параметров в модель.
+  </text>
+  <text x="440" y="515" class="text-body">
+    3. <tspan style="fill:#f59e0b; font-weight:bold;">tools/call</tspan>: Вызов конкретной функции с переданными аргументами и возврат результата.
+  </text>
+</svg>

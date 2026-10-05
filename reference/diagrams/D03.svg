@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; rx: 12px; }
+      .title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 18px; font-weight: bold; }
+      .subtitle { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 13px; }
+      .box-global { fill: #1e293b; stroke: #a855f7; stroke-width: 2px; rx: 8px; }
+      .box-root { fill: #1e293b; stroke: #38bdf8; stroke-width: 2px; rx: 8px; }
+      .box-sub { fill: #1e293b; stroke: #10b981; stroke-width: 2px; rx: 8px; }
+      .box-prompt { fill: #1e293b; stroke: #f59e0b; stroke-width: 2px; rx: 8px; }
+      .box-bounds { fill: #0f172a; stroke: #334155; stroke-dasharray: 4; stroke-width: 1.5px; rx: 8px; }
+      .text-title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .text-body { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 12px; text-anchor: middle; }
+      .arrow { stroke: #64748b; stroke-width: 2px; fill: none; marker-end: url(#arrowhead); }
+      .arrow-accent { stroke: #38bdf8; stroke-width: 2px; fill: none; marker-end: url(#arrowhead-blue); }
+      .bullet-title { fill: #38bdf8; font-family: system-ui, sans-serif; font-size: 12px; font-weight: bold; }
+      .bullet-text { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 12px; }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b" />
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#38bdf8" />
+    </marker>
+  </defs>
+
+  <rect width="880" height="560" class="bg" />
+
+  <text x="40" y="45" class="title">D03: Область действия и иерархия AGENTS.md</text>
+  <text x="40" y="68" class="subtitle">Приоритеты правил: от глобальных инструкций к корню проекта и вложенным модулям</text>
+
+  <!-- Global Instructions -->
+  <rect x="50" y="110" width="380" height="75" class="box-global" />
+  <text x="240" y="140" class="text-title">Глобальный профиль (~/.codex/AGENTS.md)</text>
+  <text x="240" y="162" class="text-body">Персональные предпочтения разработчика, стиль, язык</text>
+
+  <!-- Root Project Instructions -->
+  <rect x="50" y="225" width="380" height="75" class="box-root" />
+  <text x="240" y="255" class="text-title">Корень репозитория (/project/AGENTS.md)</text>
+  <text x="240" y="277" class="text-body">Архитектура, стек, правила сборки, тесты и запреты</text>
+
+  <!-- Subdirectory Instructions -->
+  <rect x="50" y="340" width="380" height="75" class="box-sub" />
+  <text x="240" y="370" class="text-title">Вложенная папка (/project/module/AGENTS.md)</text>
+  <text x="240" y="392" class="text-body">Локальные требования к конкретному компоненту</text>
+
+  <!-- Context Assembled -->
+  <rect x="50" y="455" width="380" height="70" class="box-prompt" />
+  <text x="240" y="485" class="text-title">Исполнимый контекст системного промпта</text>
+  <text x="240" y="505" class="text-body">Согласованный набор инструкций, переданный в модель</text>
+
+  <!-- Arrows -->
+  <path d="M 240 185 L 240 220" class="arrow" />
+  <path d="M 240 300 L 240 335" class="arrow-accent" />
+  <path d="M 240 415 L 240 450" class="arrow" />
+
+  <!-- Right side: Boundaries & Rules explanation -->
+  <rect x="470" y="110" width="360" height="415" class="box-bounds" />
+  <text x="500" y="145" class="title" style="font-size:15px; fill:#38bdf8;">Принципы разрешения конфликтов</text>
+
+  <circle cx="505" cy="185" r="4" fill="#38bdf8" />
+  <text x="520" y="190" class="bullet-title">Проект главнее личных настроек</text>
+  <text x="520" y="210" class="bullet-text">Инструкции корня проекта переопределяют</text>
+  <text x="520" y="228" class="bullet-text">глобальные привычки для консистентности кода.</text>
+
+  <circle cx="505" cy="265" r="4" fill="#10b981" />
+  <text x="520" y="270" class="bullet-title">Локальное сужение области</text>
+  <text x="520" y="290" class="bullet-text">Вложенный AGENTS.md уточняет правила</text>
+  <text x="520" y="308" class="bullet-text">только при работе внутри своей директории.</text>
+
+  <circle cx="505" cy="345" r="4" fill="#f59e0b" />
+  <text x="520" y="350" class="bullet-title">Аддитивность запретов безопасности</text>
+  <text x="520" y="370" class="bullet-text">Запрет, указанный на любом уровне,</text>
+  <text x="520" y="388" class="bullet-text">не может быть отменён более вложенным файлом.</text>
+
+  <circle cx="505" cy="425" r="4" fill="#a855f7" />
+  <text x="520" y="430" class="bullet-title">Лаконичность и фокус</text>
+  <text x="520" y="450" class="bullet-text">AGENTS.md должен содержать неизменные нормы,</text>
+  <text x="520" y="468" class="bullet-text">а не дублировать код или временные задачи.</text>
+</svg>

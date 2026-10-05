@@ -1,0 +1,22 @@
+flowchart TD
+    subgraph SessionSpace ["Пространство диалога (Codex Session)"]
+        S1["Turn 1: Промпт ученика"] --> S2["Turn 2: План изменений (/plan)"]
+        S2 --> S3["Turn 3: Правка кода"]
+        S3 --> S4["Turn 4: Прогон тестов"]
+        
+        S_Ctrl["Управление сессией:\n• codex resume (восстановление диалога)\n• codex fork (создание копии ветки диалога)\n• /compact (сокращение истории)"]
+        S_Ctrl -.-> S3
+    end
+
+    subgraph GitSpace ["Пространство репозитория (Git Repository)"]
+        C1["Commit A: Базовое состояние"] --> C2["Commit B: Фича в разработке"]
+        C2 --> WT["Рабочая копия (Working Tree)\nТекущие изменённые файлы"]
+        
+        G_Ctrl["Управление Git:\n• git commit (фиксация diff)\n• git restore / checkout (откат файлов)\n• git diff (инспекция изменений)"]
+        G_Ctrl -.-> WT
+    end
+
+    SyncWarning["Ортоганальность состояний:\nВосстановление сессии (codex resume) НЕ откатывает файлы в Git!\nПереключение ветки Git (git checkout) НЕ меняет контекст текущего диалога!"]
+    
+    SessionSpace --- SyncWarning
+    GitSpace --- SyncWarning

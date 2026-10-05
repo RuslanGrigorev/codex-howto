@@ -42,8 +42,8 @@ codex exec --json --sandbox read-only "Объясни проект, не изм�
 | `codex exec` | Неинтерактивное выполнение |
 | `codex review` | Ревью через CLI |
 | `codex mcp` | Подключения MCP; начните с `--help`, `list` |
-| `codex mcp-server` | Предоставление Codex через MCP |
-| `codex app-server` | Протокол для собственного приложения-клиента |
+| `codex mcp-server` | *Удалена / Историческая:* команда удалена из официального CLI; интеграции переведены на `codex app-server` |
+| `codex app-server` | Протокол для собственного приложения-клиента (заменяет устаревший mcp-server) |
 | `codex features` | Сведения о возможностях и флагах |
 | `codex execpolicy` | Работа с политиками команд |
 | `codex cloud` | Сетевые облачные задачи, требующие отдельного доступа |

@@ -1,0 +1,19 @@
+flowchart TD
+    Req["Запрос на действие от модели\n(Запуск команды / Запись файла / Сеть)"] --> Rules["1. Правила .rules (execpolicy)\nПроверка паттернов команд и путей"]
+    
+    Rules -- "DENY (Запрещено правилом)" --> Block1["Блокировка: Отказ в запуске"]
+    Rules -- "ALLOW (Разрешено безусловно)" --> Hook
+    Rules -- "ASK (Требует проверки)" --> Hook["2. PreToolUse Hook\nПрограммная валидация аргументов"]
+    
+    Hook -- "Deny / Ошибка хука" --> Block2["Блокировка: Отклонено хуком"]
+    Hook -- "Allow" --> Approval["3. Политика подтверждений (Approval Policy)\n(on-request / never)"]
+    
+    Approval -- "on-request: Запрос к ученику" --> UserPrompt{"Решение пользователя"}
+    UserPrompt -- "Отклонено" --> Block3["Блокировка: Отклонено пользователем"]
+    UserPrompt -- "Подтверждено" --> Sandbox
+    Approval -- "never и небезопасно" --> Block4["Блокировка: Запрет без интерактива"]
+    
+    Approval -- "Безопасное действие" --> Sandbox["4. Песочница ОС (Sandbox Mode)\nread-only | workspace-write | изоляция ФС"]
+    
+    Sandbox -- "Попытка выхода за workspace" --> Block5["Блокировка ядра ОС (EPERM)"]
+    Sandbox -- "В пределах разрешённой папки" --> Exec["5. Физическое исполнение команды"]

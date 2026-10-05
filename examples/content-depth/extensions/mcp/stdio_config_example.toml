@@ -1,0 +1,5 @@
+# Пример конфигурации локального stdio сервера MCP
+[mcp_servers.local_data]
+command = "python"
+args = ["-m", "mcp_server_sqlite", "--db", "project.db"]
+env = { PYTHONUNBUFFERED = "1" }

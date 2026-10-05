@@ -1,0 +1,13 @@
+flowchart TD
+    User["Пользователь"] --> Orch["Главный Оркестратор (Orchestrator)\nУправляет общей целью, планом и приёмкой"]
+    
+    Orch -->|1. Делегация задачи исследования| Exp["Субагент-Исследователь (Explorer)\n• role: explorer\n• sandbox: read-only\n• Находит файлы, функции, зависимости"]
+    Exp -->|Возврат отчёта об исследовании| Orch
+    
+    Orch -->|2. Делегация задачи реализации| Imp["Субагент-Исполнитель (Implementer)\n• role: implementer\n• sandbox: workspace-write\n• Создаёт минимальный точный diff"]
+    Imp -->|Возврат diff и результатов тестов| Orch
+    
+    Orch -->|3. Делегация ревью изменений| Rev["Субагент-Ревьюер (Reviewer)\n• role: reviewer\n• sandbox: read-only\n• Проверяет контракт, критерии, регрессии"]
+    Rev -->|Возврат вердикта: APPROVE / CHANGES| Orch
+    
+    Orch -->|Финальный верифицированный результат| User

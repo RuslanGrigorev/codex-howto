@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; rx: 12px; }
+      .title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 18px; font-weight: bold; }
+      .subtitle { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 13px; }
+      .box-step { fill: #1e293b; stroke: #38bdf8; stroke-width: 2px; rx: 8px; }
+      .box-trigger { fill: #1e293b; stroke: #a855f7; stroke-width: 2px; rx: 8px; }
+      .box-exec { fill: #1e293b; stroke: #10b981; stroke-width: 2px; rx: 8px; }
+      .text-title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .text-body { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 12px; text-anchor: middle; }
+      .arrow { stroke: #64748b; stroke-width: 2px; fill: none; marker-end: url(#arrowhead); }
+      .arrow-blue { stroke: #38bdf8; stroke-width: 2px; fill: none; marker-end: url(#arrowhead-blue); }
+      .arrow-green { stroke: #10b981; stroke-width: 2px; fill: none; marker-end: url(#arrowhead-green); }
+      .label { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 11px; text-anchor: middle; }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b" />
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#38bdf8" />
+    </marker>
+    <marker id="arrowhead-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10b981" />
+    </marker>
+  </defs>
+
+  <rect width="880" height="560" class="bg" />
+
+  <text x="40" y="45" class="title">D05: Обнаружение, загрузка и вызов навыков (Skills)</text>
+  <text x="40" y="68" class="subtitle">Жизненный цикл навыка: от парсинга YAML frontmatter до исполнения процедурного чеклиста</text>
+
+  <!-- Step 1: Scan -->
+  <rect x="50" y="110" width="230" height="75" class="box-step" />
+  <text x="165" y="138" class="text-title">1. Сканирование папок</text>
+  <text x="165" y="158" class="text-body">.agents/skills/ и ~/.codex/skills/</text>
+  <text x="165" y="174" class="text-body" style="fill:#38bdf8; font-size:11px;">Поиск каталогов с SKILL.md</text>
+
+  <!-- Step 2: Parse Frontmatter -->
+  <rect x="325" y="110" width="230" height="75" class="box-step" />
+  <text x="440" y="138" class="text-title">2. Индексация метаданных</text>
+  <text x="440" y="158" class="text-body">Чтение YAML frontmatter:</text>
+  <text x="440" y="174" class="text-body" style="fill:#a7f3d0; font-family:monospace; font-size:11px;">name, description</text>
+
+  <!-- Step 3: Registry -->
+  <rect x="600" y="110" width="230" height="75" class="box-step" />
+  <text x="715" y="138" class="text-title">3. Реестр навыков</text>
+  <text x="715" y="158" class="text-body">Краткие описания в контексте</text>
+  <text x="715" y="174" class="text-body" style="fill:#38bdf8; font-size:11px;">Инспекция: /skills</text>
+
+  <!-- Arrows 1 -> 2 -> 3 -->
+  <path d="M 280 147 L 320 147" class="arrow" />
+  <path d="M 555 147 L 595 147" class="arrow" />
+
+  <!-- Trigger Box -->
+  <rect x="325" y="235" width="230" height="85" class="box-trigger" />
+  <text x="440" y="265" class="text-title">4. Триггер вызова</text>
+  <text x="440" y="285" class="text-body">• Явный ввод: $skill-name</text>
+  <text x="440" y="303" class="text-body">• Выбор моделью по описанию</text>
+
+  <path d="M 715 185 L 715 277 L 560 277" class="arrow" />
+  <text x="640" y="268" class="label">Активация</text>
+
+  <!-- Step 5: Full Content Load -->
+  <rect x="50" y="370" width="230" height="85" class="box-step" />
+  <text x="165" y="400" class="text-title">5. Загрузка инструкций</text>
+  <text x="165" y="420" class="text-body">Чтение полного текста SKILL.md</text>
+  <text x="165" y="438" class="text-body" style="fill:#38bdf8; font-size:11px;">Подмешивание в системный prompt</text>
+
+  <!-- Step 6: Assets on demand -->
+  <rect x="325" y="370" width="230" height="85" class="box-step" />
+  <text x="440" y="400" class="text-title">6. Чтение ресурсов</text>
+  <text x="440" y="420" class="text-body">Подключение скриптов и справок</text>
+  <text x="440" y="438" class="text-body" style="fill:#cbd5e1; font-family:monospace; font-size:11px;">scripts/*, references/*</text>
+
+  <!-- Step 7: Procedural Execution -->
+  <rect x="600" y="370" width="230" height="85" class="box-exec" />
+  <text x="715" y="400" class="text-title">7. Исполнение чеклиста</text>
+  <text x="715" y="420" class="text-body">Пошаговое выполнение инструкций</text>
+  <text x="715" y="438" class="text-body" style="fill:#a7f3d0; font-size:11px;">Контроль критериев завершения</text>
+
+  <!-- Arrows 4 -> 5 -> 6 -> 7 -->
+  <path d="M 325 277 L 165 277 L 165 365" class="arrow-blue" />
+  <path d="M 280 412 L 320 412" class="arrow" />
+  <path d="M 555 412 L 595 412" class="arrow-green" />
+
+  <!-- Bottom Explanatory Banner -->
+  <rect x="50" y="480" width="780" height="50" style="fill:#1e293b; stroke:#334155; stroke-width:1px; rx:6px;" />
+  <text x="440" y="510" class="label" style="font-size:12px; fill:#94a3b8;">
+    Важно: навыки расширяют методику рассуждений агента и задают детерминированные чек-листы, не требуя перекомпиляции CLI.
+  </text>
+</svg>

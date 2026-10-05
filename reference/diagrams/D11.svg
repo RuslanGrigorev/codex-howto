@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 560" width="880" height="560">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; rx: 12px; }
+      .title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 18px; font-weight: bold; }
+      .subtitle { fill: #94a3b8; font-family: system-ui, sans-serif; font-size: 13px; }
+      .panel-bundle { fill: #1e293b; stroke: #38bdf8; stroke-width: 2px; rx: 10px; }
+      .panel-life { fill: #1e293b; stroke: #a855f7; stroke-width: 2px; rx: 10px; }
+      .item-box { fill: #0f172a; stroke: #475569; stroke-width: 1.5px; rx: 6px; }
+      .step-box { fill: #0f172a; stroke: #38bdf8; stroke-width: 1.5px; rx: 6px; }
+      .text-head { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 15px; font-weight: 600; text-anchor: middle; }
+      .text-title { fill: #f8fafc; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; text-anchor: middle; }
+      .text-body { fill: #cbd5e1; font-family: system-ui, sans-serif; font-size: 11px; text-anchor: middle; }
+      .arrow { stroke: #64748b; stroke-width: 2px; fill: none; marker-end: url(#arrowhead); }
+      .arrow-purple { stroke: #a855f7; stroke-width: 2px; fill: none; marker-end: url(#arrowhead-purple); }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b" />
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#a855f7" />
+    </marker>
+  </defs>
+
+  <rect width="880" height="560" class="bg" />
+
+  <text x="40" y="45" class="title">D11: Состав пакета плагина и жизненный цикл загрузки</text>
+  <text x="40" y="68" class="subtitle">Изоляция компонентов: бандл плагина, проверка манифеста, явное доверие и безопасное удаление</text>
+
+  <!-- Left: Anatomy of a Plugin Bundle -->
+  <rect x="40" y="105" width="380" height="415" class="panel-bundle" />
+  <text x="230" y="138" class="text-head" style="fill:#7dd3fc;">Состав пакета плагина</text>
+
+  <!-- Manifest -->
+  <rect x="65" y="165" width="330" height="65" class="item-box" style="stroke:#38bdf8;" />
+  <text x="230" y="192" class="text-title" style="fill:#38bdf8;">plugin.json (Манифест)</text>
+  <text x="230" y="212" class="text-body">name, version, description, required permissions</text>
+
+  <!-- Skills -->
+  <rect x="65" y="245" width="330" height="65" class="item-box" />
+  <text x="230" y="272" class="text-title">skills/* (Навыки)</text>
+  <text x="230" y="292" class="text-body">Папки с SKILL.md, процедурные чеклисты</text>
+
+  <!-- MCP Servers -->
+  <rect x="65" y="325" width="330" height="65" class="item-box" />
+  <text x="230" y="352" class="text-title">mcp_config.json (Инструменты MCP)</text>
+  <text x="230" y="372" class="text-body">Интеграции со внешними источниками данных</text>
+
+  <!-- Hooks -->
+  <rect x="65" y="405" width="330" height="65" class="item-box" />
+  <text x="230" y="432" class="text-title">hooks.json (Нативные хуки)</text>
+  <text x="230" y="452" class="text-body">Обработчики PreToolUse, PostToolUse, Stop</text>
+
+  <!-- Right: Lifecycle Steps -->
+  <rect x="460" y="105" width="380" height="415" class="panel-life" />
+  <text x="650" y="138" class="text-head" style="fill:#d8b4fe;">Жизненный цикл плагина</text>
+
+  <rect x="485" y="160" width="330" height="50" class="step-box" />
+  <text x="650" y="185" class="text-title">1. Обнаружение и распаковка</text>
+  <text x="650" y="200" class="text-body">Размещение в папке plugins/ текущего проекта</text>
+
+  <rect x="485" y="225" width="330" height="50" class="step-box" />
+  <text x="650" y="250" class="text-title">2. Валидация манифеста</text>
+  <text x="650" y="265" class="text-body">Проверка JSON Schema и доступности путей</text>
+
+  <rect x="485" y="290" width="330" height="50" class="step-box" style="stroke:#f59e0b;" />
+  <text x="650" y="315" class="text-title" style="fill:#fde68a;">3. Явный аудит доверия</text>
+  <text x="650" y="330" class="text-body">Ученик проверяет запрошенные права</text>
+
+  <rect x="485" y="355" width="330" height="50" class="step-box" style="stroke:#10b981;" />
+  <text x="650" y="380" class="text-title" style="fill:#a7f3d0;">4. Регистрация в сессии</text>
+  <text x="650" y="395" class="text-body">Изоляция пространств имён (namespace)</text>
+
+  <rect x="485" y="420" width="330" height="50" class="step-box" />
+  <text x="650" y="445" class="text-title">5. Чистое удаление</text>
+  <text x="650" y="460" class="text-body">Удаление каталога без мусора в конфигурациях</text>
+
+  <!-- Flow arrows in lifecycle -->
+  <path d="M 650 210 L 650 225" class="arrow-purple" />
+  <path d="M 650 275 L 650 290" class="arrow-purple" />
+  <path d="M 650 340 L 650 355" class="arrow-purple" />
+  <path d="M 650 405 L 650 420" class="arrow-purple" />
+
+  <!-- Arrow Bundle to Lifecycle -->
+  <path d="M 420 312 L 455 312" class="arrow" />
+</svg>
