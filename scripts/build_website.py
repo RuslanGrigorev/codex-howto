@@ -969,18 +969,33 @@ def _resolve_landing_roadmap(
 
 def _resolve_course_roadmap(course_json_path, state, language="ru"):
     data = load_json(course_json_path)
-    modules = []
-    count = 0
+    level_defs = [
+        {"id": "level-1", "name": "Уровень 1", "title": "Основы и первый запуск", "summary": "Среда, установка, базовые команды и ограниченные исправления.", "orders": {1, 2}},
+        {"id": "level-2", "name": "Уровень 2", "title": "Безопасность и управление", "summary": "Песочница, правила AGENTS.md, контекст и сессии.", "orders": {3, 4, 5}},
+        {"id": "level-3", "name": "Уровень 3", "title": "Навыки и интеграция MCP", "summary": "Создание локальных навыков, подключение и диагностика серверов инструментов.", "orders": {6, 7}},
+        {"id": "level-4", "name": "Уровень 4", "title": "Автоматизация и приёмка", "summary": "Пакетное выполнение exec, события JSONL, hooks, субагенты и итоговый проект.", "orders": {8, 9, 10}},
+    ]
+    all_modules = []
+    total_lessons = 0
     for mod in data["modules"]:
         items = []
         for lesson in mod["lessons"]:
             if lesson["path"] not in state.source_to_url:
                 raise RuntimeError("Урок отсутствует в сборке: " + lesson["path"])
             items.append({**lesson, "full_id": lesson["id"], "href": state.source_to_url[lesson["path"]]})
-        count += len(items)
-        modules.append({**mod, "lessons": items, "number": str(mod["order"]),
-                        "tagline": mod.get("summary", ""), "url": state.source_to_url.get(mod.get("path", ""), items[0]["href"])})
-    return [{"id": "course", "title": "Карта курса", "modules": modules}], len(modules), count
+        total_lessons += len(items)
+        time_est = f"{len(items) * 15} мин"
+        all_modules.append({
+            **mod, "lessons": items, "lesson_count": len(items), "time": time_est,
+            "number": str(mod["order"]).zfill(2), "tagline": mod.get("summary", ""),
+            "url": state.source_to_url.get(mod.get("path", ""), items[0]["href"])
+        })
+    levels = []
+    for ldef in level_defs:
+        mods = [m for m in all_modules if m["order"] in ldef["orders"]]
+        if mods:
+            levels.append({**ldef, "modules": mods})
+    return levels, len(all_modules), total_lessons
 
 
 def render_landing(
