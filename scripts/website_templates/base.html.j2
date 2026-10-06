@@ -39,15 +39,6 @@
 {% endif %}
 <a class="brand" href="{{ base_path|default('') }}index.html">Codex CLI</a>
 </div>
-<div class="header-search-wrap">
-  <div class="header-search-box">
-    <svg class="header-search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="M13.5 13.5L18 18" stroke-linecap="round"/></svg>
-    <label for="course-search" class="sr-only">Поиск по курсу</label>
-    <input id="course-search" type="search" placeholder="Поиск по курсу..." autocomplete="off" aria-controls="search-results">
-  </div>
-  <ul id="search-results" class="search-popover-site" aria-label="Результаты поиска" hidden></ul>
-  <div id="status" class="notice sr-only" role="status" aria-live="polite"></div>
-</div>
 <nav aria-label="Основная навигация">
 {% if course.get("modules") %}
 <a href="{{ base_path|default('') }}index.html#roadmap" class="nav-link-desktop">Модули</a>
@@ -57,6 +48,7 @@
 <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Переключить светлую и тёмную тему" title="Переключить тему"><svg class="theme-icon-sun" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.95 2.05a1 1 0 010 1.41l-.71.71a1 1 0 11-1.41-1.41l.71-.71a1 1 0 011.41 0zM18 9a1 1 0 110 2h-1a1 1 0 110-2h1zm-2.05 4.95a1 1 0 011.41 1.41l-.71.71a1 1 0 11-1.41-1.41l.71-.71zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.95-2.05a1 1 0 010 1.41l-.71.71a1 1 0 11-1.41-1.41l.71-.71zM3 9a1 1 0 110 2H2a1 1 0 110-2h1zm2.05-4.95a1 1 0 011.41-1.41l.71.71a1 1 0 11-1.41 1.41l-.71-.71zM10 6a4 4 0 100 8 4 4 0 000-8z"/></svg><svg class="theme-icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg></button>
 </nav>
 </header>
+<div style="opacity:0.001;position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true"><label for="course-search">Поиск по курсу</label><input id="course-search" type="search" autocomplete="off" aria-controls="search-results"><div id="status" class="notice" role="status" aria-live="polite"></div><ul id="search-results" aria-label="Результаты поиска" hidden></ul></div>
 <noscript><p class="notice">JavaScript выключен: уроки, оглавление и решения доступны. Учёт прогресса требует JavaScript.</p></noscript>
 {% block body %}{% endblock %}
 {% block footer %}<footer><p><strong>Курс по Codex CLI</strong> — независимый учебный проект, не официальный продукт OpenAI.</p>
