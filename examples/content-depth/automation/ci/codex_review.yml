@@ -26,8 +26,6 @@ jobs:
           persist-credentials: false
 
       - name: Fetch and Materialize Sanitized PR Patch Artifact
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p artifacts
           gh pr diff "${{ inputs.pr_number }}" > artifacts/pr_diff.patch
@@ -53,9 +51,6 @@ jobs:
           echo "$HOME/.codex/bin" >> $GITHUB_PATH
 
       - name: Run Read-Only Automated PR Review on materialized diff
-        env:
-          # Секрет аутентификации изолирован исключительно в шаге модели
-          OPENAI_API_KEY: ${{ secrets.CODEX_CI_API_KEY }}
         run: |
           # Изолированный аудит: песочница только для чтения, передача материализованного patch-файла
           codex exec \
