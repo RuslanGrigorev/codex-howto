@@ -13,9 +13,10 @@ permissions:
   contents: read
 
 jobs:
-  review:
+  fetch_pr:
+    name: Fetch and Sanitize PR Patch Artifact
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
     permissions:
       contents: read
     steps:
@@ -25,7 +26,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Fetch and Materialize Sanitized PR Patch Artifact
+      - name: Materialize Sanitized PR Patch Artifact
         run: |
           mkdir -p artifacts
           gh pr diff "${{ inputs.pr_number }}" > artifacts/pr_diff.patch
@@ -35,12 +36,36 @@ jobs:
           fi
           echo "PR patch materialized successfully (lines: $(wc -l < artifacts/pr_diff.patch))"
 
+      - name: Upload Materialized PR Patch Artifact
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: pr-patch-${{ inputs.pr_number }}
+          path: artifacts/pr_diff.patch
+          retention-days: 1
+
+  review:
+    name: Trusted Read-Only Codex Review
+    needs: fetch_pr
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout base branch (clean trusted context)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Download Sanitized PR Patch Artifact
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: pr-patch-${{ inputs.pr_number }}
+          path: artifacts
+
       - name: Install Codex CLI (pinned 0.160.0 with SHA-256 verification)
         run: |
           CODEX_VERSION="0.160.0"
-          CODEX_SHA256="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
           curl -fsSL -o codex.tar.gz "https://github.com/openai/codex/releases/download/rust-v${CODEX_VERSION}/codex-x86_64-unknown-linux-gnu.tar.gz"
-          # Валидация контрольной суммы скачанного архива
           if command -v sha256sum >/dev/null 2>&1; then
             echo "Verifying archive integrity..."
             test -s codex.tar.gz
@@ -64,5 +89,28 @@ jobs:
         if: always()
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
-          name: pr-${{ inputs.pr_number }}-review-report
-          path: artifacts/
+          name: pr-review-report-${{ inputs.pr_number }}
+          path: artifacts/review_report.json
+          retention-days: 7
+
+  publish:
+    name: Publish and Summarize Review
+    needs: review
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Download Review Report Artifact
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: pr-review-report-${{ inputs.pr_number }}
+          path: artifacts
+
+      - name: Summarize Review Report
+        run: |
+          if [ -s artifacts/review_report.json ]; then
+            echo "Review completed for PR #${{ inputs.pr_number }}."
+          else
+            echo "Warning: No review report produced."
+          fi

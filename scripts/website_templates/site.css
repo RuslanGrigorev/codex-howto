@@ -67,16 +67,15 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5.5rem;
   scrollbar-width: thin;
   scrollbar-color: var(--border) var(--bg);
 }
 
 [id] {
-  scroll-margin-top: 5.5rem;
+  scroll-margin-top: 3.85rem;
 }
 .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
-  scroll-margin-top: 5.5rem;
+  scroll-margin-top: 3.85rem;
 }
 
 ::-webkit-scrollbar {

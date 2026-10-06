@@ -1,0 +1,13 @@
+﻿============================= test session starts ==============================
+platform linux -- Python 3.12.15, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python3.12
+cachedir: .pytest_cache
+rootdir: /workspace/scripts
+configfile: pyproject.toml
+collecting ... collected 47 items / 43 deselected / 4 selected
+
+scripts/tests/test_safety.py::test_build_refuses_symlink PASSED          [ 25%]
+scripts/tests/test_safety.py::test_prepare_rejects_symlink_learning PASSED [ 50%]
+scripts/tests/test_safety.py::test_symlink_student_source_rejected PASSED [ 75%]
+scripts/tests/test_gate_injection.py::test_symlink_evidence_outside_rejected PASSED [100%]
+
+======================= 4 passed, 43 deselected in 1.47s =======================

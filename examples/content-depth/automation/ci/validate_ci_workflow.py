@@ -26,7 +26,14 @@ def main():
     assert "--sandbox-mode" not in content, "Устаревший флаг --sandbox-mode запрещён"
     assert "--approval-policy" not in content, "Устаревший флаг --approval-policy запрещён"
 
-    # 5. Запрет утечки общих секретов в окружение процесса
+    # 5. Многоэтапная изоляция рабочих мест (Finding 5)
+    assert "fetch_pr:" in content, "В A02 обязательна стадия fetch_pr"
+    assert "review:" in content, "В A02 обязательна стадия review"
+    assert "publish:" in content, "В A02 обязательна стадия publish"
+    assert "needs: fetch_pr" in content, "Стадия review обязана зависеть от fetch_pr"
+    assert "needs: review" in content, "Стадия publish обязана зависеть от review"
+
+    # 6. Запрет утечки общих секретов в окружение процесса
     assert "CI_RUNNER_SECRET" not in content, "Переменная CI_RUNNER_SECRET не должна передаваться в окружение"
 
     print("PASS: A02 CI workflow security and syntax verification passed")

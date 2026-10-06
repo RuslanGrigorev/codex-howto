@@ -198,6 +198,21 @@ def check_inventory(root: Path) -> list[str]:
     if len(topics) < 62:
         errors.append(f"topics count < 62 (найдено {len(topics)})")
 
+    # Проверка схемы config_schema.json vs sources.json vs coverage.md
+    schema_file = root / "reference/upstream/config_schema.json"
+    if not schema_file.is_file():
+        errors.append("reference/upstream/config_schema.json не найден")
+    else:
+        schema = load_json(schema_file)
+        schema_props = set(schema.get("properties", {}).keys())
+        snapshot = data.get("baseline_snapshot", {})
+        config_keys = set(snapshot.get("config_keys", []))
+        if schema_props != config_keys:
+            diff = schema_props ^ config_keys
+            errors.append(f"Несоответствие ключей config_schema.json и sources.json baseline_snapshot: diff={diff}")
+        if "M2_live_cli_runtime_verification_unperformed" not in data.get("open_scope_items", []):
+            errors.append("sources.json open_scope_items обязан содержать M2_live_cli_runtime_verification_unperformed")
+
     # Проверка справочника coverage.md
     cov_file = root / "reference/coverage.md"
     if not cov_file.is_file():
@@ -207,6 +222,10 @@ def check_inventory(root: Path) -> list[str]:
         for cat in ("core", "advanced", "reference_only", "historical_removed", "out_of_scope"):
             if cat not in cov_text:
                 errors.append(f"reference/coverage.md не содержит категорию '{cat}'")
+        if schema_file.is_file():
+            for key in schema_props:
+                if f"`{key}`" not in cov_text:
+                    errors.append(f"reference/coverage.md не содержит канонический ключ `{key}`")
 
     return errors
 

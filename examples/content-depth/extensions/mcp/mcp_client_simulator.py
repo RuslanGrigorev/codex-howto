@@ -177,8 +177,9 @@ class HttpOAuthFixtureTransport(BaseMCPTransport):
         raise MCPAuthError("Неверные учетные данные OAuth (client_id/client_secret)")
 
     def handle_request(self, raw_request: str) -> str:
-        if self.current_token != self.valid_token:
-            raise MCPAuthError("HTTP 401 Unauthorized: Отсутствует или недействителен Bearer токен")
+        import time
+        if self.current_token != self.valid_token or time.time() > self.token_expiry_timestamp:
+            raise MCPAuthError("HTTP 401 Unauthorized: Отсутствует, недействителен или истёк Bearer токен")
 
         req = json.loads(raw_request)
         req_id = req.get("id")

@@ -161,6 +161,46 @@ def test_session_timeout():
     except CodexTimeoutError as exc:
         assert "лимит времени" in str(exc)
 
+def test_production_adapter_mocked_surface(monkeypatch=None):
+    """Тест взаимодействия ProductionSDKAdapter с замоканным официальным интерфейсом openai-codex."""
+    from unittest.mock import MagicMock
+    mock_sdk = MagicMock()
+    mock_client_instance = MagicMock()
+    mock_sdk.Client.return_value = mock_client_instance
+    mock_raw_session = MagicMock()
+    mock_raw_session.id = "prod-session-123"
+    mock_client_instance.create_session.return_value = mock_raw_session
+
+    mock_send_res = MagicMock()
+    mock_send_res.text = "SDK Response"
+    mock_send_res.events = [{"type": "message"}]
+    mock_send_res.is_success = True
+    mock_send_res.refusal = None
+    mock_sdk.send.return_value = mock_send_res
+
+    mock_sdk.get_session.return_value = mock_raw_session
+
+    prod = ProductionSDKAdapter()
+    prod._sdk = mock_sdk
+
+    cfg = CodexSessionConfig(model="gpt-5", sandbox="read-only", timeout=30.0)
+    session, res = prod.start_session(cfg, initial_prompt="Hello")
+    assert session.session_id == "prod-session-123"
+    assert res is not None and res.output == "SDK Response"
+
+    res2 = prod.send_prompt(session, "Followup")
+    assert res2.output == "SDK Response"
+    mock_sdk.send.assert_called_with("prod-session-123", "Followup", timeout=30.0)
+
+    # Тест отмены через официальный SDK
+    prod.cancel_session(session)
+    assert session.status == "cancelled"
+    mock_sdk.cancel.assert_called_with("prod-session-123")
+
+    # Тест resume через официальный SDK
+    resumed = prod.resume_session("prod-session-123")
+    assert resumed.session_id == "prod-session-123"
+
 if __name__ == "__main__":
     test_successful_fixture_interaction()
     test_unregistered_prompt_strictly_rejected()
@@ -171,4 +211,5 @@ if __name__ == "__main__":
     test_session_cancellation()
     test_session_timeout()
     test_production_adapter_offline_boundary()
+    test_production_adapter_mocked_surface()
     print("ALL SDK TESTS PASSED")

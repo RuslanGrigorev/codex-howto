@@ -5,9 +5,9 @@
 ## Безопасное начало
 
 ```toml
-approval_policy = "on-request"
+approval_policy = "untrusted"
 sandbox_mode = "read-only"
-web_search = "disabled"
+web_search = false
 ```
 
 `model` при необходимости задаётся строкой с доступным у провайдера именем. Не используйте таблицу `[model]` с вымышленной моделью. Настройки режима и разрешений не надо придумывать по аналогии с другими клиентами.

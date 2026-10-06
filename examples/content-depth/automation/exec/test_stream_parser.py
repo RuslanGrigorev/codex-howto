@@ -67,10 +67,59 @@ def test_malformed_json_tolerance():
     assert summary.malformed_lines == 1
     assert summary.valid_events == 2
 
+def test_fixture_runner_nonzero_exit_code():
+    from batch_exec import FixtureExecRunner, ExecResult, StreamParseSummary
+    runner = FixtureExecRunner()
+    runner.register_scenario(
+        "fail",
+        ExecResult(
+            exit_code=2,
+            stdout_events=[],
+            stderr="Flag error: unknown argument --bad-flag",
+            summary=StreamParseSummary(),
+            success=False,
+            error_message="Execution failed with exit code 2"
+        )
+    )
+    res = runner.run(["--bad-flag"], "fail prompt")
+    assert res.exit_code == 2
+    assert res.success is False
+    assert "unknown argument" in res.stderr
+
+def test_fixture_runner_cancellation():
+    from batch_exec import FixtureExecRunner
+    runner = FixtureExecRunner()
+    runner.cancel()
+    res = runner.run([], "any prompt")
+    assert res.is_cancelled is True
+    assert res.exit_code == 130
+    assert "cancelled" in res.stderr.lower()
+
+def test_fixture_runner_timeout():
+    from batch_exec import FixtureExecRunner
+    runner = FixtureExecRunner()
+    res = runner.run([], "prompt", timeout=0.0)
+    assert res.is_timeout is True
+    assert res.exit_code == 124
+
+def test_last_assistant_message_extraction():
+    parser = JSONLStreamParser()
+    lines = [
+        '{"event": "turn_start"}',
+        '{"event": "item.completed", "text": "Финальный структурированный вывод"}',
+        '{"event": "turn_complete", "status": "completed"}'
+    ]
+    summary = parser.parse_stream(lines)
+    assert summary.last_assistant_message == "Финальный структурированный вывод"
+
 if __name__ == "__main__":
     test_successful_stream()
     test_truncated_stream_raises_error()
     test_failed_stream_raises_error()
     test_retry_recovery_stream()
     test_malformed_json_tolerance()
+    test_fixture_runner_nonzero_exit_code()
+    test_fixture_runner_cancellation()
+    test_fixture_runner_timeout()
+    test_last_assistant_message_extraction()
     print("ALL STREAM PARSER TESTS PASSED")

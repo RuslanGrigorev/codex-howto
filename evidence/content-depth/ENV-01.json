@@ -7,6 +7,6 @@
   "details": "Все исходные скрипты и данные читаются в UTF-8 без принудительного PYTHONUTF8=1 в окружении.",
   "scenario_id": "ENV-01",
   "spec_sha256": "5d0c97942a4c4f66739e1029382cf107b98a43717f05697ecda242cb2c2c3b67",
-  "candidate_tree_sha256": "ba34300edf713f5f1ae0fee2a1e5690dfc5c2d5af397f49dba6a19baf92316d6",
+  "candidate_tree_sha256": "79e802145f5ba6e93cb3a6057c265070776bbe164d8beb171d134c9fbbb6a92d",
   "verified_at": "2026-10-06T04:30:00Z"
 }

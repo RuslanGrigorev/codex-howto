@@ -127,12 +127,29 @@ def test_missing_tool_raises_typed_error():
     except MCPToolNotFoundError as exc:
         assert "not found" in str(exc)
 
+def test_oauth_token_expiry_rejection():
+    """Проверка отклонения запроса при истечении срока действия Bearer токена."""
+    import time
+    transport = HttpOAuthFixtureTransport()
+    transport.authenticate_oauth("trusted-client", "trusted-secret")
+    client = MCPClientSimulator(transport)
+    assert client.initialize() is not None
+
+    # Истечение срока жизни токена
+    transport.token_expiry_timestamp = time.time() - 1.0
+    try:
+        client.list_tools()
+        assert False, "Ожидалось исключение MCPAuthError при истёкшем токене"
+    except MCPAuthError as exc:
+        assert "истёк" in str(exc)
+
 if __name__ == "__main__":
     test_mcp_initialize_and_tool_call()
     test_mcp_path_boundary_enforcement()
     test_mcp_refusal_and_recovery()
     test_mcp_timeout_handling()
     test_http_oauth_flow_and_unauthorized_rejection()
+    test_oauth_token_expiry_rejection()
     test_stdio_notifications_channel()
     test_missing_tool_raises_typed_error()
     print("ALL MCP SIMULATOR TESTS PASSED")

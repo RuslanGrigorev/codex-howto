@@ -131,23 +131,23 @@
 | Ключ конфигурации | Категория | Тип | Описание |
 | --- | --- | --- | --- |
 | `model` | `core` | `string` | Имя используемой модели по умолчанию |
-| `model_reasoning_effort` | `core` | `string` | Уровень рассуждений: `low`, `medium`, `high` |
-| `approval_policy` | `core` | `string` | Политика подтверждений: `on-request`, `never`, `auto` |
+| `approval_policy` | `core` | `string` | Политика подтверждений: `untrusted`, `always`, `never` |
 | `sandbox_mode` | `core` | `string` | Режим изоляции: `read-only`, `workspace-write`, `danger-full-access` |
-| `web_search` | `core` | `string` | Режим поиска: `disabled`, `cached`, `live` |
-| `mcp_servers.<name>.command` | `advanced` | `string` | Исполняемый файл локального MCP-сервера stdio |
-| `mcp_servers.<name>.args` | `advanced` | `array[string]` | Аргументы командной строки MCP-сервера |
-| `mcp_servers.<name>.env` | `advanced` | `table` | Переменные среды для процесса MCP-сервера |
-| `mcp_servers.<name>.url` | `advanced` | `string` | Эндпоинт удалённого MCP-сервера (SSE/HTTP) |
-| `hooks.<event>` | `advanced` | `array[table]` | Регистрация обработчиков хуков (`PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `Stop`) |
-| `subagents.<name>.role` | `advanced` | `string` | Назначение роли субагента: `explorer`, `reviewer`, `implementer` |
-| `subagents.<name>.permissions` | `advanced` | `table` | Ограничение прав песочницы для конкретного субагента |
-| `profiles.<name>` | `advanced` | `table` | Именованные наборы параметров (`NAME.config.toml`) |
-| `terminal.theme` | `reference_only` | `string` | Цветовая палитра: `dark`, `light`, `solarized-dark`, `monokai` |
-| `terminal.editor` | `reference_only` | `string` | Внешний редактор для расширенного ввода (`nano`, `vim`, `code`) |
-| `keybindings.mode` | `reference_only` | `string` | Режим сочетаний клавиш: `default`, `emacs`, `vim` |
-| `telemetry.enabled` | `reference_only` | `boolean` | Отправка телеметрии разработчикам (рекомендуется `false`) |
-| `cloud.compute_backend` | `out_of_scope` | `string` | Параметры закрытых корпоративных кластеров OpenAI |
+| `mcp_servers` | `advanced` | `table` | Конфигурация серверов MCP (stdio, url, args, env) |
+| `web_search` | `core` | `boolean` | Разрешение сетевого веб-поиска (`false` / `true`) |
+| `profiles` | `advanced` | `table` | Именованные наборы параметров (`NAME.config.toml`) |
+| `hooks` | `advanced` | `table` | Регистрация обработчиков событий жизненного цикла |
+| `instructions` | `core` | `string` | Дополнительные системные инструкции для модели |
+| `system_prompt` | `core` | `string` | Полное переопределение системного промпта |
+| `timeout_seconds` | `core` | `integer` | Таймаут выполнения запроса в секундах |
+| `max_context_tokens` | `core` | `integer` | Максимальный лимит контекстного окна в токенах |
+| `temperature` | `core` | `number` | Температура генерации (от 0.0 до 2.0) |
+| `top_p` | `core` | `number` | Параметр nucleus sampling (от 0.0 до 1.0) |
+| `stream` | `core` | `boolean` | Потоковая передача токенов ответа |
+| `log_level` | `core` | `string` | Уровень детализации логов: `trace`, `debug`, `info`, `warn`, `error` |
+| `environment_variables` | `advanced` | `table` | Переменные окружения для сессии |
+| `allowed_tools` | `core` | `array[string]` | Список разрешённых инструментов |
+| `blocked_tools` | `core` | `array[string]` | Список заблокированных инструментов |
 
 ---
 

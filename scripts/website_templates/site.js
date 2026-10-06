@@ -265,8 +265,10 @@ if(qd&&p){
   var KNOWN_SUBCOMMANDS = [
     'exec', 'app-server', 'login', 'logout', 'resume', 'fork', 'archive', 'unarchive',
     'delete', 'review', 'apply', 'mcp', 'execpolicy', 'cloud', 'agents', 'queue',
-    'plugin', 'remote-control', 'completion', 'features', 'sandbox', 'doctor', 'update', 'debug', 'mcp-server'
+    'plugin', 'remote-control', 'completion', 'features', 'sandbox', 'doctor', 'update', 'debug'
   ];
+
+  var HISTORICAL_REMOVED_COMMANDS = ['mcp-server'];
 
   var SUBCOMMAND_ALLOWED_FLAGS = {
     'exec': null,
@@ -590,6 +592,11 @@ if(qd&&p){
         return;
       }
 
+      if(HISTORICAL_REMOVED_COMMANDS.indexOf(a0) !== -1){
+        appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Команда "codex ' + a0 + '" устарела и была удалена в Codex CLI 0.160.0. Используйте "codex mcp" или "codex app-server". Подробнее: 07-mcp/local-stdio.md', 'error-line');
+        return;
+      }
+
       if(KNOWN_SUBCOMMANDS.indexOf(a0) !== -1){
         var subArgs = args.slice(1);
         var allowed = SUBCOMMAND_ALLOWED_FLAGS[a0] || ['--help', '-h'];
@@ -744,7 +751,15 @@ if ('IntersectionObserver' in window) {
           var target = document.getElementById(id.substring(1));
           if (target) {
             e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            var header = document.querySelector('header');
+            var headerH = header ? header.offsetHeight : 58;
+            var targetTop = target.getBoundingClientRect().top + window.pageYOffset;
+            window.scrollTo({
+              top: Math.max(0, targetTop - headerH - 2),
+              behavior: 'smooth'
+            });
+            tocLinks.forEach(function(lnk){ lnk.classList.remove('active'); });
+            l.classList.add('active');
             if (history.pushState) {
               history.pushState(null, null, '#' + id.substring(1));
             }

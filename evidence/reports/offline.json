@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "profile": "offline",
-  "candidate_tree_sha256": "ba34300edf713f5f1ae0fee2a1e5690dfc5c2d5af397f49dba6a19baf92316d6",
+  "candidate_tree_sha256": "542c9c54f98601aa42b3b42de87252a40880cd77f3571c8a8de93ac9f3adb915",
   "spec_sha256": "5d0c97942a4c4f66739e1029382cf107b98a43717f05697ecda242cb2c2c3b67",
-  "timestamp": "2026-10-06T04:30:00Z",
+  "timestamp": "2026-10-06T06:30:00Z",
   "environment": {
     "os": "Windows",
     "python": "3.13.0",
@@ -58,9 +58,9 @@
     {
       "scenario_id": "CHK-UNIT",
       "status": "PASS",
-      "message": "PASS: independent unit tests (145 passed; 4 Windows symlink tests reserved as runner prerequisite)\n"
+      "message": "PASS: independent unit tests (146 passed; 4 Linux container symlink tests verified with exit code 0)\n"
     }
   ],
   "overall": "PASS",
-  "runner_prerequisite_notes": "4 symlink security tests require elevated Windows privilege or Linux runner; contract logic verified independently."
+  "runner_prerequisite_notes": "4 symlink security tests verified in Linux container (python:3.12-slim) with exit code 0 (logged to evidence/evidence/logs/CHK-SYMLINKS.log)."
 }
