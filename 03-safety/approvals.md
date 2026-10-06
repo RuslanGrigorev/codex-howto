@@ -30,7 +30,7 @@
    [БЛОКИРОВКА]     [Проверка политики approval_policy]
         │                 │
         │        ┌────────┴────────┐
-        │      never?         on-request / untrusted?
+        │      never?         untrusted / always?
         │        │                 │
         │        ▼                 ▼
         │   [Выполнение]      [Диалог с оператором:
@@ -45,14 +45,14 @@
 
 ## Команды и параметры
 
-Codex CLI 0.160.0 поддерживает следующие параметры политики подтверждения:
+Codex CLI 0.160.0 поддерживает три канонических значения политики подтверждения (`approval_policy`):
 
 ```bash
-# Режим подтверждения при каждом потенциально опасном действии (по умолчанию)
-codex --ask-for-approval on-request
-
-# Запрос подтверждения только для команд вне доверенного списка или непроверенного кода
+# Режим подтверждения для потенциально опасных и недоверенных действий (по умолчанию)
 codex --ask-for-approval untrusted
+
+# Запрос подтверждения на каждый вызов инструмента
+codex --ask-for-approval always
 
 # Отключение запросов подтверждения (применимо только для изолированных CI/автоматизаций)
 codex --ask-for-approval never
@@ -61,8 +61,8 @@ codex --ask-for-approval never
 Эквивалентная настройка в `~/.codex/config.toml` или проектном `.codex/config.toml`:
 
 ```toml
-# Возможные значения: "always", "on-request", "untrusted", "never"
-approval_policy = "on-request"
+# Канонические значения схемы 0.160.0: "untrusted", "always", "never"
+approval_policy = "untrusted"
 sandbox_mode = "workspace-write"
 ```
 
@@ -75,7 +75,7 @@ sandbox_mode = "workspace-write"
 Запуск сессии с ограниченными правами и запросом подтверждения:
 
 ```bash
-codex --sandbox read-only --ask-for-approval on-request
+codex --sandbox read-only --ask-for-approval untrusted
 ```
 
 В диалоге агент предлагает выполнить команду проверки статуса:

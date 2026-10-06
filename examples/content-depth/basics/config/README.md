@@ -24,7 +24,7 @@
 codex --profile security_audit
 
 # Запуск с переопределением режима песочницы на лету
-codex -c sandbox_mode=read-only -c approval_policy=on-request
+codex -c sandbox_mode=read-only -c approval_policy=untrusted
 
 # Проверка активных параметров внутри сессии
 /debug-config

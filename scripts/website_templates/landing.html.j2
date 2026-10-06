@@ -61,10 +61,15 @@
         <a href="{{ guide_url }}">{{ ui.nav_reference | default('Справочник') }}</a>
         <a href="{{ repo_url }}" target="_blank" rel="noopener noreferrer">Репозиторий</a>
       </nav>
-      <!-- Offscreen search preserving index verification without cluttering header UI -->
-      <div style="opacity: 0.001; position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden;" aria-hidden="true">
-        <label for="course-search">Поиск по курсу</label>
-        <input id="course-search" type="search" placeholder="Поиск" autocomplete="off" aria-controls="search-results" />
+      <div class="nav-search-wrap">
+        <div class="nav-search-box">
+          <svg class="nav-search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="9" cy="9" r="6" />
+            <path d="M13.5 13.5L18 18" stroke-linecap="round" />
+          </svg>
+          <label for="course-search" class="sr-only">Поиск по курсу</label>
+          <input id="course-search" type="search" placeholder="Поиск по курсу..." autocomplete="off" aria-controls="search-results" />
+        </div>
         <ul id="search-results" class="search-popover" aria-label="Результаты поиска" hidden></ul>
       </div>
       <div class="nav-actions">

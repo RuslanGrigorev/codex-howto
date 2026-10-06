@@ -7,8 +7,8 @@
 ```bash
 codex --version
 codex --help
-codex --sandbox read-only --ask-for-approval on-request
-codex --sandbox workspace-write --ask-for-approval on-request
+codex --sandbox read-only --ask-for-approval untrusted
+codex --sandbox workspace-write --ask-for-approval untrusted
 codex exec --json --sandbox read-only "Объясни проект, не изменяя файлы"
 ```
 
@@ -20,7 +20,7 @@ codex exec --json --sandbox read-only "Объясни проект, не изм�
 | `--config`, `-c` | Разовое переопределение `key=value` в синтаксисе TOML |
 | `--profile`, `-p` | Дополнительный профиль; в актуальной документации это файл `NAME.config.toml` в CODEX_HOME |
 | `--sandbox` | `read-only`, `workspace-write` или опасный `danger-full-access` |
-| `--ask-for-approval`, `-a` | `on-request` или `never`; последнее не расширяет права |
+| `--ask-for-approval`, `-a` | `untrusted`, `always` или `never`; `never` в неинтерактивном режиме отклоняет запросы |
 | `--strict-config` | Ошибка на неподдерживаемой конфигурации |
 | `--image`, `-i` | Существующее изображение в запросе |
 | `--search` | Веб-поиск; не обязательный для курса сетевой сценарий |

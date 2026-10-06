@@ -23,3 +23,28 @@ def tmp_project(tmp_path: Path) -> Path:
     (chapter_dir / "overview.md").write_text("# Chapter Overview\n\nOverview content.")
 
     return tmp_path
+
+
+def _symlinks_supported() -> bool:
+    import tempfile
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            src = Path(td) / "src.txt"
+            src.write_text("x")
+            dst = Path(td) / "dst.txt"
+            dst.symlink_to(src)
+            return True
+    except OSError:
+        return False
+
+
+_HAS_SYMLINKS = _symlinks_supported()
+
+
+def pytest_collection_modifyitems(config, items):
+    if not _HAS_SYMLINKS:
+        skip_symlink = pytest.mark.skip(reason="Platform lacks unprivileged symlink support (WinError 1314)")
+        for item in items:
+            if "symlink" in item.name.lower():
+                item.add_marker(skip_symlink)
+

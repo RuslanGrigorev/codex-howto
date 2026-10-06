@@ -41,7 +41,7 @@
 name = "reviewer"
 description = "Субагент независимого ревью diff без изменения файлов"
 sandbox_mode = "read-only"
-approval_policy = "on-request"
+approval_policy = "untrusted"
 developer_instructions = """
 Проводи аудит diff на безопасность и регрессии.
 Запрещено изменять файлы и выполнять деструктивные команды.

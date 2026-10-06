@@ -33,7 +33,7 @@ python test_calc.py
 
 Команда запуска сессии:
 ```bash
-codex --ask-for-approval on-request --sandbox workspace-write
+codex --ask-for-approval untrusted --sandbox workspace-write
 ```
 
 Промпт для модели:

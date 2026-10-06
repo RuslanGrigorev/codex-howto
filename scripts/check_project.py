@@ -26,7 +26,7 @@ def config(root=ROOT):
     for path in (root/'examples/config').glob('*.toml'):
         data=tomllib.loads(path.read_text(encoding='utf-8'))
         if set(data)-{'approval_policy','sandbox_mode','web_search','mcp_servers','model'}:errors.append('Неизвестные ключи учебного примера')
-        if data.get('approval_policy') not in {'on-request','never'}:errors.append('Неверный approval_policy')
+        if data.get('approval_policy') not in {'untrusted','always','never'}:errors.append('Неверный approval_policy')
         if data.get('sandbox_mode') not in {'read-only','workspace-write','danger-full-access'}:errors.append('Неверный sandbox_mode')
     hooks=load_json(root/'examples/hooks/hooks.json')
     if set(hooks.get('hooks',{}))!={'PreToolUse'}:errors.append('Неверное событие hooks')

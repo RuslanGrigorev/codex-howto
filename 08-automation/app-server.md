@@ -100,6 +100,63 @@ codex app-server --stdio --profile production-agent
    }
    ```
 
+## Архитектура Python SDK: CodexSDKClient и адаптеры (ADR-CD-04)
+
+Для встраивания возможностей Codex в бэкенд-сервисы и скрипты автоматизации разработана модульная архитектура Python SDK, изолирующая прикладной код от деталей низкоуровневого stdio-транспорта.
+
+```text
+┌────────────────────────────────────────────────────────┐
+│                   Прикладной код                       │
+├────────────────────────────────────────────────────────┤
+│     CodexSDKClient (сессии, таймауты, отмена)          │
+├───────────────────────────┬────────────────────────────┤
+│    ProductionSDKAdapter   │      FixtureSDKAdapter     │
+│   (openai-codex==0.160.0) │    (строгие офлайн-тесты)  │
+├───────────────────────────┴────────────────────────────┤
+│                  BaseSDKAdapter (интерфейс)            │
+└────────────────────────────────────────────────────────┘
+```
+
+### Ключевые компоненты:
+
+1. **`BaseSDKAdapter`**: абстрактный контракт жизненного цикла сессий:
+   - `start_session(workspace_path, profile)`: инициализация сессии.
+   - `send_prompt(session_id, prompt)`: отправка хода и возврат `CodexSDKResult`.
+   - `continue_session(session_id, prompt)` / `resume_session(session_id)`: продолжение диалога.
+   - `cancel_session(session_id)`: отправка сигнала немедленного прерывания.
+2. **`ProductionSDKAdapter`**: производственный адаптер, использующий официальный клиент `openai-codex==0.160.0`. В офлайн-окружении без установленной библиотеки возвращает диагностическое исключение с требованием установки пакета.
+3. **`FixtureSDKAdapter`**: строгий детерминированный адаптер для unit- и integration-тестов. Требует явной регистрации ожидаемых пар «промпт → ответ». Фабрикация случайных или неявных ответов запрещена: при незарегистрированном промпте возбуждается ошибка.
+4. **`CodexSDKClient`**: высокоуровневый клиент с типизацией:
+   - Типизированный результат `CodexSDKResult` (поля `session_id`, `text`, `tool_calls`, `usage`).
+   - Иерархия ошибок: `CodexRefusalError` (отказ модели/политики), `CodexExecutionError` (системная ошибка) и `CodexTimeoutError` (таймаут ответа).
+   - Поддержка отмены хода через `client.cancel(session_id)`.
+
+### Пример программного использования SDK:
+
+```python
+from examples.content_depth.automation.sdk.sdk_client import (
+    CodexSDKClient,
+    FixtureSDKAdapter,
+    CodexRefusalError,
+)
+
+# Для тестирования используем строгий FixtureSDKAdapter
+adapter = FixtureSDKAdapter()
+adapter.register_response(
+    prompt="Проверь синтаксис discount.py",
+    response_text="Синтаксических ошибок не обнаружено.",
+)
+
+client = CodexSDKClient(adapter=adapter)
+session = client.start_session(workspace_path=".learning/workspaces/small-fix")
+
+try:
+    result = client.send(session.session_id, "Проверь синтаксис discount.py")
+    print(f"Ответ SDK: {result.text}")
+except CodexRefusalError as err:
+    print(f"Отказ выполнения: {err}")
+```
+
 ## Ограничения и безопасность
 
 1. **Несмешиваемость протоколов**: не направляйте события от `codex exec` в парсер `app-server`. Хотя оба формата используют JSON, схема событий и методы жизненного цикла тредов принципиально различаются.

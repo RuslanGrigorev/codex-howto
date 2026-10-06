@@ -100,6 +100,12 @@ if(search&&list){
       var li=document.createElement('li');li.textContent='Совпадений нет.';list.append(li);
     }
   });
+  document.addEventListener('click',function(e){
+    if(!list.contains(e.target)&&e.target!==search){list.hidden=true;}
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){list.hidden=true;}
+  });
 }
 
 var ld=document.getElementById('lesson-data'),lesson=ld?JSON.parse(ld.textContent):null;

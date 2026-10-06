@@ -1,5 +1,5 @@
 # Базовый профиль для повседневной разработки
 model = "gpt-5-codex"
-approval_policy = "on-request"
+approval_policy = "untrusted"
 sandbox_mode = "workspace-write"
-web_search = "disabled"
+web_search = false

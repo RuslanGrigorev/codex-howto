@@ -15,32 +15,31 @@
 
 ## Схема процесса
 
-Безопасная архитектура CI/CD конвейера с Codex CLI:
+Безопасная архитектура изолированного CI/CD конвейера (модель 3 задач: `fetch_pr` → `review` → `publish`):
 
-```
-[Входящий Pull Request от внешнего автора]
-                   │
-                   ▼
+```text
 ┌────────────────────────────────────────────────────────┐
-│         Шаг 1: Недоверенный запуск (БЕЗ СЕКРЕТОВ)       │
-├────────────────────────────────────────────────────────┤
-│ - python scripts/check_project.py catalog              │
-│ - python -m pytest -q scripts/tests                    │
-│ - Токены API отсутствуют в окружении ранера            │
-└──────────────────┬─────────────────────────────────────┘
-                   │ Все проверки пройдены
-                   ▼
+│  1. fetch_pr (Без секретов, unprivileged runner)       │
+│  - gh pr diff $PR > artifacts/pr_diff.patch            │
+│  - Сохранение только текстового diff как артефакта     │
+└───────────────────────────┬────────────────────────────┘
+                            │ pr_diff.patch
+                            ▼
 ┌────────────────────────────────────────────────────────┐
-│     Шаг 2: Ручной триггер мейнтейнера (workflow_dispatch│
-├────────────────────────────────────────────────────────┤
-│ - Инжекция токена доступа из защищенных секретов        │
-│ - codex exec --sandbox read-only --ask-for-approval    │
-│   never "Проведи ревью изменений в PR #42"             │
-│ - Экспорт отчета в артефакты сборки                    │
-└──────────────────┬─────────────────────────────────────┘
-                   │
-                   ▼
-[Публикация комментария с аудитом в PR]
+│  2. review (Доверенная база + read-only песочница)     │
+│  - Чистый checkout целевой ветки (не код автора PR!)   │
+│  - Проверка целостности бинарника Codex CLI (SHA-256)   │
+│  - codex exec --sandbox read-only --ask-for-approval   │
+│    never --json "Аудит artifacts/pr_diff.patch"        │
+│  - Сохранение review_report.json в артефакты           │
+└───────────────────────────┬────────────────────────────┘
+                            │ review_report.json
+                            ▼
+┌────────────────────────────────────────────────────────┐
+│  3. publish (Минимальные права pull-requests: write)   │
+│  - Чтение готового JSON-отчёта                         │
+│  - Публикация комментария с вердиктом в Pull Request   │
+└────────────────────────────────────────────────────────┘
 ```
 
 ## Команды и параметры
@@ -55,35 +54,81 @@ python scripts/verify.py --profile offline
 timeout 180 codex exec --json --sandbox read-only --ask-for-approval never "Проведи линтинг" > codex_ci_report.jsonl
 ```
 
-Пример безопасного GitHub Actions workflow (`.github/workflows/codex-review.yml`):
+Пример защищённого GitHub Actions workflow (`examples/content-depth/automation/ci/codex_review.yml`):
 
 ```yaml
-name: Codex Automated Review
+name: Codex Trusted PR Review
 on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: 'Pull Request Number'
+        description: "Номер проверяемого Pull Request"
         required: true
+        type: string
+
+permissions:
+  contents: read
 
 jobs:
-  review:
+  fetch_pr:
+    name: Fetch and Sanitize PR Patch Artifact
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - name: Run Codex Exec Review
-        env:
-          CI_RUNNER_SECRET: ${{ secrets.CI_RUNNER_SECRET }}
+          persist-credentials: false
+      - name: Materialize Sanitized PR Patch Artifact
         run: |
-          codex exec --sandbox read-only --ask-for-approval never \
-            "Проверь diff PR и сформируй структурированный отчет"
+          mkdir -p artifacts
+          gh pr diff "${{ inputs.pr_number }}" > artifacts/pr_diff.patch
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pr-patch-${{ inputs.pr_number }}
+          path: artifacts/pr_diff.patch
+
+  review:
+    name: Trusted Read-Only Codex Review
+    needs: fetch_pr
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: pr-patch-${{ inputs.pr_number }}
+          path: artifacts
+      - name: Run Read-Only Automated PR Review
+        run: |
+          codex exec \
+            --sandbox read-only \
+            --ask-for-approval never \
+            --json \
+            "Проведи аудит безопасности изменений artifacts/pr_diff.patch" \
+            > artifacts/review_report.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pr-review-report-${{ inputs.pr_number }}
+          path: artifacts/review_report.json
+
+  publish:
+    name: Publish and Summarize Review
+    needs: review
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: pr-review-report-${{ inputs.pr_number }}
+          path: artifacts
+      - name: Post Comment to PR
+        run: |
+          gh pr comment "${{ inputs.pr_number }}" \
+            --body "Codex Automated Review завершён. Отчёт доступен в артефактах."
 ```
 
 ## Разбор примера

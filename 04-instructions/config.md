@@ -34,8 +34,26 @@ Codex CLI 0.160.0 использует стандартные параметры
 # Ключевые параметры первого уровня в config.toml:
 model = "gpt-5-codex"
 sandbox_mode = "workspace-write"       # "read-only" | "workspace-write" | "danger-full-access"
-approval_policy = "on-request"         # "never" | "on-request"
-web_search = "disabled"                # "enabled" | "disabled"
+approval_policy = "untrusted"          # "untrusted" | "always" | "never"
+web_search = false                     # false | true (булевый флаг)
+
+# Дополнительные канонические параметры управления сессией и моделью:
+system_prompt = "Ты — инженерный ассистент проекта."
+max_context_tokens = 128000
+timeout_seconds = 180
+temperature = 0.2
+top_p = 0.95
+stream = true
+log_level = "info"                     # "trace" | "debug" | "info" | "warn" | "error"
+
+# Ограничение инструментов:
+allowed_tools = ["read_file", "write_file", "execute_command"]
+blocked_tools = ["raw_socket"]
+
+# Переменные окружения песочницы:
+[environment_variables]
+CI = "true"
+PYTHONUTF8 = "1"
 
 [mcp_servers.sqlite]
 command = "python"
@@ -49,7 +67,7 @@ args = ["-m", "mcp_server_sqlite", "--db", "app.db"]
 codex --profile security-audit
 
 # Переопределение конкретного ключа при запуске сессии
-codex -c sandbox_mode=read-only -c approval_policy=on-request
+codex -c sandbox_mode=read-only -c approval_policy=untrusted -c web_search=false
 
 # Запуск со строгой валидацией схемы конфигурации (ошибка при неизвестных ключах)
 codex --strict-config
@@ -65,16 +83,16 @@ codex --strict-config
 Глобальный файл `~/.codex/config.toml`:
 ```toml
 model = "gpt-5-codex"
-approval_policy = "on-request"
+approval_policy = "untrusted"
 sandbox_mode = "read-only"
-web_search = "enabled"
+web_search = true
 ```
 
 Проектный файл `.codex/config.toml` в репозитории:
 ```toml
 # Репозиторий требует записи в рабочее пространство для тестов
 sandbox_mode = "workspace-write"
-web_search = "disabled"
+web_search = false
 ```
 
 Команда запуска ученика:
@@ -85,8 +103,8 @@ codex -c model=gpt-5-codex-fast
 Результирующая эффективная конфигурация, отображаемая по команде `/debug-config`:
 - `model`: `"gpt-5-codex-fast"` (источник: аргумент командной строки `-c`, наивысший приоритет).
 - `sandbox_mode`: `"workspace-write"` (источник: проектный `.codex/config.toml`, переопределил глобальный `read-only`).
-- `approval_policy`: `"on-request"` (источник: глобальный `~/.codex/config.toml`, так как проектный файл его не переопределял).
-- `web_search`: `"disabled"` (источник: проектный `.codex/config.toml`, переопределил глобальное значение).
+- `approval_policy`: `"untrusted"` (источник: глобальный `~/.codex/config.toml`, так как проектный файл его не переопределял).
+- `web_search`: `false` (источник: проектный `.codex/config.toml`, переопределил глобальное значение `true`).
 
 ## Ограничения и безопасность
 
@@ -109,8 +127,8 @@ codex -c model=gpt-5-codex-fast
    mkdir -p .learning/workspaces/config-lab/.codex
    cat << 'EOF' > .learning/workspaces/config-lab/.codex/config.toml
    sandbox_mode = "workspace-write"
-   approval_policy = "on-request"
-   web_search = "disabled"
+   approval_policy = "untrusted"
+   web_search = false
    EOF
    ```
 2. Проверьте синтаксис конфигурации встроенным верификатором:

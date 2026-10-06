@@ -68,7 +68,7 @@ def test_independent_test_ignores_student_test(repo):
     (ws/'code.py').rename(ws/'exercise_value.py')
     (repo/'examples/known/test.py').write_text('from exercise_value import value\nassert value == 1')
     assert verify.run_exercise_check('known',ws)==0
-    data=json.loads((repo/'.learning/progress.json').read_text())
+    data=json.loads((repo/'.learning/progress.json').read_text(encoding='utf-8'))
     assert data['lessons']['x.one']['exercise']['passed']
     assert not data['lessons']['x.one']['read']
 

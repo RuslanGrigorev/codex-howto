@@ -69,8 +69,8 @@
 | `--cd` / `-C <DIR>` | `core` | Выбор рабочего каталога | `codex -C /path/to/project` |
 | `--model` / `-m <NAME>` | `core` | Выбор имени модели | `codex -m gpt-5-codex` |
 | `--sandbox <MODE>` | `core` | Режим песочницы: `read-only`, `workspace-write`, `danger-full-access` | `codex --sandbox read-only` |
-| `--ask-for-approval` / `-a` | `core` | Политика утверждения действий (`on-request`, `never`) | `codex -a on-request` |
-| `--config` / `-c <KEY=VAL>` | `core` | Разовое переопределение ключа конфигурации в синтаксисе TOML | `codex -c 'web_search="disabled"'` |
+| `--ask-for-approval` / `-a` | `core` | Политика утверждения действий (`untrusted`, `always`, `never`) | `codex -a untrusted` |
+| `--config` / `-c <KEY=VAL>` | `core` | Разовое переопределение ключа конфигурации в синтаксисе TOML | `codex -c 'web_search=false'` |
 | `--profile` / `-p <NAME>` | `core` | Подключение профиля конфигурации (`NAME.config.toml`) | `codex -p offline-dev` |
 | `--add-dir <DIR>` | `core` | Расширение рабочей области записи | `codex --add-dir ../shared-libs` |
 | `--image` / `-i <PATH>` | `core` | Передача графического файла в контекст запроса | `codex -i diagram.png "Объясни архитектуру"` |

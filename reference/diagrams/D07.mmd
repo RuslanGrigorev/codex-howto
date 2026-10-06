@@ -6,9 +6,9 @@ flowchart TD
     Rules -- "ASK (Требует проверки)" --> Hook["2. PreToolUse Hook\nПрограммная валидация аргументов"]
     
     Hook -- "Deny / Ошибка хука" --> Block2["Блокировка: Отклонено хуком"]
-    Hook -- "Allow" --> Approval["3. Политика подтверждений (Approval Policy)\n(on-request / never)"]
+    Hook -- "Allow" --> Approval["3. Политика подтверждений (Approval Policy)\n(untrusted / always / never)"]
     
-    Approval -- "on-request: Запрос к ученику" --> UserPrompt{"Решение пользователя"}
+    Approval -- "untrusted: Запрос к ученику" --> UserPrompt{"Решение пользователя"}
     UserPrompt -- "Отклонено" --> Block3["Блокировка: Отклонено пользователем"]
     UserPrompt -- "Подтверждено" --> Sandbox
     Approval -- "never и небезопасно" --> Block4["Блокировка: Запрет без интерактива"]

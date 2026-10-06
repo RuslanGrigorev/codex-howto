@@ -49,7 +49,7 @@
   <!-- Step 3: Approval Policy -->
   <rect x="270" y="270" width="180" height="75" class="box-gate" />
   <text x="360" y="298" class="text-title">3. Approval Policy</text>
-  <text x="360" y="318" class="text-body">on-request (TUI) / never</text>
+  <text x="360" y="318" class="text-body">untrusted (TUI) / never</text>
 
   <!-- Step 4: Sandbox -->
   <rect x="490" y="270" width="180" height="75" class="box-gate" />

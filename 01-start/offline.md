@@ -70,8 +70,8 @@ python scripts/verify.py --exercise small-fix --workspace .learning/workspaces/s
 Пример конфигурации `config.toml` для полностью изолированной среды:
 ```toml
 sandbox_mode = "workspace-write"
-approval_policy = "on-request"
-web_search = "disabled"
+approval_policy = "untrusted"
+web_search = false
 model = "llama3:latest"
 ```
 

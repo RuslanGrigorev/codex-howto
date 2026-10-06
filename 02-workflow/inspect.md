@@ -17,7 +17,7 @@
 ```text
 ┌─────────────────────────────────────────────────────────────┐
 │ 1. Входной барьер безопасности                             │
-│    codex --sandbox read-only --ask-for-approval on-request    │
+│    codex --sandbox read-only --ask-for-approval untrusted     │
 │    (Любые попытки записи блокируются песочницей ОС)         │
 └───────────────────────────────┬─────────────────────────────┘
                                 │
@@ -50,7 +50,7 @@
 python scripts/verify.py --prepare small-fix
 
 # Запуск Codex CLI в режиме строгого чтения
-codex -C .learning/workspaces/small-fix --sandbox read-only --ask-for-approval on-request
+codex -C .learning/workspaces/small-fix --sandbox read-only --ask-for-approval untrusted
 
 # Быстрое неинтерактивное исследование через exec
 codex exec --sandbox read-only "Проанализируй discount.py и перечисли граничные условия"
