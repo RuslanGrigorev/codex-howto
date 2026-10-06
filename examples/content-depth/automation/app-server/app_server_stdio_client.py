@@ -80,6 +80,10 @@ class BaseJsonRpcTransport(ABC):
         """Устанавливает обработчик входящих текстовых строк от сервера."""
         raise NotImplementedError
 
+    def set_error_handler(self, handler: Callable[[Exception], None]) -> None:
+        """Устанавливает обработчик сбоев транспорта / EOF."""
+        pass
+
     @abstractmethod
     def write_message(self, message: str) -> None:
         """Отправляет сериализованную строку запроса серверу."""
@@ -129,16 +133,22 @@ class SubprocessStdioTransport(BaseJsonRpcTransport):
         self._reader_thread = threading.Thread(target=self._read_stdout_loop, daemon=True)
         self._reader_thread.start()
 
+    def set_error_handler(self, handler: Callable[[Exception], None]) -> None:
+        self._error_handler = handler
+
     def _read_stdout_loop(self) -> None:
         assert self._proc is not None and self._proc.stdout is not None
         try:
             for line in self._proc.stdout:
                 if self._handler and line:
                     self._handler(line)
-        except Exception:
-            pass
+        except Exception as exc:
+            if hasattr(self, "_error_handler") and self._error_handler:
+                self._error_handler(exc)
         finally:
             self._is_closed = True
+            if hasattr(self, "_error_handler") and self._error_handler:
+                self._error_handler(AppServerProtocolError("Процесс app-server завершился (EOF)"))
 
     def set_message_handler(self, handler: Callable[[str], None]) -> None:
         self._handler = handler
@@ -177,9 +187,19 @@ class FixtureStdioTransport(BaseJsonRpcTransport):
 
     def __init__(self):
         self._handler: Optional[Callable[[str], None]] = None
+        self._error_handler: Optional[Callable[[Exception], None]] = None
         self._is_alive = True
         self.sent_messages: list[str] = []
         self._responses: dict[str, dict[str, Any]] = {}
+        self.notifications_to_send: list[dict[str, Any]] = []
+
+    def set_error_handler(self, handler: Callable[[Exception], None]) -> None:
+        self._error_handler = handler
+
+    def simulate_eof(self) -> None:
+        self._is_alive = False
+        if self._error_handler:
+            self._error_handler(AppServerProtocolError("EOF reached"))
 
     def register_response(self, method: str, result: Optional[dict[str, Any]] = None, error: Optional[dict[str, Any]] = None):
         self._responses[method] = {"result": result, "error": error}
@@ -245,14 +265,31 @@ class AppServerStdioClient:
         self._pending_requests: dict[int, queue.Queue] = {}
         self._active_thread_id: Optional[str] = None
         self._lock = threading.Lock()
+        self.notifications: queue.Queue = queue.Queue()
+        self._last_error: Optional[Exception] = None
 
         self.transport.set_message_handler(self.handle_incoming_message)
+        if hasattr(self.transport, "set_error_handler"):
+            self.transport.set_error_handler(self.handle_transport_error)
+
+    def handle_transport_error(self, exc: Exception) -> None:
+        """Оповещает всех ожидающих при сбое транспорта или разрыве соединения (EOF)."""
+        with self._lock:
+            self._last_error = exc
+            for req_id, q in list(self._pending_requests.items()):
+                q.put({"jsonrpc": "2.0", "id": req_id, "error": {"code": -32000, "message": str(exc)}})
+            self._pending_requests.clear()
 
     def handle_incoming_message(self, raw_line: str) -> Optional[dict[str, Any]]:
         raw_line = raw_line.strip()
         if not raw_line:
             return None
-        msg = json.loads(raw_line)
+        try:
+            msg = json.loads(raw_line)
+        except Exception as e:
+            self.handle_transport_error(AppServerProtocolError(f"Malformed JSON-RPC message: {e}"))
+            raise AppServerProtocolError(f"Некорректный JSON в потоке app-server: {e}") from e
+
         if msg.get("jsonrpc") != "2.0":
             raise AppServerProtocolError(f"Неподдерживаемая версия протокола: {msg.get('jsonrpc')}")
 
@@ -262,6 +299,9 @@ class AppServerStdioClient:
                 q = self._pending_requests.pop(req_id, None)
             if q is not None:
                 q.put(msg)
+        else:
+            # Уведомление без id сохраняется в очереди уведомлений
+            self.notifications.put(msg)
         return msg
 
     def send_request(self, method: str, params: dict[str, Any], timeout: Optional[float] = None) -> Any:
@@ -273,7 +313,12 @@ class AppServerStdioClient:
             self._pending_requests[req_id] = resp_q
 
         req = JsonRpcRequest(id=req_id, method=method, params=params)
-        self.transport.write_message(req.serialize())
+        try:
+            self.transport.write_message(req.serialize())
+        except Exception as write_exc:
+            with self._lock:
+                self._pending_requests.pop(req_id, None)
+            raise write_exc
 
         try:
             resp = resp_q.get(timeout=tout)

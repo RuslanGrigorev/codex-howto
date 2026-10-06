@@ -30,11 +30,24 @@
 <body data-base="{{ base_path|default('') }}">
 <div id="top" style="position: absolute; top: 0; left: 0; width: 1px; height: 1px; pointer-events: none;" aria-hidden="true"></div>
 <a class="skip" href="#content">Перейти к содержанию</a>
-<header><a class="brand" href="{{ base_path|default('') }}index.html">Codex CLI</a>
-<nav aria-label="Основная навигация">{% if course.get("modules") %}<a href="{{ base_path|default('') }}index.html#roadmap">Модули</a>
-<a href="{{ base_path|default('') }}reference/index.html">Справочник</a>
-<a href="{{ base_path|default('') }}materials/index.html">Материалы</a>
-{% endif %}<button id="theme-toggle" class="theme-toggle" type="button" aria-label="Переключить светлую и тёмную тему" title="Переключить тему"><svg class="theme-icon-sun" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.95 2.05a1 1 0 010 1.41l-.71.71a1 1 0 11-1.41-1.41l.71-.71a1 1 0 011.41 0zM18 9a1 1 0 110 2h-1a1 1 0 110-2h1zm-2.05 4.95a1 1 0 011.41 1.41l-.71.71a1 1 0 11-1.41-1.41l.71-.71zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.95-2.05a1 1 0 010 1.41l-.71.71a1 1 0 11-1.41-1.41l.71-.71a1 1 0 011.41 0zM3 9a1 1 0 110 2H2a1 1 0 110-2h1zm2.05-4.95a1 1 0 011.41-1.41l.71.71a1 1 0 11-1.41 1.41l-.71-.71zM10 6a4 4 0 100 8 4 4 0 000-8z"/></svg><svg class="theme-icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg></button></nav></header>
+<header>
+<div class="header-left">
+{% if nav or course.get("modules") %}
+<button id="nav-toggle" class="nav-toggle" type="button" aria-label="Открыть оглавление" aria-expanded="false" aria-controls="course-sidebar">
+<svg class="nav-toggle-icon" viewBox="0 0 20 20" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+</button>
+{% endif %}
+<a class="brand" href="{{ base_path|default('') }}index.html">Codex CLI</a>
+</div>
+<nav aria-label="Основная навигация">
+{% if course.get("modules") %}
+<a href="{{ base_path|default('') }}index.html#roadmap" class="nav-link-desktop">Модули</a>
+<a href="{{ base_path|default('') }}reference/index.html" class="nav-link-desktop">Справочник</a>
+<a href="{{ base_path|default('') }}materials/index.html" class="nav-link-desktop">Материалы</a>
+{% endif %}
+<button id="theme-toggle" class="theme-toggle" type="button" aria-label="Переключить светлую и тёмную тему" title="Переключить тему"><svg class="theme-icon-sun" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.95 2.05a1 1 0 010 1.41l-.71.71a1 1 0 11-1.41-1.41l.71-.71a1 1 0 011.41 0zM18 9a1 1 0 110 2h-1a1 1 0 110-2h1zm-2.05 4.95a1 1 0 011.41 1.41l-.71.71a1 1 0 11-1.41-1.41l.71-.71zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.95-2.05a1 1 0 010 1.41l-.71.71a1 1 0 11-1.41-1.41l.71-.71zM3 9a1 1 0 110 2H2a1 1 0 110-2h1zm2.05-4.95a1 1 0 011.41-1.41l.71.71a1 1 0 11-1.41 1.41l-.71-.71zM10 6a4 4 0 100 8 4 4 0 000-8z"/></svg><svg class="theme-icon-moon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg></button>
+</nav>
+</header>
 <div style="opacity:0.001;position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true"><label for="course-search">Поиск по курсу</label><input id="course-search" type="search" autocomplete="off" aria-controls="search-results"><div id="status" class="notice" role="status" aria-live="polite"></div><ul id="search-results" aria-label="Результаты поиска" hidden></ul></div>
 <noscript><p class="notice">JavaScript выключен: уроки, оглавление и решения доступны. Учёт прогресса требует JavaScript.</p></noscript>
 {% block body %}{% endblock %}

@@ -78,6 +78,16 @@ class CodexUnregisteredFixtureError(CodexSDKError):
     pass
 
 
+class CodexSessionNotFoundError(CodexSDKError):
+    """Исключение при попытке возобновить неизвестную сессию (ADR-CD-04)."""
+    pass
+
+
+class CodexCancellationError(CodexSDKError):
+    """Исключение при обращении к отменённой сессии."""
+    pass
+
+
 class BaseSDKAdapter(ABC):
     """Абстрактный адаптер для SDK взаимодействия с Codex."""
 
@@ -99,6 +109,11 @@ class BaseSDKAdapter(ABC):
     @abstractmethod
     def resume_session(self, session_id: str, config: Optional[CodexSessionConfig] = None) -> CodexSession:
         """Возобновляет сохранённую сессию по идентификатору."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def cancel_session(self, session: CodexSession) -> bool:
+        """Отменяет активную сессию (ADR-CD-04)."""
         raise NotImplementedError
 
 
@@ -136,9 +151,20 @@ class ProductionSDKAdapter(BaseSDKAdapter):
             res = self.send_prompt(session, initial_prompt, timeout=config.timeout)
         return session, res
 
+
+
+    def continue_session(self, session: CodexSession, prompt: str, timeout: Optional[float] = None) -> CodexSDKResult:
+        return self.send_prompt(session, prompt, timeout=timeout)
+
     def send_prompt(self, session: CodexSession, prompt: str, timeout: Optional[float] = None) -> CodexSDKResult:
         self._require_sdk()
-        raw_res = self._sdk.send(session.session_id, prompt, timeout=timeout or session.config.timeout)
+        tout = timeout or session.config.timeout
+        try:
+            raw_res = self._sdk.send(session.session_id, prompt, timeout=tout)
+        except Exception as exc:
+            if "timeout" in str(exc).lower() or type(exc).__name__ == "TimeoutError":
+                raise CodexTimeoutError(f"Превышен лимит времени ({tout}s): {exc}") from exc
+            raise
         return CodexSDKResult(
             session_id=session.session_id,
             output=raw_res.text,
@@ -148,14 +174,25 @@ class ProductionSDKAdapter(BaseSDKAdapter):
             exit_code=0 if raw_res.is_success else 1
         )
 
-    def continue_session(self, session: CodexSession, prompt: str, timeout: Optional[float] = None) -> CodexSDKResult:
-        return self.send_prompt(session, prompt, timeout=timeout)
-
     def resume_session(self, session_id: str, config: Optional[CodexSessionConfig] = None) -> CodexSession:
         self._require_sdk()
         cfg = config or CodexSessionConfig()
-        raw_session = self._sdk.get_session(session_id)
+        try:
+            raw_session = self._sdk.get_session(session_id)
+        except Exception as exc:
+            if "not found" in str(exc).lower():
+                raise CodexSessionNotFoundError(f"Сессия '{session_id}' не найдена: {exc}") from exc
+            raise
+        if not raw_session:
+            raise CodexSessionNotFoundError(f"Сессия '{session_id}' не существует.")
         return CodexSession(session_id=raw_session.id, config=cfg)
+
+    def cancel_session(self, session: CodexSession) -> bool:
+        self._require_sdk()
+        if hasattr(self._sdk, "cancel"):
+            self._sdk.cancel(session.session_id)
+        session.status = "cancelled"
+        return True
 
 
 class FixtureSDKAdapter(BaseSDKAdapter):
@@ -189,6 +226,13 @@ class FixtureSDKAdapter(BaseSDKAdapter):
     def send_prompt(self, session: CodexSession, prompt: str, timeout: Optional[float] = None) -> CodexSDKResult:
         self.call_history.append({"action": "send_prompt", "session_id": session.session_id, "prompt": prompt})
 
+        if session.status == "cancelled":
+            raise CodexCancellationError(f"Сессия '{session.session_id}' отменена.")
+
+        tout = timeout or session.config.timeout
+        if prompt == "__timeout__" or (tout is not None and tout <= 0):
+            raise CodexTimeoutError(f"Превышен лимит времени ожидания выполнения запроса ({tout}s).")
+
         # Поиск зарегистрированного ответа
         for sub, res in self.registered_responses.items():
             if sub in prompt:
@@ -214,11 +258,14 @@ class FixtureSDKAdapter(BaseSDKAdapter):
         self.call_history.append({"action": "resume_session", "session_id": session_id})
         if session_id in self.registered_sessions:
             return self.registered_sessions[session_id]
-        # Если сессия была зарегистрирована заранее
-        cfg = config or CodexSessionConfig()
-        session = CodexSession(session_id=session_id, config=cfg)
-        self.registered_sessions[session_id] = session
-        return session
+        raise CodexSessionNotFoundError(
+            f"Сессия '{session_id}' не найдена. Возобновление несуществующей сессии запрещено (ADR-CD-04)."
+        )
+
+    def cancel_session(self, session: CodexSession) -> bool:
+        self.call_history.append({"action": "cancel_session", "session_id": session.session_id})
+        session.status = "cancelled"
+        return True
 
 
 class CodexSDKClient:
@@ -249,6 +296,11 @@ class CodexSDKClient:
         session = self.adapter.resume_session(session_id, config=self.config)
         self.current_session = session
         return session
+
+    def cancel(self) -> bool:
+        if not self.current_session:
+            return False
+        return self.adapter.cancel_session(self.current_session)
 
 
 def main():

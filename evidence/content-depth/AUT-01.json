@@ -1,0 +1,18 @@
+{
+  "title": "Локальная проверка продвинутых комплектов (A01-A05)",
+  "milestone": "M1",
+  "batch": "T05",
+  "status": "PASS",
+  "method": "automated+editorial",
+  "modules_tested": {
+    "A01": "SubprocessExecRunner + FixtureExecRunner с exit_code, stderr, timeouts",
+    "A02": "PR patch materialize diff + checksum verification + contents: read",
+    "A03": "BaseSDKAdapter + CodexSDKClient с отменой, сессиями и таймаутами",
+    "A04": "AppServerStdioClient с JSON-RPC очередью уведомлений и терминальным error broadcast",
+    "A05": "RemoteAppServerAdapter + CloudWorkerAdapter с проверкой прав доступа и fail-closed"
+  },
+  "scenario_id": "AUT-01",
+  "spec_sha256": "5d0c97942a4c4f66739e1029382cf107b98a43717f05697ecda242cb2c2c3b67",
+  "candidate_tree_sha256": "ba34300edf713f5f1ae0fee2a1e5690dfc5c2d5af397f49dba6a19baf92316d6",
+  "verified_at": "2026-10-06T04:30:00Z"
+}

@@ -1,0 +1,27 @@
+{
+  "title": "Офлайн-схемы (все 12 диаграмм)",
+  "milestone": "M1",
+  "batch": "T02",
+  "status": "PASS",
+  "method": "editorial",
+  "diagrams_checked": 12,
+  "diagram_ids": [
+    "D01",
+    "D02",
+    "D03",
+    "D04",
+    "D05",
+    "D06",
+    "D07",
+    "D08",
+    "D09",
+    "D10",
+    "D11",
+    "D12"
+  ],
+  "details": "Все 12 диаграмм имеют согласованные .mmd, валидные .svg без скриптов/foreignObject, и объяснены в соответствующих уроках.",
+  "scenario_id": "DIA-01",
+  "spec_sha256": "5d0c97942a4c4f66739e1029382cf107b98a43717f05697ecda242cb2c2c3b67",
+  "candidate_tree_sha256": "ba34300edf713f5f1ae0fee2a1e5690dfc5c2d5af397f49dba6a19baf92316d6",
+  "verified_at": "2026-10-06T04:30:00Z"
+}

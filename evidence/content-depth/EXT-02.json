@@ -1,0 +1,14 @@
+{
+  "title": "Нет доступа к настоящему клиенту",
+  "milestone": "M1",
+  "batch": "T04",
+  "status": "PASS",
+  "method": "automated",
+  "tested_cli_declared": null,
+  "native_compatibility_claimed": false,
+  "disclaimer": "Codex не запускался. Native-совместимость и M2 не проверены.",
+  "scenario_id": "EXT-02",
+  "spec_sha256": "5d0c97942a4c4f66739e1029382cf107b98a43717f05697ecda242cb2c2c3b67",
+  "candidate_tree_sha256": "ba34300edf713f5f1ae0fee2a1e5690dfc5c2d5af397f49dba6a19baf92316d6",
+  "verified_at": "2026-10-06T04:30:00Z"
+}

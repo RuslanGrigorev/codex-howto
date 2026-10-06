@@ -265,25 +265,56 @@ if(qd&&p){
   var KNOWN_SUBCOMMANDS = [
     'exec', 'app-server', 'login', 'logout', 'resume', 'fork', 'archive', 'unarchive',
     'delete', 'review', 'apply', 'mcp', 'execpolicy', 'cloud', 'agents', 'queue',
-    'plugin', 'remote-control', 'completion', 'features', 'sandbox', 'doctor', 'update', 'debug'
+    'plugin', 'remote-control', 'completion', 'features', 'sandbox', 'doctor', 'update', 'debug', 'mcp-server'
   ];
+
+  var SUBCOMMAND_ALLOWED_FLAGS = {
+    'exec': null,
+    'doctor': ['--help', '-h'],
+    'update': ['--help', '-h'],
+    'login': ['--help', '-h'],
+    'logout': ['--help', '-h'],
+    'resume': ['--help', '-h'],
+    'fork': ['--help', '-h'],
+    'archive': ['--help', '-h'],
+    'unarchive': ['--help', '-h'],
+    'delete': ['--help', '-h'],
+    'review': ['--help', '-h'],
+    'apply': ['--help', '-h'],
+    'mcp': ['--help', '-h'],
+    'execpolicy': ['--help', '-h'],
+    'cloud': ['--help', '-h'],
+    'agents': ['--help', '-h'],
+    'queue': ['--help', '-h'],
+    'plugin': ['--help', '-h'],
+    'remote-control': ['--help', '-h'],
+    'completion': ['--help', '-h'],
+    'features': ['--help', '-h'],
+    'sandbox': ['--help', '-h'],
+    'debug': ['--help', '-h'],
+    'mcp-server': ['--help', '-h'],
+    'app-server': ['--help', '-h']
+  };
+
+  var VALID_SANDBOX_VALUES = ['read-only', 'workspace-write', 'danger-full-access'];
+  var VALID_APPROVAL_VALUES = ['untrusted', 'always', 'never'];
 
   var VALID_CODEX_FLAGS = {
     '--model': true, '-m': true,
-    '--sandbox': true, '-s': true,
+    '--sandbox': true,
     '--ask-for-approval': true, '-a': true,
-    '--cd': true, '-c': true,
+    '--cd': true, '-C': true,
+    '--config': true, '-c': true,
     '--profile': true, '-p': true,
     '--mcp-config': true,
     '--agent': true,
     '--image': true, '-i': true,
-    '--config': true,
     '--add-dir': true,
     '--search': false,
     '--oss': false, '--local-provider': false,
     '--continue': false, '--resume': false,
     '--help': false, '-h': false,
-    '--version': false, '-v': false, '-v': false,
+    '--version': false, '-V': false,
     '--strict-config': false,
     '--no-alt-screen': false,
     '--skip-git-repo-check': false
@@ -294,13 +325,14 @@ if(qd&&p){
     '--ephemeral': false,
     '--output-schema': true,
     '--output-last-message': true, '-o': true,
-    '--sandbox': true, '-s': true,
+    '--sandbox': true,
     '--ask-for-approval': true, '-a': true,
-    '--cd': true, '-c': true,
+    '--cd': true, '-C': true,
+    '--config': true, '-c': true,
     '--profile': true, '-p': true,
     '--model': true, '-m': true,
     '--help': false, '-h': false,
-    '--version': false, '-v': false, '-v': false
+    '--version': false, '-V': false
   };
 
   function executeSim(rawCmd){
@@ -324,12 +356,13 @@ if(qd&&p){
         '    --model <gpt-5 | gpt-4.1 | o3-mini>\n' +
         '    --sandbox <read-only | workspace-write | danger-full-access>\n' +
         '    --ask-for-approval <untrusted | always | never>\n' +
-        '    --continue, --help, --version, exec, app-server\n' +
+        '    --cd, -C <КАТАЛОГ>\n' +
+        '    --config, -c <КЛЮЧ=ЗНАЧЕНИЕ>\n' +
+        '    --continue, --help, --version (-V), exec, app-server\n' +
         '  Slash-команды сессии:\n' +
         '    /goal [/goal pause | /goal resume | /goal clear]\n' +
         '    /model [/model <название>]\n' +
-        '    /permissions, /sandbox [read-only | workspace-write]\n' +
-        '    /status, /skills, /mcp, /plugins, /hooks, /resume [<id>], /exit\n' +
+        '    /permissions, /status, /skills, /mcp, /plugins, /hooks, /resume [<id>], /exit\n' +
         '  Навыки и проектные команды:\n' +
         '    $learn, cat AGENTS.md, clear');
       return;
@@ -402,8 +435,7 @@ if(qd&&p){
         return;
       }
       if(first === '/sandbox'){
-        var sMode = tokens[1] ? tokens[1].toLowerCase() : 'read-only';
-        appendLine('[СИМУЛЯЦИЯ /sandbox] Режим песочницы установлен в "' + sMode + '".');
+        appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестная slash-команда "/sandbox". Команда /sandbox отсутствует в каноническом baseline 0.160.0. Используйте флаг CLI "codex --sandbox <режим>" или команду "/permissions".', 'error-line');
         return;
       }
       if(first === '/status'){
@@ -460,7 +492,7 @@ if(qd&&p){
         return;
       }
       if(first === '/version'){
-        appendLine('codex 0.160.0 (offline docs baseline rust-v0.160.0)');
+        appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестная slash-команда "/version". Для вывода версии используйте команду CLI "codex --version" или "codex -V".', 'error-line');
         return;
       }
       appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестная slash-команда "' + first + '". В Codex CLI 0.160.0 используйте /help для списка поддерживаемых команд.', 'error-line');
@@ -495,9 +527,10 @@ if(qd&&p){
           '  app-server   Запуск stdio JSON-RPC 2.0 сервера интеграции\n\n' +
           'Параметры:\n' +
           '  -m, --model <МОДЕЛЬ>         Целевая модель (gpt-5, gpt-4.1)\n' +
-          '  -s, --sandbox <РЕЖИМ>        Режим: read-only | workspace-write | danger-full-access\n' +
-          '  --ask-for-approval <РЕЖИМ>   Запрос подтверждения: untrusted | always | never\n' +
-          '  --cd <КАТАЛОГ>               Рабочий каталог\n' +
+          '  --sandbox <РЕЖИМ>            Режим: read-only | workspace-write | danger-full-access\n' +
+          '  -a, --ask-for-approval <РЕЖ> Запрос подтверждения: untrusted | always | never\n' +
+          '  -C, --cd <КАТАЛОГ>           Рабочий каталог\n' +
+          '  -c, --config <КЛЮЧ=ЗНАЧ>     Переопределение конфигурации TOML\n' +
           '  --mcp-config <ФАЙЛ>          Путь к конфигурации MCP\n' +
           '  --continue, --resume         Возобновление сессии\n' +
           '  -h, --help                   Справка\n' +
@@ -520,16 +553,28 @@ if(qd&&p){
         for(var ei = 0; ei < execArgs.length; ei++){
           var etok = execArgs[ei];
           if(etok.startsWith('-')){
-            var etokLow = etok.toLowerCase();
-            if(VALID_EXEC_FLAGS[etokLow] === undefined){
+            var normEtok = etok.startsWith('--') ? etok.toLowerCase() : etok;
+            if(VALID_EXEC_FLAGS[normEtok] === undefined){
               appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестный параметр команды codex exec: "' + etok + '". Введите "codex exec --help" для списка параметров.', 'error-line');
               return;
             }
-            if(VALID_EXEC_FLAGS[etokLow] === true){
+            if(VALID_EXEC_FLAGS[normEtok] === true){
               ei++;
               if(ei >= execArgs.length){
                 appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Параметр "' + etok + '" требует аргумент.', 'error-line');
                 return;
+              }
+              var evalVal = execArgs[ei];
+              if(normEtok === '--sandbox'){
+                if(VALID_SANDBOX_VALUES.indexOf(evalVal) === -1){
+                  appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Недопустимое значение для --sandbox: "' + evalVal + '". Разрешённые режимы: ' + VALID_SANDBOX_VALUES.join(', ') + '.', 'error-line');
+                  return;
+                }
+              } else if(normEtok === '--ask-for-approval' || normEtok === '-a'){
+                if(VALID_APPROVAL_VALUES.indexOf(evalVal) === -1){
+                  appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Недопустимое значение для --ask-for-approval: "' + evalVal + '". Разрешённые значения: ' + VALID_APPROVAL_VALUES.join(', ') + '.', 'error-line');
+                  return;
+                }
               }
             }
           } else {
@@ -546,6 +591,18 @@ if(qd&&p){
       }
 
       if(KNOWN_SUBCOMMANDS.indexOf(a0) !== -1){
+        var subArgs = args.slice(1);
+        var allowed = SUBCOMMAND_ALLOWED_FLAGS[a0] || ['--help', '-h'];
+        for(var si = 0; si < subArgs.length; si++){
+          var stok = subArgs[si];
+          if(stok.startsWith('-')){
+            var normStok = stok.startsWith('--') ? stok.toLowerCase() : stok;
+            if(allowed.indexOf(normStok) === -1){
+              appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестный параметр команды codex ' + a0 + ': "' + stok + '".', 'error-line');
+              return;
+            }
+          }
+        }
         appendLine('[СИМУЛЯЦИЯ ' + a0 + '] Подкоманда baseline 0.160.0 принята к исполнению.');
         return;
       }
@@ -567,25 +624,37 @@ if(qd&&p){
       for(var ai = 0; ai < args.length; ai++){
         var atok = args[ai];
         if(atok.startsWith('-')){
-          var atokLow = atok.toLowerCase();
-          if(VALID_CODEX_FLAGS[atokLow] === undefined){
+          var normAtok = atok.startsWith('--') ? atok.toLowerCase() : atok;
+          if(VALID_CODEX_FLAGS[normAtok] === undefined){
             appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Неизвестный параметр команды codex: "' + atok + '". Введите "codex --help" для списка поддерживаемых параметров.', 'error-line');
             return;
           }
-          if(VALID_CODEX_FLAGS[atokLow] === true){
+          if(VALID_CODEX_FLAGS[normAtok] === true){
             ai++;
             if(ai >= args.length){
               appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Параметр "' + atok + '" требует аргумент.', 'error-line');
               return;
             }
             var aval = args[ai];
-            if(atokLow === '--model' || atokLow === '-m') curModel = aval;
-            if(atokLow === '--sandbox' || atokLow === '-s') curSandbox = aval;
-            if(atokLow === '--ask-for-approval' || atokLow === '-a') curApp = aval;
-            if(atokLow === '--agent') curAgent = aval;
-            if(atokLow === '--mcp-config') curMcp = aval;
+            if(normAtok === '--model' || normAtok === '-m') curModel = aval;
+            if(normAtok === '--sandbox'){
+              if(VALID_SANDBOX_VALUES.indexOf(aval) === -1){
+                appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Недопустимое значение для --sandbox: "' + aval + '". Разрешённые режимы: ' + VALID_SANDBOX_VALUES.join(', ') + '.', 'error-line');
+                return;
+              }
+              curSandbox = aval;
+            }
+            if(normAtok === '--ask-for-approval' || normAtok === '-a'){
+              if(VALID_APPROVAL_VALUES.indexOf(aval) === -1){
+                appendLine('[СИМУЛЯЦИЯ: ОШИБКА] Недопустимое значение для --ask-for-approval: "' + aval + '". Разрешённые значения: ' + VALID_APPROVAL_VALUES.join(', ') + '.', 'error-line');
+                return;
+              }
+              curApp = aval;
+            }
+            if(normAtok === '--agent') curAgent = aval;
+            if(normAtok === '--mcp-config') curMcp = aval;
           } else {
-            if(atokLow === '--continue' || atokLow === '--resume') isCont = true;
+            if(normAtok === '--continue' || normAtok === '--resume') isCont = true;
           }
         } else if(atok.startsWith('$')){
           curSkill = atok;
@@ -698,4 +767,51 @@ if ('IntersectionObserver' in window) {
     headings.forEach(function(h){ observer.observe(h); });
   }
 }
+
+// Mobile navigation drawer toggle
+var navToggle = document.getElementById('nav-toggle');
+var sidebarClose = document.getElementById('sidebar-close');
+var sidebarBackdrop = document.getElementById('sidebar-backdrop');
+var courseSidebar = document.getElementById('course-sidebar');
+
+function openSidebar() {
+  document.body.classList.add('sidebar-open');
+  if (navToggle) navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeSidebar() {
+  document.body.classList.remove('sidebar-open');
+  if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+}
+
+if (navToggle) {
+  navToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (document.body.classList.contains('sidebar-open')) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  });
+}
+if (sidebarClose) {
+  sidebarClose.addEventListener('click', closeSidebar);
+}
+if (sidebarBackdrop) {
+  sidebarBackdrop.addEventListener('click', closeSidebar);
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
+    closeSidebar();
+  }
+});
+if (courseSidebar) {
+  courseSidebar.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 860) {
+        closeSidebar();
+      }
+    });
+  });
+}
+
 })();

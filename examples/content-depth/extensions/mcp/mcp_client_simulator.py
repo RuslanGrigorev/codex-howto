@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
+from abc import ABC, abstractmethod
 from typing import Any, Callable, Optional
 
 # UTF-8 reconfigure
@@ -41,12 +42,41 @@ class MCPRefusalError(MCPError):
     pass
 
 
-class MockMCPTransport:
-    """Детерминированный транспорт MCP-сервера для офлайн-тестирования."""
+class MCPAuthError(MCPError):
+    """Ошибка авторизации HTTP/OAuth (401 Unauthorized / Token Expiry)."""
+    pass
+
+
+class MCPToolNotFoundError(MCPError):
+    """Запрошенный инструмент отсутствует на MCP-сервере."""
+    pass
+
+
+class BaseMCPTransport(ABC):
+    """Базовый интерфейс транспорта MCP."""
+
+    @abstractmethod
+    def handle_request(self, raw_request: str) -> str:
+        raise NotImplementedError
+
+    def set_notification_handler(self, handler: Callable[[str, dict[str, Any]], None]) -> None:
+        pass
+
+
+class StdioFixtureTransport(BaseMCPTransport):
+    """Детерминированный stdio-транспорт с поддержкой входящих уведомлений."""
 
     def __init__(self, workspace_root: Path):
         self.workspace_root = workspace_root.resolve()
         self.should_timeout = False
+        self._notification_handler: Optional[Callable[[str, dict[str, Any]], None]] = None
+
+    def set_notification_handler(self, handler: Callable[[str, dict[str, Any]], None]) -> None:
+        self._notification_handler = handler
+
+    def emit_notification(self, method: str, params: dict[str, Any]) -> None:
+        if self._notification_handler:
+            self._notification_handler(method, params)
 
     def handle_request(self, raw_request: str) -> str:
         if self.should_timeout:
@@ -63,6 +93,9 @@ class MockMCPTransport:
                 "capabilities": {"tools": {}},
                 "serverInfo": {"name": "mock-mcp-fs", "version": "1.0.0"}
             }
+            # При инициализации сервер может отправить уведомление об обновлении инструментов
+            if self._notification_handler:
+                self._notification_handler("notifications/tools/list_changed", {})
             return json.dumps({"jsonrpc": "2.0", "id": req_id, "result": res})
 
         elif method == "tools/list":
@@ -107,14 +140,10 @@ class MockMCPTransport:
                             "message": f"Path boundary violation: путь '{rel_path}' выходит за пределы workspace"
                         }
                     })
-
-                content = "Mock file content"
-                if target.is_file():
-                    content = target.read_text(encoding="utf-8")
                 return json.dumps({
                     "jsonrpc": "2.0",
                     "id": req_id,
-                    "result": {"content": [{"type": "text", "text": content}]}
+                    "result": {"content": [{"type": "text", "text": "Stdio content"}]}
                 })
 
             return json.dumps({
@@ -130,14 +159,69 @@ class MockMCPTransport:
         })
 
 
+class HttpOAuthFixtureTransport(BaseMCPTransport):
+    """Детерминированный HTTP/OAuth транспорт со строгой проверкой токенов (Finding 6)."""
+
+    def __init__(self, valid_token: str = "valid-mcp-bearer-token"):
+        self.valid_token = valid_token
+        self.current_token: Optional[str] = None
+        self.token_expiry_timestamp: float = 9999999999.0
+
+    def set_bearer_token(self, token: Optional[str]) -> None:
+        self.current_token = token
+
+    def authenticate_oauth(self, client_id: str, client_secret: str) -> str:
+        if client_id == "trusted-client" and client_secret == "trusted-secret":
+            self.current_token = self.valid_token
+            return self.valid_token
+        raise MCPAuthError("Неверные учетные данные OAuth (client_id/client_secret)")
+
+    def handle_request(self, raw_request: str) -> str:
+        if self.current_token != self.valid_token:
+            raise MCPAuthError("HTTP 401 Unauthorized: Отсутствует или недействителен Bearer токен")
+
+        req = json.loads(raw_request)
+        req_id = req.get("id")
+        method = req.get("method")
+
+        if method == "initialize":
+            return json.dumps({
+                "jsonrpc": "2.0",
+                "id": req_id,
+                "result": {"protocolVersion": "2024-11-05", "serverInfo": {"name": "remote-http-mcp"}}
+            })
+        elif method == "tools/list":
+            return json.dumps({
+                "jsonrpc": "2.0",
+                "id": req_id,
+                "result": {"tools": [{"name": "remote_api_query", "description": "Запрос к удалённому API"}]}
+            })
+        elif method == "tools/call":
+            return json.dumps({
+                "jsonrpc": "2.0",
+                "id": req_id,
+                "result": {"content": [{"type": "text", "text": "OAuth API response"}]}
+            })
+        return json.dumps({"jsonrpc": "2.0", "id": req_id, "error": {"code": -32600, "message": "Unknown"}})
+
+class MockMCPTransport(StdioFixtureTransport):
+    """Совместимый псевдоним для StdioFixtureTransport."""
+    pass
+
+
 class MCPClientSimulator:
     """Клиент MCP с поддержкой жизненного цикла и проверки границ песочницы."""
 
-    def __init__(self, transport: MockMCPTransport):
+    def __init__(self, transport: BaseMCPTransport):
         self.transport = transport
         self._next_id = 1
         self.initialized = False
         self.available_tools: list[dict[str, Any]] = []
+        self.notifications: list[dict[str, Any]] = []
+        self.transport.set_notification_handler(self._on_notification)
+
+    def _on_notification(self, method: str, params: dict[str, Any]) -> None:
+        self.notifications.append({"method": method, "params": params})
 
     def _call(self, method: str, params: dict[str, Any]) -> Any:
         req_id = self._next_id
@@ -149,11 +233,14 @@ class MCPClientSimulator:
         if "error" in resp and resp["error"]:
             err = resp["error"]
             msg = err.get("message", "MCP error")
+            code = err.get("code")
+            if code == -32601 or "not found" in msg.lower():
+                raise MCPToolNotFoundError(msg)
             if "boundary violation" in msg.lower():
                 raise MCPPathBoundaryError(msg)
             if "refusal" in msg.lower():
                 raise MCPRefusalError(msg)
-            raise MCPError(f"MCP error {err.get('code')}: {msg}")
+            raise MCPError(f"MCP error {code}: {msg}")
 
         return resp.get("result")
 

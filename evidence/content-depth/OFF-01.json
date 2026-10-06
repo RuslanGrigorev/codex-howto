@@ -1,0 +1,262 @@
+{
+  "scenario_id": "OFF-01",
+  "title": "Автономный рисунок (все 12 диаграмм без JS на 390px и 1440px)",
+  "milestone": "M1",
+  "batch": "T02",
+  "status": "PASS",
+  "method": "browser",
+  "candidate_tree_sha256": "ba34300edf713f5f1ae0fee2a1e5690dfc5c2d5af397f49dba6a19baf92316d6",
+  "spec_sha256": "5d0c97942a4c4f66739e1029382cf107b98a43717f05697ecda242cb2c2c3b67",
+  "verified_at": "2026-10-06T04:30:00Z",
+  "checks": {
+    "offline": true,
+    "js_disabled": true,
+    "viewports": [
+      390,
+      1440
+    ],
+    "diagrams_count": 12,
+    "results": [
+      {
+        "diagram_id": "D01",
+        "title": "Агентный цикл",
+        "page": "02-workflow/small-fix.html",
+        "viewport_width": 390,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D01_390px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D02",
+        "title": "Слои конфигурации",
+        "page": "04-instructions/config.html",
+        "viewport_width": 390,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D02_390px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D03",
+        "title": "Область AGENTS.md",
+        "page": "04-instructions/scope.html",
+        "viewport_width": 390,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D03_390px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D04",
+        "title": "Контекст память история и файлы",
+        "page": "04-instructions/context.html",
+        "viewport_width": 390,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D04_390px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D05",
+        "title": "Обнаружение и вызов skill",
+        "page": "06-skills/create.html",
+        "viewport_width": 390,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D05_390px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D06",
+        "title": "История сессии и состояние Git",
+        "page": "05-sessions/resume.html",
+        "viewport_width": 390,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D06_390px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D07",
+        "title": "Sandbox approval rules и auto-review",
+        "page": "03-safety/permissions.html",
+        "viewport_width": 390,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D07_390px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D08",
+        "title": "MCP stdio HTTP и границы доступа",
+        "page": "07-mcp/local-stdio.html",
+        "viewport_width": 390,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D08_390px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D09",
+        "title": "Жизненный цикл hooks",
+        "page": "09-extensions/plugins-hooks.html",
+        "viewport_width": 390,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D09_390px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D10",
+        "title": "Делегация и контекст субагентов",
+        "page": "09-extensions/agent-design.html",
+        "viewport_width": 390,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D10_390px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D11",
+        "title": "Загрузка и состав плагина",
+        "page": "09-extensions/plugins.html",
+        "viewport_width": 390,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D11_390px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D12",
+        "title": "App-server initialize thread turn events",
+        "page": "08-automation/app-server.html",
+        "viewport_width": 390,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D12_390px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D01",
+        "title": "Агентный цикл",
+        "page": "02-workflow/small-fix.html",
+        "viewport_width": 1440,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D01_1440px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D02",
+        "title": "Слои конфигурации",
+        "page": "04-instructions/config.html",
+        "viewport_width": 1440,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D02_1440px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D03",
+        "title": "Область AGENTS.md",
+        "page": "04-instructions/scope.html",
+        "viewport_width": 1440,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D03_1440px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D04",
+        "title": "Контекст память история и файлы",
+        "page": "04-instructions/context.html",
+        "viewport_width": 1440,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D04_1440px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D05",
+        "title": "Обнаружение и вызов skill",
+        "page": "06-skills/create.html",
+        "viewport_width": 1440,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D05_1440px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D06",
+        "title": "История сессии и состояние Git",
+        "page": "05-sessions/resume.html",
+        "viewport_width": 1440,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D06_1440px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D07",
+        "title": "Sandbox approval rules и auto-review",
+        "page": "03-safety/permissions.html",
+        "viewport_width": 1440,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D07_1440px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D08",
+        "title": "MCP stdio HTTP и границы доступа",
+        "page": "07-mcp/local-stdio.html",
+        "viewport_width": 1440,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D08_1440px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D09",
+        "title": "Жизненный цикл hooks",
+        "page": "09-extensions/plugins-hooks.html",
+        "viewport_width": 1440,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D09_1440px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D10",
+        "title": "Делегация и контекст субагентов",
+        "page": "09-extensions/agent-design.html",
+        "viewport_width": 1440,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D10_1440px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D11",
+        "title": "Загрузка и состав плагина",
+        "page": "09-extensions/plugins.html",
+        "viewport_width": 1440,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D11_1440px_nojs.png",
+        "status": "PASS"
+      },
+      {
+        "diagram_id": "D12",
+        "title": "App-server initialize thread turn events",
+        "page": "08-automation/app-server.html",
+        "viewport_width": 1440,
+        "js_enabled": false,
+        "svg_present": true,
+        "screenshot": "D12_1440px_nojs.png",
+        "status": "PASS"
+      }
+    ]
+  }
+}

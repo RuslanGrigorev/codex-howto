@@ -1,0 +1,250 @@
+[
+  {
+    "command": "/agents",
+    "description": "Каноническая slash-команда /agents baseline 0.160.0"
+  },
+  {
+    "command": "/app",
+    "description": "Каноническая slash-команда /app baseline 0.160.0"
+  },
+  {
+    "command": "/approve",
+    "description": "Каноническая slash-команда /approve baseline 0.160.0"
+  },
+  {
+    "command": "/apps",
+    "description": "Каноническая slash-команда /apps baseline 0.160.0"
+  },
+  {
+    "command": "/archive",
+    "description": "Каноническая slash-команда /archive baseline 0.160.0"
+  },
+  {
+    "command": "/btw",
+    "description": "Каноническая slash-команда /btw baseline 0.160.0"
+  },
+  {
+    "command": "/cd",
+    "description": "Каноническая slash-команда /cd baseline 0.160.0"
+  },
+  {
+    "command": "/clear",
+    "description": "Каноническая slash-команда /clear baseline 0.160.0"
+  },
+  {
+    "command": "/compact",
+    "description": "Каноническая slash-команда /compact baseline 0.160.0"
+  },
+  {
+    "command": "/copy",
+    "description": "Каноническая slash-команда /copy baseline 0.160.0"
+  },
+  {
+    "command": "/daemon",
+    "description": "Каноническая slash-команда /daemon baseline 0.160.0"
+  },
+  {
+    "command": "/debug-config",
+    "description": "Каноническая slash-команда /debug-config baseline 0.160.0"
+  },
+  {
+    "command": "/debug-m-drop",
+    "description": "Каноническая slash-команда /debug-m-drop baseline 0.160.0"
+  },
+  {
+    "command": "/debug-m-update",
+    "description": "Каноническая slash-команда /debug-m-update baseline 0.160.0"
+  },
+  {
+    "command": "/delete",
+    "description": "Каноническая slash-команда /delete baseline 0.160.0"
+  },
+  {
+    "command": "/diff",
+    "description": "Каноническая slash-команда /diff baseline 0.160.0"
+  },
+  {
+    "command": "/exit",
+    "description": "Каноническая slash-команда /exit baseline 0.160.0"
+  },
+  {
+    "command": "/experimental",
+    "description": "Каноническая slash-команда /experimental baseline 0.160.0"
+  },
+  {
+    "command": "/export",
+    "description": "Каноническая slash-команда /export baseline 0.160.0"
+  },
+  {
+    "command": "/feedback",
+    "description": "Каноническая slash-команда /feedback baseline 0.160.0"
+  },
+  {
+    "command": "/fork",
+    "description": "Каноническая slash-команда /fork baseline 0.160.0"
+  },
+  {
+    "command": "/goal",
+    "description": "Каноническая slash-команда /goal baseline 0.160.0"
+  },
+  {
+    "command": "/hooks",
+    "description": "Каноническая slash-команда /hooks baseline 0.160.0"
+  },
+  {
+    "command": "/ide",
+    "description": "Каноническая slash-команда /ide baseline 0.160.0"
+  },
+  {
+    "command": "/import",
+    "description": "Каноническая slash-команда /import baseline 0.160.0"
+  },
+  {
+    "command": "/init",
+    "description": "Каноническая slash-команда /init baseline 0.160.0"
+  },
+  {
+    "command": "/keymap",
+    "description": "Каноническая slash-команда /keymap baseline 0.160.0"
+  },
+  {
+    "command": "/logout",
+    "description": "Каноническая slash-команда /logout baseline 0.160.0"
+  },
+  {
+    "command": "/mcp",
+    "description": "Каноническая slash-команда /mcp baseline 0.160.0"
+  },
+  {
+    "command": "/memories",
+    "description": "Каноническая slash-команда /memories baseline 0.160.0"
+  },
+  {
+    "command": "/mention",
+    "description": "Каноническая slash-команда /mention baseline 0.160.0"
+  },
+  {
+    "command": "/model",
+    "description": "Каноническая slash-команда /model baseline 0.160.0"
+  },
+  {
+    "command": "/new",
+    "description": "Каноническая slash-команда /new baseline 0.160.0"
+  },
+  {
+    "command": "/permissions",
+    "description": "Каноническая slash-команда /permissions baseline 0.160.0"
+  },
+  {
+    "command": "/pets",
+    "description": "Каноническая slash-команда /pets baseline 0.160.0"
+  },
+  {
+    "command": "/plan",
+    "description": "Каноническая slash-команда /plan baseline 0.160.0"
+  },
+  {
+    "command": "/plugins",
+    "description": "Каноническая slash-команда /plugins baseline 0.160.0"
+  },
+  {
+    "command": "/ps",
+    "description": "Каноническая slash-команда /ps baseline 0.160.0"
+  },
+  {
+    "command": "/pwd",
+    "description": "Каноническая slash-команда /pwd baseline 0.160.0"
+  },
+  {
+    "command": "/quit",
+    "description": "Каноническая slash-команда /quit baseline 0.160.0"
+  },
+  {
+    "command": "/raw",
+    "description": "Каноническая slash-команда /raw baseline 0.160.0"
+  },
+  {
+    "command": "/recap",
+    "description": "Каноническая slash-команда /recap baseline 0.160.0"
+  },
+  {
+    "command": "/rename",
+    "description": "Каноническая slash-команда /rename baseline 0.160.0"
+  },
+  {
+    "command": "/resume",
+    "description": "Каноническая slash-команда /resume baseline 0.160.0"
+  },
+  {
+    "command": "/review",
+    "description": "Каноническая slash-команда /review baseline 0.160.0"
+  },
+  {
+    "command": "/rollout",
+    "description": "Каноническая slash-команда /rollout baseline 0.160.0"
+  },
+  {
+    "command": "/setup-default-sandbox",
+    "description": "Каноническая slash-команда /setup-default-sandbox baseline 0.160.0"
+  },
+  {
+    "command": "/side",
+    "description": "Каноническая slash-команда /side baseline 0.160.0"
+  },
+  {
+    "command": "/skills",
+    "description": "Каноническая slash-команда /skills baseline 0.160.0"
+  },
+  {
+    "command": "/status",
+    "description": "Каноническая slash-команда /status baseline 0.160.0"
+  },
+  {
+    "command": "/statusline",
+    "description": "Каноническая slash-команда /statusline baseline 0.160.0"
+  },
+  {
+    "command": "/stop",
+    "description": "Каноническая slash-команда /stop baseline 0.160.0"
+  },
+  {
+    "command": "/subagents",
+    "description": "Каноническая slash-команда /subagents baseline 0.160.0"
+  },
+  {
+    "command": "/test-approval",
+    "description": "Каноническая slash-команда /test-approval baseline 0.160.0"
+  },
+  {
+    "command": "/theme",
+    "description": "Каноническая slash-команда /theme baseline 0.160.0"
+  },
+  {
+    "command": "/title",
+    "description": "Каноническая slash-команда /title baseline 0.160.0"
+  },
+  {
+    "command": "/tui",
+    "description": "Каноническая slash-команда /tui baseline 0.160.0"
+  },
+  {
+    "command": "/usage",
+    "description": "Каноническая slash-команда /usage baseline 0.160.0"
+  },
+  {
+    "command": "/vim",
+    "description": "Каноническая slash-команда /vim baseline 0.160.0"
+  },
+  {
+    "command": "/voice",
+    "description": "Каноническая slash-команда /voice baseline 0.160.0"
+  },
+  {
+    "command": "/warnings",
+    "description": "Каноническая slash-команда /warnings baseline 0.160.0"
+  },
+  {
+    "command": "/worktree",
+    "description": "Каноническая slash-команда /worktree baseline 0.160.0"
+  }
+]

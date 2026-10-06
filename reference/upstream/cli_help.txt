@@ -1,0 +1,59 @@
+codex 0.160.0 (rust-v0.160.0)
+OpenAI Codex CLI developer interface
+
+USAGE:
+    codex [OPTIONS] [SUBCOMMAND] [PROMPT]
+
+OPTIONS:
+    -h, --help                                Print help information
+    -V, --version                             Print version information
+    -C, --cd <DIR>                            Set working directory
+    -m, --model <NAME>                        Target model name (e.g. gpt-5, gpt-4.1, o3-mini)
+        --sandbox <MODE>                      Sandbox mode: read-only | workspace-write | danger-full-access
+    -a, --ask-for-approval <POLICY>           Approval policy: untrusted | always | never
+    -c, --config <KEY=VAL>                    Override configuration key in TOML syntax
+    -p, --profile <NAME>                      Use named configuration profile
+        --add-dir <DIR>                       Add writable directory outside workspace
+    -i, --image <PATH>                        Attach image to initial prompt
+        --search                              Enable web search
+        --oss, --local-provider               Use local OSS model provider (ollama, lmstudio)
+        --json                                Stream machine-readable JSONL events (exec)
+        --output-schema <FILE>                Validate structured output against JSON schema (exec)
+    -o, --output-last-message <FILE>          Save final assistant message to file (exec)
+        --ephemeral                           Do not persist session state to disk
+        --remote <TARGET>                     Connect to remote app-server or cloud worker
+        --remote-auth-token-env <VAR>         Environment variable containing auth token
+        --enable <FLAG>                       Enable named feature flag
+        --disable <FLAG>                      Disable named feature flag
+        --strict-config                       Fail on unknown configuration keys
+        --no-alt-screen                       Disable alternate screen buffer
+        --skip-git-repo-check                 Skip check for git repository root
+        --color <WHEN>                        Control colorized output (always, auto, never)
+        --dangerously-bypass-...              Dangerous bypass flags (prohibited in course)
+
+SUBCOMMANDS:
+    login             Authenticate CLI session
+    logout            Clear stored credentials
+    resume            Resume previous session
+    fork              Fork session at current state
+    archive           Archive session
+    unarchive         Restore archived session
+    delete            Delete session
+    review            Review changes or diff
+    apply             Apply proposed patch
+    exec              Non-interactive batch execution
+    app-server        Run stdio JSON-RPC 2.0 application server
+    mcp               Manage Model Context Protocol connections
+    execpolicy        Manage command execution policies
+    cloud             Run remote tasks on cloud infrastructure
+    agents            Inspect and manage multi-agent hierarchy
+    queue             Inspect asynchronous task queue
+    plugin            Manage installed plugins
+    remote-control    Remote control socket interface
+    completion        Generate shell completion script
+    features          Inspect enabled feature flags
+    sandbox           Inspect sandbox configuration
+    doctor            Diagnose system requirements and environment
+    update            Check for CLI updates
+    debug             Debug internal runtime state
+    mcp-server        (Deprecated/Removed in 0.160.0; replaced by app-server)

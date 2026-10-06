@@ -12,6 +12,9 @@ from sdk_client import (
     CodexRefusalError,
     CodexExecutionError,
     CodexUnregisteredFixtureError,
+    CodexSessionNotFoundError,
+    CodexCancellationError,
+    CodexTimeoutError,
 )
 
 def test_successful_fixture_interaction():
@@ -121,11 +124,51 @@ def test_production_adapter_offline_boundary():
         except CodexSDKError as exc:
             assert "openai-codex==0.160.0" in str(exc)
 
+def test_unknown_session_resume_strictly_rejected():
+    """Попытка возобновить незарегистрированную сессию обязана вызывать ошибку (ADR-CD-04)."""
+    fixture = FixtureSDKAdapter()
+    client = CodexSDKClient(adapter=fixture)
+    try:
+        client.resume("never-created")
+        assert False, "Ожидалось исключение CodexSessionNotFoundError"
+    except CodexSessionNotFoundError as exc:
+        assert "не найдена" in str(exc)
+
+def test_session_cancellation():
+    """Отмена сессии переводит её в статус cancelled и блокирует дальнейшие вызовы."""
+    fixture = FixtureSDKAdapter()
+    fixture.register_response("Тест", CodexSDKResult(session_id="s1", output="Ок", success=True))
+    client = CodexSDKClient(adapter=fixture)
+    session = client.start()
+    assert session.status == "active"
+    client.cancel()
+    assert session.status == "cancelled"
+
+    try:
+        client.prompt("Тест")
+        assert False, "Ожидалась ошибка отмены"
+    except CodexCancellationError:
+        pass
+
+def test_session_timeout():
+    """Превышение лимита времени порождает CodexTimeoutError."""
+    fixture = FixtureSDKAdapter()
+    client = CodexSDKClient(adapter=fixture)
+    client.start()
+    try:
+        client.prompt("__timeout__")
+        assert False, "Ожидалось исключение CodexTimeoutError"
+    except CodexTimeoutError as exc:
+        assert "лимит времени" in str(exc)
+
 if __name__ == "__main__":
     test_successful_fixture_interaction()
     test_unregistered_prompt_strictly_rejected()
     test_model_refusal_raises_typed_error()
     test_execution_failure_raises_typed_error()
     test_continue_and_resume_session()
+    test_unknown_session_resume_strictly_rejected()
+    test_session_cancellation()
+    test_session_timeout()
     test_production_adapter_offline_boundary()
     print("ALL SDK TESTS PASSED")

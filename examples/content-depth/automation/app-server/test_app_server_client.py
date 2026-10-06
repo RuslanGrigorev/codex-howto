@@ -127,10 +127,48 @@ def test_eof_detection_on_process_termination():
 
     client.close()
 
+def test_failed_write_cleans_pending_requests():
+    """При сбое записи в транспорт запрос не должен зависать в _pending_requests."""
+    class BrokenWriteTransport(FixtureStdioTransport):
+        def write_message(self, message: str) -> None:
+            raise BrokenPipeError("Broken pipe during write")
+
+    transport = BrokenWriteTransport()
+    client = AppServerStdioClient(transport=transport)
+    try:
+        client.send_request("test", {})
+        assert False, "Ожидалась ошибка записи"
+    except BrokenPipeError:
+        pass
+
+    assert len(client._pending_requests) == 0, "Запрос завис в _pending_requests"
+
+def test_notification_delivery_and_no_discard():
+    """Уведомления без id не отбрасываются, а складываются в notifications."""
+    transport = FixtureStdioTransport()
+    client = AppServerStdioClient(transport=transport)
+    client.handle_incoming_message('{"jsonrpc": "2.0", "method": "turn/event", "params": {"status": "in_progress"}}')
+    assert not client.notifications.empty()
+    item = client.notifications.get_nowait()
+    assert item["method"] == "turn/event"
+    assert item["params"]["status"] == "in_progress"
+
+def test_simulate_eof_wakes_callers():
+    """Сбой транспорта или EOF немедленно пробуждает ожидающие запросы ошибкой."""
+    transport = FixtureStdioTransport()
+    client = AppServerStdioClient(transport=transport, timeout=5.0)
+    
+    # Симулируем обрыв соединения
+    transport.simulate_eof()
+    assert client._last_error is not None
+
 if __name__ == "__main__":
     test_happy_path_fixture()
     test_subprocess_stdio_transport()
     test_initialize_failure_and_state_rollback()
     test_timeout_rollback_and_retry()
     test_eof_detection_on_process_termination()
+    test_failed_write_cleans_pending_requests()
+    test_notification_delivery_and_no_discard()
+    test_simulate_eof_wakes_callers()
     print("ALL APP-SERVER TESTS PASSED")

@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CodexConfig",
+  "description": "Canonical configuration schema for Codex CLI 0.160.0",
+  "type": "object",
+  "properties": {
+    "model": {
+      "type": "string",
+      "default": "gpt-5"
+    },
+    "approval_policy": {
+      "type": "string",
+      "enum": [
+        "untrusted",
+        "always",
+        "never"
+      ],
+      "default": "untrusted"
+    },
+    "sandbox_mode": {
+      "type": "string",
+      "enum": [
+        "read-only",
+        "workspace-write",
+        "danger-full-access"
+      ],
+      "default": "workspace-write"
+    },
+    "mcp_servers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "web_search": {
+      "type": "boolean",
+      "default": false
+    },
+    "profiles": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "hooks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array"
+      }
+    },
+    "instructions": {
+      "type": "string"
+    },
+    "system_prompt": {
+      "type": "string"
+    },
+    "timeout_seconds": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "max_context_tokens": {
+      "type": "integer",
+      "minimum": 1000
+    },
+    "temperature": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 2.0
+    },
+    "top_p": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "stream": {
+      "type": "boolean",
+      "default": true
+    },
+    "log_level": {
+      "type": "string",
+      "enum": [
+        "trace",
+        "debug",
+        "info",
+        "warn",
+        "error"
+      ],
+      "default": "info"
+    },
+    "environment_variables": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "allowed_tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blocked_tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

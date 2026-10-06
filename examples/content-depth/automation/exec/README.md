@@ -21,8 +21,8 @@ codex exec --ask-for-approval never --sandbox workspace-write "Промпт"
 # Потоковый машиночитаемый вывод событий
 codex exec --json "Выполни линтинг" > stream.jsonl
 
-# Ограничение максимального количества итераций агента
-codex exec --max-turns 5 "Исправь форматирование"
+# Сохранение финального сообщения агента в артефакт
+codex exec --output-last-message result.txt "Исправь форматирование"
 ```
 
 ## Структура потоковых событий JSONL

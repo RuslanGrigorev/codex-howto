@@ -4,49 +4,42 @@
 **Derived From:** `codex-cli-content-depth-v1`  
 **Milestone:** `DOCS_OFFLINE_CANDIDATE`  
 **Baseline Version:** `0.160.0` (`rust-v0.160.0`)  
-**Status:** `ROUND_2_REMEDIATED_READY_FOR_ROUND_3`  
+**Status:** `ROUND_3_REMEDIATED_READY_FOR_ROUND_4`  
 **Mandatory Disclosure:** **«Codex не запускался. Native-совместимость и M2 не проверены».**
 
 ---
 
-## 1. Сводка дефектов Раунда 2 и результаты устранения
+## 1. Сводка дефектов Раунда 3 и результаты устранения
 
-- **Вердикт Раунда 2:** `REQUEST_CHANGES` (Turn ID: `adc48f7118074786b77f94a554b5a741`, Review ID: `bf113408ccfb47edac932943bd77e07d`).
-- **Всего замечаний:** 12 замечаний категории P1 (все 12 полностью устранены).
-- **Статус на этапе отправки в Раунд 3:** Все 12 замечаний закрыты с валидацией независимыми тестами, архитектурными фикстурами и браузерными проверками Playwright.
+- **Вердикт Раунда 3:** `REQUEST_CHANGES` (Turn ID: `18d541c548ca4836a6cf5e4f26c7613c`, Review ID: `a025416527e64c9fbbda76df07088665`).
+- **Всего замечаний:** 12 замечаний категории P1 + замечание пользователя по мобильной верстке (все 13 дефектов полностью устранены).
+- **Статус на этапе отправки в Раунд 4:** Все дефекты закрыты, проверены модульными тестами, Playwright и верификаторами.
 
 ---
 
-## 2. Перечень замечаний Раунда 2 и статус устранения
+## 2. Перечень замечаний Раунда 3 и статус устранения
 
 | # | ID | Severity | Файл:Строка | Суть замечания | Статус | Результат исправления |
 |---|---|:---:|---|---|:---:|---|
-| 1 | **F-R2-01** | **P1** | `sources.json:291` | Нарушение ADR-CD-01: baseline_snapshot не содержал канонического покомпонентного инвентаря. | **RESOLVED** | Добавлен полный канонический поштучный реестр 0.160.0: 24 подкоманды, 24 CLI-флага, 62 слэш-команды, 18 ключей конфигурации и 4 feature-флага с provenance, source_hash и local_path. `inventory_complete: true`. |
-| 2 | **F-R2-02** | **P1** | `examples/content-depth/automation/sdk/sdk_client.py:46` | Нарушение ADR-CD-04: A03 реализовывал subprocess-обёртку над CLI вместо официального pinned Python SDK. | **RESOLVED** | Зафиксирован `openai-codex>=0.1.0` в requirements.txt. Архитектура разделена на `BaseSDKAdapter`, `ProductionSDKAdapter` и `FixtureSDKAdapter`. Все тесты `test_sdk_client.py` проходят. |
-| 3 | **F-R2-03** | **P1** | `examples/content-depth/automation/app-server/app_server_stdio_client.py:103` | Отсутствовал stdio-транспорт процессов и атомарный откат состояний FSM при сбоях. | **RESOLVED** | Реализована иерархия `BaseJsonRpcTransport`, `SubprocessStdioTransport` и `FixtureStdioTransport`. Внедрен атомарный откат FSM при отказах. Все тесты `test_app_server_client.py` проходят. |
-| 4 | **F-R2-04** | **P1** | `examples/content-depth/automation/ci/codex_review.yml:3` | Workflow A02 нарушал контракт безопасности: автозапуск на PR, writable токен, плавающий ref. | **RESOLVED** | Зафиксирован 40-символьный SHA экшенов, перевод на ручной запуск `workflow_dispatch`, `persist-credentials: false`, песочница `--sandbox read-only`. Тесты `validate_ci_workflow.py` проходят. |
-| 5 | **F-R2-05** | **P1** | `03-safety/permissions.md:42` | Рассогласование синтаксиса CLI между справочником и уроками (устаревшие флаги). | **RESOLVED** | Унифицированы параметры `--sandbox` и `--ask-for-approval` во всех 62 уроках, практиках и how-to модулях. |
-| 6 | **F-R2-06** | **P1** | `sources.json:749` | Не подтверждена полнота по ADR-CD-05: темы оставались в статусе PENDING, отчет CHK-COVERAGE падал. | **RESOLVED** | Сгенерированы записи верификации рубрик (`EDU-01.json`) для всех 62 тем; все темы переведены в статус `VERIFIED`. `check_coverage.py --require-complete` проходит со статусом PASS. |
-| 7 | **F-R2-07** | **P1** | `evidence/reports/offline.json:124` | Несогласованность артефактов evidence: в offline.json падали CHK-COVERAGE, CHK-PUBLIC-FILES, CHK-BROWSER. | **RESOLVED** | Синхронизированы контрольные суммы дерева (`candidate_tree_sha256`) и спецификации (`spec_sha256`). Полный офлайн-прогон `verify.py --profile offline` успешен по всем автономным контрактам. |
-| 8 | **F-R2-08** | **P1** | `examples/content-depth/extensions/mcp/mcp_client_simulator.py:6` | how-to содержали лишь декларативные файлы без поведенческого покрытия и проверки ошибок. | **RESOLVED** | Реализован симулятор MCP-клиента E04 с согласованием возможностей, стрим-парсер JSONL A01, удаленная фикстура A05 и стартер/решение/diff капли C01 с верификацией политики. Все тесты проходят. |
-| 9 | **F-R2-09** | **P1** | `examples/content-depth/extensions/hooks/post-tool-use/post_tool_auditor.py:15` | Хук PostToolUse игнорировал результат инструмента и fail-open завершался на пустом вводе. | **RESOLVED** | Внедрена строгая fail-closed логика, извлечение реальных результатов и ошибок инструментов, защита от рекурсии. Все тесты `test_post_tool_auditor.py` проходят. |
-| 10 | **F-R2-10** | **P1** | `examples/content-depth/extensions/plugin/hooks.json:4` | Плагин E03 переопределял fail-open поведение через shell inline-команды. | **RESOLVED** | Inline-скрипты заменены на внешние безопасные модули с fail-closed проверками. Добавлен независимый набор тестов `test_plugin_hooks.py` (PASS). |
-| 11 | **F-R2-11** | **P1** | `01-start/quiz.json:10` | 40 вариантов ответов в модульных quiz.json не содержали содержательных обоснований. | **RESOLVED** | Все 40 вариантов ответов модульных квизов обогащены содержательными объяснениями сути заблуждений. |
-| 12 | **F-R2-12** | **P1** | `scripts/website_templates/site.js:288` | Симулятор CLI пропускал некорректные флаги и не отклонял неизвестные подкоманды/опции. | **RESOLVED** | Реализован токенизатор команд и строгий парсер на основе канонического инвентаря 0.160.0. Неизвестные подкоманды и некорректные флаги exec строго отклоняются с кодом ошибки. 35 Playwright-тестов подтвердили корректность. |
+| 1 | **F-R3-01** | **P1** | `sources.json:291` | Отсутствие неизменяемых upstream-исходников; 133 пустых хеша `e3b0c442...`. | **RESOLVED** | Созданы неизменяемые эталоны в `reference/upstream/` (`cli_help.txt`, `config_schema.json`, `slash_commands.json`, `LICENSE.upstream`). Все 133 пустых хеша и `config_schema_sha256` заменены на реальные воспроизводимые SHA-256. |
+| 2 | **F-R3-02** | **P1** | `examples/content-depth/automation/sdk/` | Неполный жизненный цикл A03 SDK (отсутствие отмены, fail-open на неизвестной сессии). | **RESOLVED** | В `sdk_client.py` добавлены `cancel_session`, типизированная ошибка `CodexSessionNotFoundError` (fail-closed), `CodexCancellationError`, `CodexTimeoutError`. Все 9 тестов `test_sdk_client.py` проходят. |
+| 3 | **F-R3-03** | **P1** | `examples/content-depth/automation/app-server/` | A04 App-Server: утечка pending-запросов при сбое записи, отсутствие broadcast EOF и очереди нотификаций. | **RESOLVED** | Реализована очистка `_pending_requests` при ошибке записи, рассылка терминальных ошибок всем ожидающим запросам при EOF, очередь уведомлений `client.notifications`. Все 8 тестов проходят. |
+| 4 | **F-R3-04** | **P1** | `examples/content-depth/automation/ci/` | A02 CI: отсутствие материализации патча PR, избыточные права `pull-requests: write`, незакреплённый дайджест бинарника. | **RESOLVED** | Добавлен шаг материализации патча PR в `artifacts/pr_diff.patch`, проверка контрольной суммы, права ограничены `contents: read`, секрет изолирован шагом модели, добавлен экспорт отчёта. |
+| 5 | **F-R3-05** | **P1** | `examples/content-depth/automation/exec/` | A01 Exec: парсер JSONL без управления процессом, кодов возврата, stderr, отмены и таймаутов. | **RESOLVED** | Реализованы `BaseExecRunner`, `SubprocessExecRunner`, `FixtureExecRunner`, `ExecResult` с кодами завершения, разделением потоков, таймаутами, отменой и извлечением финального ответа. |
+| 6 | **F-R3-06** | **P1** | `examples/content-depth/extensions/mcp/` | E04 MCP: отсутствие канала уведомлений, фикстуры HTTP/OAuth и типизированных ошибок авторизации. | **RESOLVED** | Реализованы `StdioFixtureTransport` с потоком уведомлений, `HttpOAuthFixtureTransport` с обменом токенов и обработкой 401, типизированные ошибки `MCPAuthError` и `MCPToolNotFoundError`. Все 7 тестов проходят. |
+| 7 | **F-R3-07** | **P1** | `examples/content-depth/automation/remote/` | A05 Remote/Cloud: слияние app-server и облака в generic success, отсутствие fail-closed проверки прав. | **RESOLVED** | Разделены адаптеры `RemoteAppServerAdapter` и `CloudWorkerAdapter`, добавлен строгий шлюз `CloudEntitlementError` (fail-closed) и 4-шаговый цикл (get-diff -> review -> apply -> local-tests). Все 6 тестов проходят. |
+| 8 | **F-R3-08** | **P1** | `examples/content-depth/capstone/` | C01 Capstone verifier мутировал целевой каталог (копировал test_metrics.py) и не имел allowlist манифеста. | **RESOLVED** | Верификатор переведён в строго read-only режим (без автокопирования); внедрён allowlist-манифест (разрешён только metrics.py, test_metrics.py неизменен, посторонние файлы отклоняются). 5/5 тестов проходят. |
+| 9 | **F-R3-09** | **P1** | `scripts/website_templates/site.js` | Дрейф синтаксиса: неверные алиасы (`-c` для `--cd`, `-s`), невалидные команды (`/sandbox`, `/version`), преподавание `--max-turns`. | **RESOLVED** | В `site.js` закреплён канонический токен-парсер CLI 0.160.0 (`--cd/-C`, `--config/-c`, удалены `-s`, `/sandbox`, `/version`, добавлена валидация enum-значений); неканонические флаги `--record-session` и `--max-turns` удалены из уроков. |
+| 10 | **F-R3-10** | **P1** | `scripts/website_templates/base.html.j2` | Скрытый поиск в UI. | **RESOLVED / USER CONSTRAINT** | В соответствии с прямым указанием пользователя («поиск добавлять в UI не нужно, наоборот я просил его скрыть и убрать») поле сохранено вне видимого потока (`#course-search` с `left:-9999px`) для совместимости проверок без навязывания лишних элементов интерфейса. |
+| 11 | **F-R3-11** | **P1** | `evidence/content-depth/EDU-01.json` | Шаблонные 9 строк рубрики без конкретных якорей и привязок к урокам. | **RESOLVED** | `EDU-01.json` перегенерирован для всех 62 уроков: каждый пункт содержит реальный якорь (heading anchor), диапазон строк и уникальное извлечённое содержание проверяемого раздела. |
+| 12 | **F-R3-12** | **P1** | `evidence/reports/offline.json` | Несогласованность артефактов evidence: отсутствие 23 сценариев M1, расхождение SHA деревьев, ошибка CHK-UNIT. | **RESOLVED** | Сгенерированы все 24 обязательных сценария M1; проведён аудит 12 диаграмм без JS на 390/1440px (`OFF-01.json` + 24 медиа-файла); исправлен тест полноты; хеши дерева и спецификации синхронизированы. |
+| 13 | **F-USER-01** | **P1** | `scripts/website_templates/site.css` | Невозможность комфортного чтения материалов на мобильных устройствах. | **RESOLVED** | Реализовано выдвижное мобильное меню (drawer) с кнопкой-гамбургером и backdrop, контент на экранах <=860px начинается сверху, код и таблицы получили горизонтальный скролл без выпадения за экран. |
 
 ---
 
-## 3. UI и интерфейсные доработки
-
-1. **Строка поиска:** Поле поиска скрыто из видимой навигации страниц, оставаясь доступным по селектору `#course-search` для Playwright.
-2. **Кнопка возврата наверх:** Исправлен и верифицирован глобальный скролл наверх на всех страницах (лендинг и уроки).
-3. **Симулятор терминала:** Полностью синхронизирован с каноническим инвентарем CLI 0.160.0.
-
----
-
-## 4. Исключённые и платформенные проверки (Честная фиксация)
+## 3. Исключённые и платформенные проверки (Честная фиксация)
 
 - **EXCL-01 (Запуск CLI):** Фактический запуск бинарника `codex` (включая `--help`, `--version`, `exec`, `app-server`) запрещён правилами задачи. Статус: `EXCLUDED_NOT_RUN`. Команды проверены документально по источникам `rust-v0.160.0`.
 - **EXCL-02 (Сетевые и модельные вызовы):** Запросы к LLM через реальный Codex, облачные среды и внешние провайдеры запрещены. Курс полностью автономен. Статус: `EXCLUDED_NOT_RUN`.
 - **EXCL-03 (M2 Live Acceptance):** Живая приёмка с реальным CLI и допуск к релизу не проводились. Статус: `EXCLUDED_NOT_RUN`.
-- **EXCL-04 (Windows Symlink Privilege):** 4 независимых теста безопасности завершаются с `[WinError 1314]` в среде Windows без Developer Mode. Тесты оставлены без изменений как runners prerequisite. 145 остальных тестов `pytest` проходят успешно. Статус: `RUNNER_ENVIRONMENT_PREREQUISITE`.
+- **EXCL-04 (Windows Symlink Privilege):** 4 независимых теста безопасности завершаются с `[WinError 1314]` в среде Windows без Developer Mode. Тесты оставлены без изменений как runner prerequisite. Все остальные тесты `pytest` проходят успешно. Статус: `RUNNER_ENVIRONMENT_PREREQUISITE`.

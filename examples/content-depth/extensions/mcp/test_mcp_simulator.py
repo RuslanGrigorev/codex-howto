@@ -6,9 +6,13 @@ from pathlib import Path
 from mcp_client_simulator import (
     MCPClientSimulator,
     MockMCPTransport,
+    StdioFixtureTransport,
+    HttpOAuthFixtureTransport,
     MCPPathBoundaryError,
     MCPRefusalError,
     MCPTimeoutError,
+    MCPAuthError,
+    MCPToolNotFoundError,
     MCPError
 )
 
@@ -74,9 +78,61 @@ def test_mcp_timeout_handling():
     except MCPTimeoutError:
         pass
 
+def test_http_oauth_flow_and_unauthorized_rejection():
+    """Проверка HTTP/OAuth: 401 Unauthorized при отсутствии токена и успешный вызов после обмена."""
+    transport = HttpOAuthFixtureTransport()
+    client = MCPClientSimulator(transport)
+
+    # 1. Без токена вызов отвергается с 401 (MCPAuthError)
+    try:
+        client.initialize()
+        assert False, "Ожидалось исключение MCPAuthError без Bearer токена"
+    except MCPAuthError as exc:
+        assert "401" in str(exc)
+
+    # 2. Успешный обмен учетных данных OAuth на Bearer токен
+    token = transport.authenticate_oauth("trusted-client", "trusted-secret")
+    assert token is not None
+
+    # 3. После аутентификации вызовы работают
+    init_res = client.initialize()
+    assert init_res["serverInfo"]["name"] == "remote-http-mcp"
+    tools = client.list_tools()
+    assert len(tools) == 1
+    call_res = client.call_tool("remote_api_query", {})
+    assert call_res["content"][0]["text"] == "OAuth API response"
+
+def test_stdio_notifications_channel():
+    """Проверка асинхронного канала уведомлений в stdio транспорте."""
+    root = Path(__file__).resolve().parent
+    transport = StdioFixtureTransport(workspace_root=root)
+    client = MCPClientSimulator(transport)
+    assert len(client.notifications) == 0
+
+    client.initialize()
+    # Сервер отправляет уведомление при инициализации
+    assert len(client.notifications) >= 1
+    assert client.notifications[0]["method"] == "notifications/tools/list_changed"
+
+def test_missing_tool_raises_typed_error():
+    """Вызов неизвестного инструмента порождает MCPToolNotFoundError."""
+    root = Path(__file__).resolve().parent
+    transport = MockMCPTransport(workspace_root=root)
+    client = MCPClientSimulator(transport)
+    client.initialize()
+
+    try:
+        client.call_tool("nonexistent_tool", {})
+        assert False, "Ожидалось исключение MCPToolNotFoundError"
+    except MCPToolNotFoundError as exc:
+        assert "not found" in str(exc)
+
 if __name__ == "__main__":
     test_mcp_initialize_and_tool_call()
     test_mcp_path_boundary_enforcement()
     test_mcp_refusal_and_recovery()
     test_mcp_timeout_handling()
+    test_http_oauth_flow_and_unauthorized_rejection()
+    test_stdio_notifications_channel()
+    test_missing_tool_raises_typed_error()
     print("ALL MCP SIMULATOR TESTS PASSED")
